@@ -1,13 +1,12 @@
 <template>
   <div>
+    <header-vue class="header"></header-vue>
+    <router-view class="main"></router-view>
     <p v-for="(name, index) in names" :key="index"  :v-if="isPink">
       <button @click="del(index)">delete</button>
       <Item :id="index" :name="name.label" :per="name.per" :others="1"   />
     </p>
-    add<input type="text" v-model="label">
-    per<input type="text" v-model="per">
-    status<input type="text" v-model="status">
-    <button @click="add">add</button>
+    <footer-vue class="footer"></footer-vue>
   </div>
 </template>
 
@@ -40,6 +39,9 @@ export default {
         },
         add(){
           this.names.push({label:this.label,per:this.per,status:this.status})
+        },
+        handleClose(){
+          
         }
     }  
 }
@@ -54,10 +56,11 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-.pink{
-  background-color: pink
+.footer{
+  position:fixed;
+  bottom:0;
 }
-.green{
-  background-color: green
-}
+/* .main{
+  display:block
+} */
 </style>

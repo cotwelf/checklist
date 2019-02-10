@@ -1,11 +1,14 @@
 <template>
   <!-- <div>{{computedId}}. 名称: {{name}},{{others}}</div> -->
   <div>
-      <span>{{id}}</span>
-      <span class="name">{{name}}</span>
-      <br/>
-      <span class="tips">每日{{per}},进度{{remain}}</span>
-
+    <mu-container v-for="(item,index) in items" :key="index">
+    <mu-expansion-panel>
+        <div slot="header">{{name}}</div>
+        每日{{per}},进度{{remain}}
+        <mu-button slot="action" flat>Cancel</mu-button>
+        <mu-button slot="action" flat color="primary">Save</mu-button>
+    </mu-expansion-panel>
+    </mu-container>
   </div>
 </template>
 
