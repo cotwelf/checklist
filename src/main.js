@@ -8,7 +8,9 @@ Vue.use(MuseUI);
 
 
 Vue.config.productionTip = false
-
+// axios
+import Axios from 'axios';
+Vue.prototype.$axios = Axios;
 // routes
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);

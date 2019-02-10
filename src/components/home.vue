@@ -29,6 +29,27 @@ export default {
     },
     methods:{
         handleClose(){}
+    },
+    created(){
+      // get请求
+      // this.$axios.get('')
+      // .then(res=>{
+      //   this.data = res.data.message;
+      //   console.log(res);
+      // })
+      // .catch(err=>{
+      //   console.log(err);
+      // })
+
+      // post请求
+      // $this.$asios.post('','content = xxx')
+      // .then(res=>{
+      //   this.data = res.data.message;
+      //   console.log(res);
+      // })
+      // .catch(err=>{
+      //   console.log(err);
+      // })
     }
 }
 </script>
