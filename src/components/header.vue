@@ -1,28 +1,29 @@
 <template>
-    <div>
-        <mu-appbar style="width: 100%;" color="primary">
-        <mu-button icon slot="left">
-            <mu-icon value="menu"></mu-icon>
-        </mu-button>
-        Title
-
-        <mu-button flat slot="right">LOGIN</mu-button>
-        </mu-appbar>
-    </div>
+  <div>
+    <mu-appbar style="width: 100%;" color="#f48fb1">
+      <mu-button icon slot="left">
+        <i class="iconfont icon-fenlei" style="font-size: 30px"></i>
+      </mu-button>
+      {{title}}
+      <mu-button flat slot="right">
+        <i class="iconfont icon-shezhi" style="font-size: 30px"></i>
+      </mu-button>
+    </mu-appbar>
+  </div>
 </template>
 <script>
 export default {
-    data(){
-        return{
-
-        }
-    },
-    methods:{
-        handleClose(){}
-    }
-}
+  props: ["title"],
+  data() {
+    return {
+      //   title: ""
+    };
+  },
+  methods: {
+    handleClose() {}
+  }
+};
 </script>
 <style>
-
 </style>
 
