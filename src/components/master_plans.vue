@@ -2,51 +2,51 @@
   <div>
     <mu-list textline="two-line">
       <mu-sub-header>今天也要元气满满加油鸭O(∩_∩)O~~</mu-sub-header>
-      <span v-for="(task,index) in tasks" :key="index">
-        <mu-list-item avatar :ripple="ture" button v-if="task.status == 0" :id="task.id">
+      <span v-for="(task,index) in tasks" :key="index" :id="index">
+        <mu-list-item avatar :ripple="ture" button v-if="task.status == 0">
           <mu-list-item-content>
             <mu-list-item-title>
               <mu-icon
                 size="20"
                 value=":iconfont icon-weiguanzhu"
-                v-if="task.level == 1"
+                v-if="task.prev == 1"
                 color="red400"
               ></mu-icon>
               <mu-icon
                 size="20"
                 value=":iconfont icon-weiguanzhu"
-                v-if="task.level ==2 "
+                v-if="task.prev ==2 "
                 color="yellow800"
               ></mu-icon>
               <mu-icon
                 size="20"
                 value=":iconfont icon-weiguanzhu"
-                v-if="task.level ==3 "
+                v-if="task.prev ==3 "
                 color="blue300"
               ></mu-icon>
               <mu-icon
                 size="20"
                 value=":iconfont icon-weiguanzhu"
-                v-if="task.level ==4 "
+                v-if="task.prev ==4 "
                 color="green200"
               ></mu-icon>
               {{task.name}}
-              <mu-icon v-if="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
             </mu-list-item-title>
             <mu-list-item-sub-title>周末要来你这里出差，要不要一起吃个饭呀周末要来你这里出差，要不要一起吃个饭呀周末要来你这里出差，要不要一起吃个饭呀</mu-list-item-sub-title>
           </mu-list-item-content>
           <mu-list-item-action>
-            <!-- <mu-list-item-after-text>第12次</mu-list-item-after-text> -->
+            <mu-list-item-after-text>第12次</mu-list-item-after-text>
             <mu-checkbox
               color="yellow700"
               v-model="selects"
               :value="task.id"
-              uncheck-icon=":iconfont icon-xuanzhong"
-              checked-icon=":iconfont icon-xuanzhong"
-              @click="CloseTask(task.id,task.ver)"
+              uncheck-icon=":iconfont icon-31yiguanzhudianpu"
+              checked-icon=":iconfont icon-31xuanzhong"
+              @click="CloseTask(index)"
             ></mu-checkbox>
           </mu-list-item-action>
         </mu-list-item>
+        <mu-divider></mu-divider>
       </span>
     </mu-list>
   </div>
@@ -55,7 +55,6 @@
 export default {
   data() {
     return {
-      openSimple: false,
       selects: [],
       id: "",
       name: "",
@@ -67,70 +66,56 @@ export default {
         {
           id: "1",
           name: "狍球",
-          level: "1",
+          prev: "1",
           per: "2",
           remain: "100",
-          status: "0",
-          // 0:普通计划；1：角虫养成计划
-          ver: "1"
+          status: "0"
         },
         {
           id: "2",
           name: "狍几",
-          level: "2",
+          prev: "2",
           per: "2",
           remain: "100",
-          status: "0",
-          ver: "0"
+          status: "0"
         },
         {
           id: "3",
           name: "狍毛",
-          level: "3",
+          prev: "3",
           per: "2",
           remain: "100",
-          status: "0",
-          ver: "0"
+          status: "0"
         },
         {
           id: "4",
           name: "haha",
-          level: "4",
+          prev: "4",
           per: "2",
           remain: "100",
-          status: "0",
-          ver: "0"
+          status: "0"
         }
       ]
     };
   },
   methods: {
-    CloseTask(id, ver) {
-      if (ver == 0) {
-        this.$toast.message("恭喜你，经验值+1");
-        $("#" + id).fadeOut();
-      } else {
-        this.$prompt("请输入完成时间(min)", {
-          validator(value) {
-            return {
-              valid: /[0-9]/.test(value),
-              message: "请输入正确时间"
-            };
-          }
-        }).then(({ result, value }) => {
-          if (result) {
-            this.$toast.message("你输入的时间：" + value);
-            $("#" + id).fadeOut();
-          } else {
-            this.selects = [];
-            this.$toast.message("少年还需努力啊");
-          }
-        });
+    handleClose() {},
+    CloseTask(index) {
+      //   console.log("2333");
+
+      $("#" + index).fadeOut();
+    },
+    OpenTask(index) {
+      $("#" + index).fadeIn();
+    },
+    GetColor() {
+      switch (this.prev) {
+        case 1:
+          "red";
+          break;
       }
     }
-  },
-  position: "bottom-end",
-  close: false
+  }
 };
 </script>
 <style>

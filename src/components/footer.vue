@@ -1,11 +1,21 @@
 
 <template>
   <div>
-    <mu-container style="max-width: 400px; width:100%;" color="#f48fb1">
-      <mu-bottom-nav :value.sync="shift" color="#f48fb1" shift>
-        <mu-bottom-nav-item value="movies" title="今日计划" icon=":iconfont icon-31dingdan"></mu-bottom-nav-item>
-        <mu-bottom-nav-item value="music" title="新建项目" icon=":iconfont icon-bianji" size="30"></mu-bottom-nav-item>
-        <mu-bottom-nav-item value="pictures" title="我的" icon=":iconfont icon-mine"></mu-bottom-nav-item>
+    <mu-container style="width:100%;">
+      <mu-bottom-nav :value.sync="shift" color="pinkA100" shift>
+        <mu-bottom-nav-item
+          value="plans"
+          title="角虫计划"
+          icon=":iconfont icon-bianji"
+          :to="{ name: 'plans', params: { userId: 123 }}"
+        ></mu-bottom-nav-item>
+        <mu-bottom-nav-item
+          value="todo"
+          title="今日计划"
+          icon=":iconfont icon-31dingdan"
+          :to="{ name: 'home', params: { userId: 123 }}"
+        ></mu-bottom-nav-item>
+        <mu-bottom-nav-item value="mine" title="我的" icon=":iconfont icon-mine" :to="{name:'mine'}"></mu-bottom-nav-item>
       </mu-bottom-nav>
     </mu-container>
   </div>
@@ -14,7 +24,7 @@
 export default {
   data() {
     return {
-      shift: "movies"
+      shift: "todo"
     };
   },
   methods: {

@@ -42,13 +42,16 @@ export default {
   position: fixed;
   bottom: 0;
 }
-/* .main{
-  display:block
-} */
+.main {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
 mu-paper {
   height: 100%;
 }
 .footer {
+  position: absolute;
   width: 100%;
 }
 </style>
