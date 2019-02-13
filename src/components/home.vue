@@ -33,7 +33,7 @@
               {{task.name}}
               <mu-icon v-if="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
             </mu-list-item-title>
-            <mu-list-item-sub-title>周末要来你这里出差，要不要一起吃个饭呀周末要来你这里出差，要不要一起吃个饭呀周末要来你这里出差，要不要一起吃个饭呀</mu-list-item-sub-title>
+            <mu-list-item-sub-title>每天{{task.per}}，剩余{{task.done}}%</mu-list-item-sub-title>
           </mu-list-item-content>
           <mu-list-item-action>
             <!-- <mu-list-item-after-text>第12次</mu-list-item-after-text> -->
@@ -43,7 +43,7 @@
               :value="task.id"
               uncheck-icon=":iconfont icon-xuanzhong"
               checked-icon=":iconfont icon-xuanzhong"
-              @click="CloseTask(task.id,task.ver)"
+              @click="CloseTask(task.id,task.ver,task.done,task.total)"
             ></mu-checkbox>
           </mu-list-item-action>
         </mu-list-item>
@@ -53,25 +53,33 @@
 </template>
 <script>
 export default {
+  mounted: function() {
+    this.$emit("getMessage", this.show);
+  },
+  created() {
+    $("body,html").animate({ scrollTop: 0 }, 100);
+  },
   data() {
     return {
+      show: "todo",
       openSimple: false,
       selects: [],
       id: "",
       name: "",
-      title: "今日计划",
       per: "",
-      remain: "",
+      done: "",
       status: "",
+      total: "",
       tasks: [
         {
           id: "1",
           name: "狍球",
           level: "1",
           per: "2",
-          remain: "100",
+          total: "222",
+          done: "100",
           status: "0",
-          // 0:普通计划；1：角虫养成计划
+          // 0:普通计划（简单重复或当天结束）；1：角虫养成计划; 2:项目计划（有目标）
           ver: "1"
         },
         {
@@ -79,16 +87,18 @@ export default {
           name: "狍几",
           level: "2",
           per: "2",
-          remain: "100",
+          total: "222",
+          done: "100",
           status: "0",
-          ver: "0"
+          ver: "2"
         },
         {
           id: "3",
           name: "狍毛",
           level: "3",
           per: "2",
-          remain: "100",
+          total: "222",
+          done: "100",
           status: "0",
           ver: "0"
         },
@@ -97,7 +107,8 @@ export default {
           name: "haha",
           level: "4",
           per: "2",
-          remain: "100",
+          total: "222",
+          done: "100",
           status: "0",
           ver: "0"
         }
@@ -105,19 +116,23 @@ export default {
     };
   },
   methods: {
-    CloseTask(id, ver) {
+    CloseTask(id, ver, done, total) {
       if (ver == 0) {
         this.$toast.message("恭喜你，经验值+1");
         $("#" + id).fadeOut();
       } else {
-        this.$prompt("请输入完成时间(min)", {
-          validator(value) {
-            return {
-              valid: /[0-9]/.test(value),
-              message: "请输入正确时间"
-            };
+        this.$prompt(
+          "已完成" + done + "，剩余" + (total - done),
+          ver == 1 ? "请输入完成时间(min)" : "请输入当前进度",
+          {
+            validator(value) {
+              return {
+                valid: /[0-9]/.test(value),
+                message: "请输入正确时间"
+              };
+            }
           }
-        }).then(({ result, value }) => {
+        ).then(({ result, value }) => {
           if (result) {
             this.$toast.message("你输入的时间：" + value);
             $("#" + id).fadeOut();

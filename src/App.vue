@@ -1,10 +1,10 @@
 <template>
   <div>
+    <header-vue :title="title" class="header"></header-vue>
     <mu-paper :z-depth="1">
-      <header-vue :title="title" class="header"></header-vue>
-      <router-view class="main"></router-view>
-      <footer-vue class="footer" @onChangeView="onChangeView"></footer-vue>
+      <router-view class="main" @getMessage="showMsg"></router-view>
     </mu-paper>
+    <footer-vue class="footer" :show="show"></footer-vue>
   </div>
 </template>
 
@@ -13,6 +13,7 @@
 // import Item from "./components/Item.vue";
 
 export default {
+  props: ["show"],
   // components: {
   //   Item
   // },
@@ -22,8 +23,8 @@ export default {
     };
   },
   methods: {
-    onChangeView(newTitle) {
-      this.title = newTitle;
+    showMsg(show) {
+      this.show = show;
     }
   }
 };
@@ -38,11 +39,15 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-.footer {
+.header {
   position: fixed;
-  bottom: 0;
+  display: block;
+  top: 0;
+  width: 100%;
+  z-index: 999;
 }
 .main {
+  top: 66px;
   position: absolute;
   height: 100%;
   width: 100%;
@@ -51,7 +56,8 @@ mu-paper {
   height: 100%;
 }
 .footer {
-  position: absolute;
+  position: fixed;
+  bottom: 0;
   width: 100%;
 }
 </style>

@@ -2,12 +2,12 @@
 <template>
   <div>
     <mu-container style="width:100%;">
-      <mu-bottom-nav :value.sync="shift" color="pinkA100" shift>
+      <mu-bottom-nav :value.sync="show" color="pinkA100" shift>
         <mu-bottom-nav-item
-          value="plans"
-          title="角虫计划"
+          value="project"
+          title="项目进度"
           icon=":iconfont icon-bianji"
-          :to="{ name: 'plans', params: { userId: 123 }}"
+          :to="{ name: 'project', params: { userId: 123 }}"
         ></mu-bottom-nav-item>
         <mu-bottom-nav-item
           value="todo"
@@ -22,13 +22,12 @@
 </template>
 <script>
 export default {
+  props: ["show"],
   data() {
     return {
       shift: "todo"
     };
   },
-  methods: {
-    handleClose() {}
-  }
+  methods: {}
 };
 </script>
