@@ -4,7 +4,7 @@
     <mu-paper :z-depth="1">
       <router-view class="main" @getMessage="showMsg"></router-view>
     </mu-paper>
-    <footer-vue class="footer" :show="show"></footer-vue>
+    <footer-vue class="footer" :msg="show"></footer-vue>
   </div>
 </template>
 
@@ -13,12 +13,12 @@
 // import Item from "./components/Item.vue";
 
 export default {
-  props: ["show"],
   // components: {
   //   Item
   // },
   data() {
     return {
+      show: "",
       title: "角虫养成计划"
     };
   },

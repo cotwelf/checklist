@@ -1,12 +1,20 @@
 import Vue from 'vue'
 import App from './App.vue'
+import Axios from 'axios';
+Vue.prototype.$axios = Axios;
+
 
 import MuseUI from 'muse-ui';
 import 'muse-ui/dist/muse-ui.css';
-import './img/icon/iconfont.css';
-import Toast from 'muse-ui-toast';
 import 'muse-ui-message/dist/muse-ui-message.css';
 import Message from 'muse-ui-message';
+import Toast from 'muse-ui-toast';
+Vue.use(MuseUI);
+
+import './img/icon/iconfont.css';
+
+
+
 Vue.use(Message);
 // Vue.use(Toast);
 Vue.use(Toast, {
@@ -14,7 +22,7 @@ Vue.use(Toast, {
   position: 'top-end',
 });
 
-Vue.use(MuseUI);
+
 
 
 Vue.config.productionTip = false
@@ -48,5 +56,5 @@ new Vue({
   el: '#app',
   router: router,
   render: h => h(App),
-  
+
 })

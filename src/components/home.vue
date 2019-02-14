@@ -43,7 +43,7 @@
               :value="task.id"
               uncheck-icon=":iconfont icon-xuanzhong"
               checked-icon=":iconfont icon-xuanzhong"
-              @click="CloseTask(task.id,task.ver,task.done,task.total)"
+              @click="closeTask(task.id,task.ver,task.done,task.total,task.per)"
             ></mu-checkbox>
           </mu-list-item-action>
         </mu-list-item>
@@ -58,9 +58,19 @@ export default {
   },
   created() {
     $("body,html").animate({ scrollTop: 0 }, 100);
+    this.$axios
+      .get("/api/get_todo_list")
+      .then(tasks => {
+        this.tasks = tasks.data;
+        console.log(this.tasks);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   data() {
     return {
+      ture: "",
       show: "todo",
       openSimple: false,
       selects: [],
@@ -70,56 +80,15 @@ export default {
       done: "",
       status: "",
       total: "",
-      tasks: [
-        {
-          id: "1",
-          name: "狍球",
-          level: "1",
-          per: "2",
-          total: "222",
-          done: "100",
-          status: "0",
-          // 0:普通计划（简单重复或当天结束）；1：角虫养成计划; 2:项目计划（有目标）
-          ver: "1"
-        },
-        {
-          id: "2",
-          name: "狍几",
-          level: "2",
-          per: "2",
-          total: "222",
-          done: "100",
-          status: "0",
-          ver: "2"
-        },
-        {
-          id: "3",
-          name: "狍毛",
-          level: "3",
-          per: "2",
-          total: "222",
-          done: "100",
-          status: "0",
-          ver: "0"
-        },
-        {
-          id: "4",
-          name: "haha",
-          level: "4",
-          per: "2",
-          total: "222",
-          done: "100",
-          status: "0",
-          ver: "0"
-        }
-      ]
+      tasks: ""
     };
   },
   methods: {
-    CloseTask(id, ver, done, total) {
+    closeTask(id, ver, done, total, per) {
       if (ver == 0) {
         this.$toast.message("恭喜你，经验值+1");
         $("#" + id).fadeOut();
+        // finishTask(id, per);
       } else {
         this.$prompt(
           "已完成" + done + "，剩余" + (total - done),
@@ -143,6 +112,9 @@ export default {
         });
       }
     }
+    // finishTask(id, per) {
+    //   this.$axios.post("/api/update_plan", { id, per });
+    // }
   },
   position: "bottom-end",
   close: false
