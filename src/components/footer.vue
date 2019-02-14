@@ -2,7 +2,7 @@
 <template>
   <div>
     <mu-container style="width:100%;">
-      <mu-bottom-nav :value.sync="smg" color="pinkA100" shift>
+      <mu-bottom-nav :value.sync="show" color="pinkA100" shift>
         <mu-bottom-nav-item
           value="project"
           title="项目进度"
@@ -22,7 +22,7 @@
 </template>
 <script>
 export default {
-  props: ["smg"],
+  props: ["show"],
   data() {
     return {
       shift: "todo"

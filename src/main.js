@@ -1,10 +1,11 @@
 import Vue from 'vue'
+import MuseUI from 'muse-ui';
 import App from './App.vue'
 import Axios from 'axios';
 Vue.prototype.$axios = Axios;
 
 
-import MuseUI from 'muse-ui';
+
 import 'muse-ui/dist/muse-ui.css';
 import 'muse-ui-message/dist/muse-ui-message.css';
 import Message from 'muse-ui-message';

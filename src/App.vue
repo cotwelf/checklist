@@ -4,7 +4,7 @@
     <mu-paper :z-depth="1">
       <router-view class="main" @getMessage="showMsg"></router-view>
     </mu-paper>
-    <footer-vue class="footer" :msg="show"></footer-vue>
+    <footer-vue class="footer" :show="show"></footer-vue>
   </div>
 </template>
 

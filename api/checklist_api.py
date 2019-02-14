@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import MySQLdb
 import time
 
@@ -63,12 +63,17 @@ def create_plan():
     return 1
 
 
-@app.route('/update_plan')
-def update_plan(id, per):
+@app.route('/update_plan', methods=['POST'])
+def update_plan():
+    id = request.form['id']
+    per = request.form['per']
+    print request.__dict__
+    print request
     sql = "update plans set done = (done + %s) where id =%s"
     val = (id, per)
     cursor.execute(sql, val)
     db.commit()
+    print sql
     return 1
 
 

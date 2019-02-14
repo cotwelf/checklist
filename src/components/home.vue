@@ -84,11 +84,13 @@ export default {
     };
   },
   methods: {
+    finishTask(id, per) {
+      this.$axios.post("/api/update_plan", { id, per });
+    },
     closeTask(id, ver, done, total, per) {
       if (ver == 0) {
         this.$toast.message("恭喜你，经验值+1");
         $("#" + id).fadeOut();
-        // finishTask(id, per);
       } else {
         this.$prompt(
           "已完成" + done + "，剩余" + (total - done),
@@ -105,6 +107,8 @@ export default {
           if (result) {
             this.$toast.message("你输入的时间：" + value);
             $("#" + id).fadeOut();
+            console.log("done");
+            this.finishTask(id, per);
           } else {
             this.selects = [];
             this.$toast.message("少年还需努力啊");
@@ -112,9 +116,6 @@ export default {
         });
       }
     }
-    // finishTask(id, per) {
-    //   this.$axios.post("/api/update_plan", { id, per });
-    // }
   },
   position: "bottom-end",
   close: false
