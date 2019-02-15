@@ -3,7 +3,7 @@
     <mu-list textline="two-line">
       <mu-sub-header>今天也要元气满满加油鸭O(∩_∩)O~~</mu-sub-header>
       <span v-for="(task,index) in tasks" :key="index">
-        <mu-list-item avatar :ripple="false" button v-if="task.status == 0" :id="task.id">
+        <mu-list-item avatar :ripple="ture" button v-if="task.status == 0" :id="task.id">
           <mu-list-item-content>
             <mu-list-item-title>
               <mu-icon
@@ -58,9 +58,8 @@ export default {
   },
   created() {
     $("body,html").animate({ scrollTop: 0 }, 100);
-    // 假设1是userid
     this.$axios
-      .get("/api/get_todo_list", { params: { user_id: "1" } })
+      .get("/api/get_todo_list")
       .then(tasks => {
         this.tasks = tasks.data;
         console.log(this.tasks);
@@ -88,31 +87,6 @@ export default {
     finishTask(id, finish) {
       this.$axios.post("/api/update_plan", { id: id, finish: finish });
     },
-<<<<<<< HEAD
-    methods:{
-        handleClose(){}
-    },
-    created(){
-      // get请求
-      // this.$axios.get('')
-      // .then(res=>{
-      //   this.data = res.data.message;
-      //   console.log(res);
-      // })
-      // .catch(err=>{
-      //   console.log(err);
-      // })
-
-      // post请求
-      // $this.$asios.post('','content = xxx')
-      // .then(res=>{
-      //   this.data = res.data.message;
-      //   console.log(res);
-      // })
-      // .catch(err=>{
-      //   console.log(err);
-      // })
-=======
     closeTask(id, ver, done, total, per) {
       if (ver == 0) {
         this.$toast.message("恭喜你，经验值+1");
@@ -141,7 +115,6 @@ export default {
           }
         });
       }
->>>>>>> 52c398886bd2dfe78816973388d616d4947552bc
     }
   },
   position: "bottom-end",

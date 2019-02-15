@@ -11,6 +11,8 @@
     "axios": "^0.18.0",
     "mint-ui": "^2.2.13",
     "muse-ui": "^3.0.2",
+    "muse-ui-message": "^0.2.1",
+    "muse-ui-toast": "^0.3.0",
     "vue": "^2.5.22",
     "vue-router": "^3.0.2"
   },

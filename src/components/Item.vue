@@ -15,6 +15,7 @@
 <script>
 export default {
     props: ['id','name','remain','per'],
+    
     computed: {
         computedId() {
             return this.id + 1;
