@@ -3,7 +3,7 @@
     <mu-list textline="two-line">
       <mu-sub-header>今天也要元气满满加油鸭O(∩_∩)O~~</mu-sub-header>
       <span v-for="(task,index) in tasks" :key="index">
-        <mu-list-item avatar :ripple="false" button v-if="task.status == 0" :id="task.id">
+        <mu-list-item avatar :ripple="ture" button v-if="task.status == 0" :id="task.id">
           <mu-list-item-content>
             <mu-list-item-title>
               <mu-icon
@@ -58,9 +58,8 @@ export default {
   },
   created() {
     $("body,html").animate({ scrollTop: 0 }, 100);
-    // 假设1是userid
     this.$axios
-      .get("/api/get_todo_list", { params: { user_id: "1" } })
+      .get("/api/get_todo_list")
       .then(tasks => {
         this.tasks = tasks.data;
         console.log(this.tasks);

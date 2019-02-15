@@ -34,8 +34,11 @@ Vue.use(VueRouter);
 import header from './components/header.vue';
 import footer from './components/footer.vue';
 import Home from './components/home.vue';
-import Project from './components/project.vue';
+import Project from './components/project/project_list.vue';
 import Mine from './components/mine.vue';
+
+// project
+import project_detail from './components/project/project_detail.vue'
 Vue.component('headerVue', header);
 Vue.component('footerVue', footer);
 let router = new VueRouter({
@@ -51,6 +54,9 @@ let router = new VueRouter({
     name: 'mine',
     path: '/mine',
     component: Mine
+  },{
+    name:'project_detail',
+    path:''
   }]
 })
 new Vue({

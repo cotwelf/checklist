@@ -3,6 +3,7 @@
 from flask import Flask, jsonify, request
 import MySQLdb
 import time
+import json
 
 app = Flask(__name__)
 
@@ -11,20 +12,38 @@ def workDay():
     return time.strftime("%w", time.localtime())+"00000======="
 
 
-# 打开数据库连接
-db = MySQLdb.connect("localhost", "root", "812811926",
-                     "checklist", charset='utf8')
-# 使用cursor()方法获取操作游标
-cursor = db.cursor()
+def openDb():
+    # 打开数据库连接
+    return MySQLdb.connect("localhost", "root", "812811926",
+                           "checklist", charset='utf8')
+
+    db = openDb()
+    # 使用cursor()方法获取操作游标
+    cursor = db.cursor()
 
 
-@app.route('/get_todo_list')
+@app.route('/get_todo_list', methods=['GET'])
 def get_todo_list():
+    try:
+        user_id = request.args.get('user_id')
+        p_id = request.args.get('p_id')
+    except ZeroDivisionError, e:
+        print e.message
+    val = (user_id, '0')
+    if(p_id):
+        p_id_str = "and p_id =%s"
+        val = (user_id, '0', p_id_str)
+    else:
+        p_id_str = ""
+
+    db = openDb()
+    cursor = db.cursor()
 
     # SQL 插入语句
-    sql = "SELECT * FROM plans WHERE status=%s"
-    val = ('0',)
+    sql = "SELECT id,ver,name,p_id,status,total,done,per,level,type FROM plans WHERE user_id = %s and status=%s" + \
+        p_id_str+" ORDER BY `level`"
     # 执行SQL语句
+    print sql
     cursor.execute(sql, val)
     # 获取所有记录列表
     results = cursor.fetchall()
@@ -50,31 +69,62 @@ def get_todo_list():
         elif(row[9] == 5):
             if(workDay() != 6 or workDay() != 7):
                 res.append(obj)
-    print res
+    # print res
     return jsonify(res)
+    db.close()
 
 
 @app.route('/create_plan')
 def create_plan():
+    db = openDb()
+    cursor = db.cursor()
     sql = "INSERT INTO plans(ver, name, p_id, total, done, per, level, status) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
     val = (1, 'Mohan', 20, 100, 55, 2, 1, 1)
     cursor.execute(sql, val)
     db.commit()
     return 1
+    db.close()
 
 
 @app.route('/update_plan', methods=['POST'])
 def update_plan():
-    id = request.form['id']
-    per = request.form['per']
-    print request.__dict__
-    print request
+    db = openDb()
+    cursor = db.cursor()
+    data = json.loads(request.get_data())
+
+    id = int(data['id'])
+
+    finish = int(data['finish'])
+
+    print type(id)
+    print type(finish)
+    # print type()
     sql = "update plans set done = (done + %s) where id =%s"
-    val = (id, per)
+    val = (finish, id)
     cursor.execute(sql, val)
     db.commit()
-    print sql
-    return 1
+    return 'ok'
+    db.close()
+
+
+@app.route('/get_project_list')
+def get_project_lsit():
+    db = openDb()
+    cursor = db.cursor()
+    sql = 'select id,name,end_at,created_at from projects where status = %s'
+    val = (0,)
+    cursor.execute(sql, val)
+    results = cursor.fetchall()
+    res = []
+    for row in results:
+        obj = {}
+        obj['id'] = row[0]
+        obj['name'] = row[1]
+        obj['end_at'] = row[2]
+        obj['created_at'] = str(row[3])
+        res.append(obj)
+    return jsonify(res)
+    db.close()
 
 
 if __name__ == '__main__':
@@ -84,4 +134,4 @@ if __name__ == '__main__':
 print 'done'
 
 # 关闭数据库连接
-db.close()
+# db.close()
