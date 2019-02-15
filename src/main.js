@@ -49,14 +49,12 @@ let router = new VueRouter({
   }, {
     name: 'project',
     path: '/master_plans',
-    component: Project
+    components: Project,
+    project_detail
   }, {
     name: 'mine',
     path: '/mine',
     component: Mine
-  },{
-    name:'project_detail',
-    path:''
   }]
 })
 new Vue({
