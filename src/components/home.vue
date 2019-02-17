@@ -92,6 +92,7 @@ export default {
       if (ver == 0) {
         this.$toast.message("恭喜你，经验值+1");
         $("#" + id).fadeOut();
+        finishTask(id, finish)
       } else {
         this.$prompt(
           "已完成" + done + "，剩余" + (total - done),
@@ -107,7 +108,9 @@ export default {
         ).then(({ result, value }) => {
           if (result) {
             this.$toast.message("你输入的时间：" + value);
-            $("#" + id).fadeOut();
+            // $("#" + id).fadeOut(); 状态变为已完成，但还可以继续做
+            
+            // todo添加完成状态
             console.log("done");
             this.finishTask(id, value);
           } else {
