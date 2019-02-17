@@ -110,7 +110,7 @@ export default {
             this.$toast.message("你输入的时间：" + value);
             // $("#" + id).fadeOut(); 状态变为已完成，但还可以继续做
             
-            // todo添加完成状态
+            // todo:完成后添加完成状态，且等级降一级
             console.log("done");
             this.finishTask(id, value);
           } else {
