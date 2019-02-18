@@ -28,6 +28,7 @@ export default {
     this.$emit("getMessage", this.show);
   },
   created() {
+    alert("23333");
     $("body,html").animate({ scrollTop: 0 }, 100);
     this.$axios
       .get("/api/get_todo_list")

@@ -33,7 +33,7 @@
               {{task.name}}
               <mu-icon v-if="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
             </mu-list-item-title>
-            <mu-list-item-sub-title>每天{{task.per}}，剩余{{task.done}}%</mu-list-item-sub-title>
+            <mu-list-item-sub-title>每天{{task.per}}{{task.unit}}，剩余{{task.done}}%</mu-list-item-sub-title>
           </mu-list-item-content>
           <mu-list-item-action>
             <!-- <mu-list-item-after-text>第12次</mu-list-item-after-text> -->
@@ -87,12 +87,21 @@ export default {
   methods: {
     finishTask(id, finish) {
       this.$axios.post("/api/update_plan", { id: id, finish: finish });
+      this.$axios
+        .get("/api/get_todo_list", { params: { user_id: "1" } })
+        .then(tasks => {
+          this.tasks = tasks.data;
+          console.log(this.tasks);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     closeTask(id, ver, done, total, per) {
       if (ver == 0) {
         this.$toast.message("恭喜你，经验值+1");
         $("#" + id).fadeOut();
-        finishTask(id, finish)
+        finishTask(id, finish);
       } else {
         this.$prompt(
           "已完成" + done + "，剩余" + (total - done),
@@ -109,9 +118,10 @@ export default {
           if (result) {
             this.$toast.message("你输入的时间：" + value);
             // $("#" + id).fadeOut(); 状态变为已完成，但还可以继续做
-            
-            // todo:完成后添加完成状态，且等级降一级
-            console.log("done");
+            ver == 1 ? "" : $("#" + id).fadeOut();
+            this.selects = [];
+            // todo:完成后添加完成状态，且等级降一级,需要临时改数据的优先级，是不是应该存在session里？
+            console.log(this);
             this.finishTask(id, value);
           } else {
             this.selects = [];

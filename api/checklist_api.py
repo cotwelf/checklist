@@ -4,6 +4,7 @@ from flask import Flask, jsonify, request
 import MySQLdb
 import time
 import json
+import datetime
 
 app = Flask(__name__)
 
@@ -32,7 +33,7 @@ def get_todo_list():
     val = (user_id, '0')
     if(p_id):
         p_id_str = "and p_id =%s"
-        val = (user_id, '0', p_id_str)
+        val = (user_id, '0', p_id)
     else:
         p_id_str = ""
 
@@ -40,10 +41,9 @@ def get_todo_list():
     cursor = db.cursor()
 
     # SQL 插入语句
-    sql = "SELECT id,ver,name,p_id,status,total,done,per,level,type FROM plans WHERE user_id = %s and status=%s" + \
+    sql = "SELECT id,ver,name,p_id,status,total,done,per,level,type,unit FROM plans WHERE user_id = %s and status=%s" + \
         p_id_str+" ORDER BY `level`"
     # 执行SQL语句
-    print sql
     cursor.execute(sql, val)
     # 获取所有记录列表
     results = cursor.fetchall()
@@ -59,7 +59,7 @@ def get_todo_list():
         obj['done'] = row[6]
         obj['per'] = row[7]
         obj['level'] = row[8]
-        print row[9] == 5
+        obj['unit'] = row[10]
         if(row[9] == 1):
             if(workDay() == 6):
                 res.append(obj)
@@ -93,17 +93,31 @@ def update_plan():
     data = json.loads(request.get_data())
 
     id = int(data['id'])
-
     finish = int(data['finish'])
-
-    print type(id)
-    print type(finish)
-    # print type()
-    sql = "update plans set done = (done + %s) where id =%s"
-    val = (finish, id)
+    nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print nowTime+"==================="
+    sql = "update plans set done = (done + %s) where id =%s;INSERT INTO finish_record(plan_id,finished_at,done) VALUES(%s,'%s',%s)"
+    val = (finish, id, id, nowTime, finish)
     cursor.execute(sql, val)
     db.commit()
-    return 'ok'
+
+    # 判断是否完成,完成置状态为10
+    sql = "SELECT total,done FROM plans WHERE id = %s"
+    val = (id,)
+    cursor.execute(sql, val)
+    results = cursor.fetchall()
+    for row in results:
+        total = float(row[0])
+        done = float(row[1])
+        if(total <= (done)):
+            sql = 'update plans set status = 10 where id =%s'
+            val = (id,)
+            cursor.execute(sql, val)
+            db.commit()
+            return 'ok'
+
+    # 判断是否完成今日计划，若完成则关闭，未完成需继续完成（角虫计划可无限次完成）
+
     db.close()
 
 

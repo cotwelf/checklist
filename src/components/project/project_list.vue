@@ -8,11 +8,36 @@
         <span slot="subTitle">
           <b>{{remain(list.end_at)}}</b>天后结束
         </span>
-        <mu-button slot="action" icon :to="{name:'mine'}">
+        <!-- <mu-button slot="action" icon :to="{name:'detail',params:{id:list.id}}"> -->
+        <mu-button slot="action" icon @click="openAlertDialog(index,list.id)">
           <mu-icon value=":iconfont icon-yanchurili"></mu-icon>
         </mu-button>
       </mu-grid-tile>
     </mu-grid-list>
+    <mu-dialog
+      :title="list[Number(indexes)].name"
+      width="600"
+      max-width="80%"
+      :esc-press-close="false"
+      :open.sync="openAlert"
+    >
+      <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
+        <mu-card-header :title="list[Number(indexes)].created_at" sub-title="创建时间"></mu-card-header>
+
+        <mu-card-title title="计划" sub-title="plans"></mu-card-title>
+
+        <mu-list>
+          <mu-divider shallow-inset></mu-divider>
+          <mu-list-item v-for="(plan,index) in plans" :key="index">
+            <mu-list-item-content>
+              <mu-list-item-title>{{plan.name}}，已完成{{donePercent(plan.done,plan.total)}}</mu-list-item-title>
+            </mu-list-item-content>
+          </mu-list-item>
+        </mu-list>
+      </mu-card>
+      <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">Disagree</mu-button>
+      <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">Agree</mu-button>
+    </mu-dialog>
   </div>
 </template>
 <script>
@@ -28,7 +53,7 @@ export default {
       .get("/api/get_project_list")
       .then(res => {
         this.list = res.data;
-        console.log(this.list);
+        // console.log(this.list);
       })
       .catch(err => {
         console.log(err);
@@ -36,11 +61,14 @@ export default {
   },
   data() {
     return {
+      openAlert: false,
+      indexes: "",
       tasks: "",
       ture: "",
       show: "project",
       openSimple: false,
       image: img,
+      plans: "",
       list: [
         {
           id: "1",
@@ -52,28 +80,39 @@ export default {
     };
   },
   methods: {
-    remain(date) {
-      var time1 = Date.parse(new Date(date));
-      var time2 = Date.parse(new Date());
-      var remain = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));
-      // var remain = this.list.end_at - today;
-      console.log(date);
-      console.log(time2);
-      return remain ? remain : 0;
+    donePercent(done, total) {
+      return parseInt((done / total) * 100) + "%";
     },
-    getPlan(id) {
+    getPlanList(p_id) {
       this.$axios
-        .get("/api/get_todo_list", { params: { user_id: 1, p_id: 1 } })
-        .then(tasks => {
-          this.tasks = tasks.data;
-          console.log(this.tasks);
+        .get("/api/get_todo_list", { params: { user_id: "1", p_id: p_id } })
+        .then(res => {
+          this.plans = res.data;
+          console.log(this.plans);
         })
         .catch(err => {
           console.log(err);
         });
     },
-    showDetail() {
-      $(".card").fadeIn();
+    remain(date) {
+      var time1 = Date.parse(new Date(date));
+      var time2 = Date.parse(new Date());
+      var remain = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));
+      // var remain = this.list.end_at - today;
+      // console.log(date);
+      // console.log(time2);
+      return remain ? remain : 0;
+    },
+    openAlertDialog(index, p_id) {
+      // console.log(this.list);
+      this.indexes = index;
+      this.getPlanList(p_id);
+      console.log(this.plans);
+
+      this.openAlert = true;
+    },
+    closeAlertDialog() {
+      this.openAlert = false;
     }
   }
 };
