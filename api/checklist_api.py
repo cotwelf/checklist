@@ -30,15 +30,30 @@ def get_todo_list():
     try:
         user_id = request.args.get('user_id')
         p_id = request.args.get('p_id')
-        status = '0'
+        status = request.args.get('status')
+
     except ZeroDivisionError, e:
         print e.message
-    val = (startTime, endTime, user_id, status)
+    val = (startTime, endTime)
+    # user_id
+    if(user_id):
+        user_id_str = "and p.user_id = %s"
+        val = val + (user_id,)
+    else:
+        user_id_str = ""
+    # P_id
     if(p_id):
         p_id_str = "and p_id =%s"
-        val = (startTime, endTime,  user_id, status, p_id)
+        val = val + (p_id,)
     else:
         p_id_str = ""
+
+    # status
+    if(status):
+        status_str = "and p.status = %s"
+        val = val + (status,)
+    else:
+        status_str = ""
     db = openDb()
     cursor = db.cursor()
 
@@ -46,7 +61,7 @@ def get_todo_list():
     sql = "select p.id,p.ver,p.name,p.p_id,p.status,p.total,p.done,p.per,p.level,p.type,p.unit,IFNULL(tb.dones,0) \
         from plans p LEFT JOIN (SELECT plan_id, sum(done) dones from finish_record \
             where finished_at BETWEEN %s and %s GROUP BY plan_id) tb on \
-                p.id=tb.plan_id  where p.user_id = %s and p.status = %s"+p_id_str+" ORDER BY p.level"
+                p.id=tb.plan_id  where p.name is not null "+user_id_str+p_id_str+status_str+" ORDER BY p.status,p.level"
     # 执行SQL语句
     cursor.execute(sql, val)
     # 获取所有记录列表

@@ -2,12 +2,12 @@
   <div>
     <mu-appbar style="width: 100%;" color="pinkA100">
       <mu-button icon slot="left">
-        <i class="iconfont icon-fenlei" style="font-size: 30px"></i>
+        <i class="iconfont icon-qiehuanqizuo" style="font-size: 30px"></i>
       </mu-button>
       {{title}}
-      <mu-button flat slot="right">
+      <!-- <mu-button flat slot="right">
         <i class="iconfont icon-shezhi" style="font-size: 30px"></i>
-      </mu-button>
+      </mu-button>-->
     </mu-appbar>
   </div>
 </template>
@@ -19,9 +19,7 @@ export default {
       //   title: ""
     };
   },
-  methods: {
-  
-  }
+  methods: {}
 };
 </script>
 <style>

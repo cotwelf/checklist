@@ -28,16 +28,19 @@
 
         <mu-list>
           <mu-divider shallow-inset></mu-divider>
-          <mu-list-item v-for="(plan,index) in plans" :key="index">
+          <mu-list-item v-for="(plan,index) in plans" :key="index" class="content">
             <mu-list-item-content>
               <mu-list-item-title>{{plan.name}}，已完成{{donePercent(plan.done,plan.total)}}</mu-list-item-title>
             </mu-list-item-content>
           </mu-list-item>
         </mu-list>
       </mu-card>
-      <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">Disagree</mu-button>
-      <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">Agree</mu-button>
+      <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">编辑</mu-button>
+      <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">返回</mu-button>
     </mu-dialog>
+    <mu-button fab color="pinkA100" class="add">
+      <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
+    </mu-button>
   </div>
 </template>
 <script>
@@ -129,5 +132,13 @@ export default {
 .card_list {
   height: 300px;
   overflow: scroll;
+}
+.mu-list {
+  height: 200px;
+}
+.add {
+  position: fixed;
+  bottom: 80px;
+  left: 10px;
 }
 </style>

@@ -68,7 +68,7 @@ export default {
     $("body,html").animate({ scrollTop: 0 }, 100);
     // 假设1是userid
     this.$axios
-      .get("/api/get_todo_list", { params: { user_id: "1" } })
+      .get("/api/get_todo_list", { params: { user_id: "1", status: "0" } })
       .then(tasks => {
         this.tasks = tasks.data;
         console.log(this.tasks);
@@ -106,7 +106,7 @@ export default {
     finishTask(id, finish) {
       this.$axios.post("/api/update_plan", { id: id, finish: finish });
       this.$axios
-        .get("/api/get_todo_list", { params: { user_id: "1" } })
+        .get("/api/get_todo_list", { params: { user_id: "1", status: "0" } })
         .then(tasks => {
           this.tasks = tasks.data;
           console.log(this.tasks);
