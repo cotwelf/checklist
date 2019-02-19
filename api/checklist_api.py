@@ -7,6 +7,8 @@ import json
 import datetime
 
 app = Flask(__name__)
+startTime = datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')
+endTime = datetime.datetime.now().strftime('%Y-%m-%d 23:59:59')
 
 
 def workDay():
@@ -28,21 +30,23 @@ def get_todo_list():
     try:
         user_id = request.args.get('user_id')
         p_id = request.args.get('p_id')
+        status = '0'
     except ZeroDivisionError, e:
         print e.message
-    val = (user_id, '0')
+    val = (startTime, endTime, user_id, status)
     if(p_id):
         p_id_str = "and p_id =%s"
-        val = (user_id, '0', p_id)
+        val = (startTime, endTime,  user_id, status, p_id)
     else:
         p_id_str = ""
-
     db = openDb()
     cursor = db.cursor()
 
     # SQL 插入语句
-    sql = "SELECT id,ver,name,p_id,status,total,done,per,level,type,unit FROM plans WHERE user_id = %s and status=%s" + \
-        p_id_str+" ORDER BY `level`"
+    sql = "select p.id,p.ver,p.name,p.p_id,p.status,p.total,p.done,p.per,p.level,p.type,p.unit,IFNULL(tb.dones,0) \
+        from plans p LEFT JOIN (SELECT plan_id, sum(done) dones from finish_record \
+            where finished_at BETWEEN %s and %s GROUP BY plan_id) tb on \
+                p.id=tb.plan_id  where p.user_id = %s and p.status = %s"+p_id_str+" ORDER BY p.level"
     # 执行SQL语句
     cursor.execute(sql, val)
     # 获取所有记录列表
@@ -60,6 +64,7 @@ def get_todo_list():
         obj['per'] = row[7]
         obj['level'] = row[8]
         obj['unit'] = row[10]
+        obj['dose'] = str(row[11])
         if(row[9] == 1):
             if(workDay() == 6):
                 res.append(obj)
@@ -95,9 +100,12 @@ def update_plan():
     id = int(data['id'])
     finish = int(data['finish'])
     nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    print nowTime+"==================="
-    sql = "update plans set done = (done + %s) where id =%s;INSERT INTO finish_record(plan_id,finished_at,done) VALUES(%s,'%s',%s)"
-    val = (finish, id, id, nowTime, finish)
+    sql = "update plans set done = (done + %s) where id =%s"
+    val = (finish, id)
+    cursor.execute(sql, val)
+    db.commit()
+    sql = "INSERT INTO finish_record(plan_id,finished_at,done) VALUES(%s,% s,%s)"
+    val = (id, nowTime, finish)
     cursor.execute(sql, val)
     db.commit()
 
@@ -115,9 +123,7 @@ def update_plan():
             cursor.execute(sql, val)
             db.commit()
             return 'ok'
-
-    # 判断是否完成今日计划，若完成则关闭，未完成需继续完成（角虫计划可无限次完成）
-
+    return 'ok'
     db.close()
 
 
