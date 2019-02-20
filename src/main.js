@@ -30,21 +30,16 @@ import Home from "./components/home.vue";
 import Project from "./components/project/project_list.vue";
 import Mine from "./components/mine.vue";
 
+
 // project
-import ProjectDetail from "./components/project/project_detail.vue";
+
 Vue.component("headerVue", header);
 Vue.component("footerVue", footer);
 let router = new VueRouter({
-  routes: [
-    {
+  routes: [{
       name: "home",
       path: "/",
       component: Home
-    },
-    {
-      name: "detail",
-      path: "project/detail/:id",
-      component: ProjectDetail
     },
     {
       name: "project",

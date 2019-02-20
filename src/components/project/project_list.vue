@@ -38,14 +38,17 @@
       <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">编辑</mu-button>
       <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">返回</mu-button>
     </mu-dialog>
-    <mu-button fab color="pinkA100" class="add">
-      <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
-    </mu-button>
+
+    <newproject :open.sync="openFullscreen"></newproject>
   </div>
 </template>
 <script>
+import newproject from "./project_new.vue";
 import img from "../../img/306240.jpg";
 export default {
+  components: {
+    newproject
+  },
   computed: {},
   mounted: function() {
     this.$emit("getMessage", this.show);
@@ -72,6 +75,7 @@ export default {
       openSimple: false,
       image: img,
       plans: "",
+      openFullscreen: false,
       list: [
         {
           id: "1",
@@ -135,10 +139,5 @@ export default {
 }
 .mu-list {
   height: 200px;
-}
-.add {
-  position: fixed;
-  bottom: 80px;
-  left: 10px;
 }
 </style>

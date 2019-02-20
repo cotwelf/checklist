@@ -6,16 +6,21 @@
         <mu-bottom-nav-item
           value="project"
           title="项目进度"
-          icon=":iconfont icon-bianji"
+          icon=":iconfont icon-fenlei1"
           :to="{ name: 'project', params: { userId: 123 }}"
         ></mu-bottom-nav-item>
         <mu-bottom-nav-item
           value="todo"
           title="今日计划"
-          icon=":iconfont icon-31dingdan"
+          icon=":iconfont icon-yanchurili"
           :to="{ name: 'home', params: { userId: 123 }}"
         ></mu-bottom-nav-item>
-        <mu-bottom-nav-item value="mine" title="我的" icon=":iconfont icon-mine" :to="{name:'mine'}"></mu-bottom-nav-item>
+        <mu-bottom-nav-item
+          value="mine"
+          title="我的"
+          icon=":iconfont icon-wodedamaijihuo"
+          :to="{name:'mine',params:{userID: 123}}"
+        ></mu-bottom-nav-item>
       </mu-bottom-nav>
     </mu-container>
   </div>
