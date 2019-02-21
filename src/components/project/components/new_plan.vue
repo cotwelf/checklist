@@ -1,36 +1,21 @@
 <template>
   <div>
-    <mu-form :model="form" :label-position="labelPosition" label-width="100">
-      <mu-form-item prop="plan_name" label="计划名称">
-        <mu-text-field v-model="form.p_name"></mu-text-field>
+    <mu-form ref="form" :model="validateForm">
+      <mu-form-item label="计划名称" help-text="汉字、字母或字符" prop="planname" :rules="plannameRules">
+        <mu-text-field v-model="validateForm.planname" prop="planname"></mu-text-field>
       </mu-form-item>
-      <mu-form-item prop="plan_total" label="总目标">
-        <mu-date-input v-model="form.p_start_at" type="number" actions></mu-date-input>
+      <mu-form-item label="总目标" help-text="数字" prop="plantotal" :rules="plantotalRules">
+        <mu-text-field v-model="validateForm.plantotal" prop="plantotal"></mu-text-field>
       </mu-form-item>
-      <mu-form-item prop="plan_start_at" label="开始时间">
-        <mu-date-input v-model="form.p_start_at" type="date" actions></mu-date-input>
+      <mu-form-item label="密码" prop="password" :rules="passwordRules">
+        <mu-text-field type="password" v-model="validateForm.password" prop="password"></mu-text-field>
       </mu-form-item>
-      <mu-form-item prop="plan_end_at" label="结束时间">
-        <mu-date-input v-model="form.p_start_at" type="date" actions></mu-date-input>
+      <mu-form-item prop="isAgree" :rules="argeeRules">
+        <mu-checkbox label="同意用户协议" v-model="validateForm.isAgree"></mu-checkbox>
       </mu-form-item>
-      <mu-form-item prop="radio" label="Radio">
-        <mu-radio v-model="form.radio" value="male" label="Male"></mu-radio>
-        <mu-radio v-model="form.radio" value="female" label="Female"></mu-radio>
-      </mu-form-item>
-      <mu-form-item prop="checkbox" label="Checkbox">
-        <mu-checkbox v-model="form.checkbox" value="eat" label="Eat"></mu-checkbox>
-        <mu-checkbox v-model="form.checkbox" value="sleep" label="Sleep"></mu-checkbox>
-        <mu-checkbox v-model="form.checkbox" value="run" label="Run"></mu-checkbox>
-        <mu-checkbox v-model="form.checkbox" value="movie" label="Movie"></mu-checkbox>
-      </mu-form-item>
-      <mu-form-item prop="switch" label="Switch">
-        <mu-switch v-model="form.switch"></mu-switch>
-      </mu-form-item>
-      <mu-form-item prop="slider" label="Slider">
-        <mu-slider v-model="form.slider"></mu-slider>
-      </mu-form-item>
-      <mu-form-item prop="textarea" label="Textarea">
-        <mu-text-field multi-line :rows="3" :rows-max="6" v-model="form.textarea"></mu-text-field>
+      <mu-form-item>
+        <mu-button color="primary" @click="submit">提交</mu-button>
+        <mu-button @click="clear">重置</mu-button>
       </mu-form-item>
     </mu-form>
   </div>
@@ -39,32 +24,49 @@
 export default {
   data() {
     return {
-      options: [
-        "Option 1",
-        "Option 2",
-        "Option 3",
-        "Option 4",
-        "Option 5",
-        "Option 6",
-        "Option 7",
-        "Option 8",
-        "Option 9",
-        "Option 10"
+      plannameRules: [
+        { validate: val => !!val, message: "必须填写计划名称" },
+        { validate: val => val.length >= 10, message: "计划名称不能超过10个字" }
       ],
-      labelPosition: "left",
-      form: {
-        plan_name: "",
-        plan_start_at: "",
-        plan_end_at: "",
-        radio: "",
-        checkbox: [],
-        switch: false,
-        slider: 30,
-        textarea: ""
+      plantotalRules: [
+        { validate: val => !!val, message: "必须填写总目标" },
+        { validate: val => val.length >= 10, message: "计划名称不能超过10个字" }
+      ],
+      passwordRules: [
+        // { validate: val => !!val, message: "必须填写密码" },
+        {
+          validate: val => {
+            console.log(this);
+          }
+        },
+        {
+          validate: val => val.length >= 3 && val.length <= 10,
+          message: "密码长度大于3小于10"
+        }
+      ],
+      argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
+      validateForm: {
+        username: "",
+        password: "",
+        isAgree: false
       }
     };
   },
-  methods: {}
+  methods: {
+    submit() {
+      this.$refs.form.validate().then(result => {
+        console.log("form valid: ", result);
+      });
+    },
+    clear() {
+      this.$refs.form.clear();
+      this.validateForm = {
+        username: "",
+        password: "",
+        isAgree: false
+      };
+    }
+  }
 };
 </script>
 <style>

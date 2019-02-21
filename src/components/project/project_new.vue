@@ -9,8 +9,8 @@
           <mu-icon value=":iconfont icon-fanhui"></mu-icon>
         </mu-button>
       </mu-appbar>
-      <div style="padding: 24px;">
-        <newPlan class="main"></newPlan>
+      <div style="padding: 10px;">
+        <newPlan class="newplanmain"></newPlan>
       </div>
     </mu-dialog>
   </div>
@@ -26,6 +26,7 @@ export default {
   },
   created() {
     $("body,html").animate({ scrollTop: 0 }, 100);
+    
   },
   data() {
     return {
@@ -67,5 +68,9 @@ export default {
   position: fixed;
   width: 100%;
   top: 0;
+}
+.newplanmain {
+  width: 90%;
+  margin-top: 25%;
 }
 </style>
