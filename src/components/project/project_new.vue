@@ -10,16 +10,16 @@
         </mu-button>
       </mu-appbar>
       <div style="padding: 24px;">
-        <newPro class="main"></newPro>
+        <newPlan class="main"></newPlan>
       </div>
     </mu-dialog>
   </div>
 </template>
 <script>
-import newPro from "./components/new_project.vue";
+import newPlan from "./components/new_plan.vue";
 export default {
   components: {
-    newPro
+    newPlan
   },
   mounted: function() {
     this.$emit("getMessage", this.show);

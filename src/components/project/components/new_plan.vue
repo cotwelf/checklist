@@ -1,13 +1,16 @@
 <template>
   <div>
     <mu-form :model="form" :label-position="labelPosition" label-width="100">
-      <mu-form-item prop="p_name" label="项目名称">
+      <mu-form-item prop="plan_name" label="计划名称">
         <mu-text-field v-model="form.p_name"></mu-text-field>
       </mu-form-item>
-      <mu-form-item prop="p_start_at" label="开始时间">
+      <mu-form-item prop="plan_total" label="总目标">
+        <mu-date-input v-model="form.p_start_at" type="number" actions></mu-date-input>
+      </mu-form-item>
+      <mu-form-item prop="plan_start_at" label="开始时间">
         <mu-date-input v-model="form.p_start_at" type="date" actions></mu-date-input>
       </mu-form-item>
-      <mu-form-item prop="p_end_at" label="结束时间">
+      <mu-form-item prop="plan_end_at" label="结束时间">
         <mu-date-input v-model="form.p_start_at" type="date" actions></mu-date-input>
       </mu-form-item>
       <mu-form-item prop="radio" label="Radio">
@@ -50,9 +53,9 @@ export default {
       ],
       labelPosition: "left",
       form: {
-        p_name: "",
-        p_start_at: "",
-        p_end_at: "",
+        plan_name: "",
+        plan_start_at: "",
+        plan_end_at: "",
         radio: "",
         checkbox: [],
         switch: false,
