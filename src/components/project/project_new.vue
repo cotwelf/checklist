@@ -16,7 +16,7 @@
   </div>
 </template>
 <script>
-import newPlan from "./components/new_plan.vue";
+import newPlan from "./new_plan/frame.vue";
 export default {
   components: {
     newPlan
@@ -26,7 +26,6 @@ export default {
   },
   created() {
     $("body,html").animate({ scrollTop: 0 }, 100);
-    
   },
   data() {
     return {
