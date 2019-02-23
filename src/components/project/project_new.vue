@@ -10,7 +10,7 @@
         </mu-button>
       </mu-appbar>
       <div style="padding: 10px;">
-        <newPlan class="newplanmain"></newPlan>
+        <newPlan class="newplanmain" @getStep="ifStep" v-if="step=='1'"></newPlan>
       </div>
     </mu-dialog>
   </div>
@@ -29,6 +29,7 @@ export default {
   },
   data() {
     return {
+      step:"1",
       show: "project",
       openFullscreen: false,
       items: [
@@ -53,6 +54,9 @@ export default {
     },
     closeFullscreenDialog() {
       this.openFullscreen = false;
+    },
+    ifStep(){
+      this.step = step
     }
   }
 };

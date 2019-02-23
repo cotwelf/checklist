@@ -46,8 +46,12 @@
 </template>
 <script>
 export default {
+  mounted: function() {
+    this.$emit("getstep", this.step);
+  },
   data() {
     return {
+      step:"1",
       types: [
         { name: "6天（月曜日-土曜日）", value: 6 },
         { name: "5天（月曜日-金曜日）", value: 5 },
