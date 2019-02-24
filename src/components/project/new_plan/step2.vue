@@ -2,7 +2,7 @@
   <div>
     <mu-form ref="form" :model="validateForm">
       <mu-form-item
-        label="计划名2222"
+        label="计划名2222step"
         help-text="汉字、字母或字符，不要超过10个字"
         prop="planname"
         :rules="plannameRules"
@@ -61,20 +61,6 @@ export default {
         {
           validate: val => val.length <= 10,
           message: "计划名称太长啦臣妾记不住啊"
-        }
-      ],
-      plantotalRules: [
-        { validate: val => !!val, message: "必须填写总目标" },
-        {
-          validate: val => val.length <= 10,
-          message: "大佬你确定这辈子可以完成？（害怕脸）"
-        }
-      ],
-      planperRules: [
-        { validate: val => !!val, message: "必须填写单位" },
-        {
-          validate: val => val.length <= 5,
-          message: "你确定单位这么长的嘛？"
         }
       ],
       argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
