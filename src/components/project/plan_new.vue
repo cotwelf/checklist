@@ -7,7 +7,7 @@
         prop="planname"
         :rules="plannameRules"
       >
-        <mu-text-field color="pink200" v-model="validateForm.planname" prop="planname"></mu-text-field>
+        <mu-text-field id="name" color="pink200" v-model="validateForm.planname" prop="planname"></mu-text-field>
       </mu-form-item>
       <mu-form-item
         label="总目标"
@@ -16,6 +16,7 @@
         :rules="plantotalRules"
       >
         <mu-text-field
+          id="total"
           color="pink200"
           type="number"
           v-model="validateForm.plantotal"
@@ -23,10 +24,10 @@
         ></mu-text-field>
       </mu-form-item>
       <mu-form-item label="单位" help-text="数字，如页、课、小时等，不要超过5个字" prop="planper" :rules="planperRules">
-        <mu-text-field color="pink200" v-model="validateForm.planper" prop="planper"></mu-text-field>
+        <mu-text-field id="unit" color="pink200" v-model="validateForm.planper" prop="planper"></mu-text-field>
       </mu-form-item>
       <mu-form-item label="周重复天数" help-text="请选择每周安排几天时间" prop="plantype">
-        <mu-flex class="select-control-row" v-for="(type,index) in types " :key="index">
+        <mu-flex id="type" class="select-control-row" v-for="(type,index) in types " :key="index">
           <mu-radio
             color="pink200"
             :value="type.value"
@@ -35,6 +36,19 @@
             class="radios"
           ></mu-radio>
         </mu-flex>
+      </mu-form-item>
+      <mu-form-item label="开始时间" prop="planname" :rules="planstartRules">
+        <!-- <mu-text-field color="pink200" v-model="validateForm.planname" ></mu-text-field> -->
+        <mu-date-input
+          id="start"
+          color="pink200"
+          v-model="validateForm.planstart"
+          label="请选择开始日期"
+          label-float
+          full-width
+          prop="planstart"
+          no-display
+        ></mu-date-input>
       </mu-form-item>
       <mu-form-item>
         <mu-button color="pink200" @click="submit">下一步</mu-button>
@@ -77,6 +91,7 @@ export default {
           message: "你确定单位这么长的嘛？"
         }
       ],
+      planstartRules: [{ validate: val => !!val, message: "请选择开始时间" }],
       argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
       validateForm: {
         planname: "",

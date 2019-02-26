@@ -16,7 +16,7 @@
   </div>
 </template>
 <script>
-import newPlan from "./new_plan/frame.vue";
+import newPlan from "./plan_new.vue";
 export default {
   components: {
     newPlan
@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      step:"1",
+      step: "1",
       show: "project",
       openFullscreen: false,
       items: [
@@ -55,8 +55,8 @@ export default {
     closeFullscreenDialog() {
       this.openFullscreen = false;
     },
-    ifStep(){
-      this.step = step
+    ifStep() {
+      this.step = step;
     }
   }
 };

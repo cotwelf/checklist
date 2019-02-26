@@ -29,7 +29,6 @@ import footer from "./components/footer.vue";
 import Home from "./components/home.vue";
 import Project from "./components/project/project_list.vue";
 import Mine from "./components/mine.vue";
-import NewPlan from './components/project/new_plan/frame.vue'
 
 
 // project
@@ -46,11 +45,7 @@ let router = new VueRouter({
       name: "project",
       path: "/projects",
       component: Project,
-      children: [{
-        name: "new_plan",
-        path: '/newplan',
-        component: NewPlan
-      }]
+      children: []
     },
     {
       name: "mine",
