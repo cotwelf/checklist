@@ -3,14 +3,20 @@
     <mu-button fab color="pinkA100" class="add" @click="openFullscreenDialog">
       <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
     </mu-button>
-    <mu-dialog width="360" transition="slide-bottom" fullscreen :open.sync="openFullscreen">
+    <mu-dialog
+      width="360"
+      transition="slide-bottom"
+      scrollable
+      fullscreen
+      :open.sync="openFullscreen"
+    >
       <mu-appbar color="pinkA100" title="新建计划" class="title">
         <mu-button slot="left" flat @click="closeFullscreenDialog">
           <mu-icon value=":iconfont icon-fanhui"></mu-icon>
         </mu-button>
       </mu-appbar>
-      <div style="padding: 10px;">
-        <newPlan class="newplanmain" @getStep="ifStep" v-if="step=='1'"></newPlan>
+      <div style="padding: 10px;" class="newplanmain">
+        <newPlan></newPlan>
       </div>
     </mu-dialog>
   </div>
@@ -71,9 +77,5 @@ export default {
   position: fixed;
   width: 100%;
   top: 0;
-}
-.newplanmain {
-  width: 90%;
-  margin-top: 25%;
 }
 </style>

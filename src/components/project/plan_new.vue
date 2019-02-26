@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mu-form ref="form" :model="validateForm">
+    <mu-form ref="form" :model="validateForm" class="newplanmain">
       <mu-form-item
         label="计划名称"
         help-text="汉字、字母或字符，不要超过10个字"
@@ -55,7 +55,7 @@
         <mu-date-input
           id="start"
           color="pink200"
-          v-model="validateForm.planstart"
+          v-model="validateForm.planend"
           label="请选择结束日期"
           label-float
           full-width
@@ -138,12 +138,12 @@ export default {
 };
 </script>
 <style>
-.mu-demo-form {
-  width: 90%;
-  max-width: 460px;
-  height: 90%;
-}
 .radios {
   margin-top: 15px;
+}
+.newplanmain {
+  width: 100%;
+  margin-top: 15%;
+  height: 100%;
 }
 </style>
