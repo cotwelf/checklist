@@ -37,7 +37,7 @@
         </mu-flex>
       </mu-form-item>
       <mu-form-item>
-        <mu-button color="pink200" @click="submit">下一步</mu-button>
+        <mu-button color="pink200" @click="submit">领养这个计划菌</mu-button>
         <mu-button @click="clear">重置</mu-button>
       </mu-form-item>
     </mu-form>
