@@ -37,7 +37,7 @@
           ></mu-radio>
         </mu-flex>
       </mu-form-item>
-      <mu-form-item label="开始时间" prop="planname" :rules="planstartRules">
+      <mu-form-item label="开始时间" prop="planname" :rules="timeRules">
         <!-- <mu-text-field color="pink200" v-model="validateForm.planname" ></mu-text-field> -->
         <mu-date-input
           id="start"
@@ -47,6 +47,19 @@
           label-float
           full-width
           prop="planstart"
+          no-display
+        ></mu-date-input>
+      </mu-form-item>
+      <mu-form-item label="结束" prop="planname" :rules="timeRules">
+        <!-- <mu-text-field color="pink200" v-model="validateForm.planname" ></mu-text-field> -->
+        <mu-date-input
+          id="start"
+          color="pink200"
+          v-model="validateForm.planstart"
+          label="请选择结束日期"
+          label-float
+          full-width
+          prop="planend"
           no-display
         ></mu-date-input>
       </mu-form-item>
@@ -91,13 +104,15 @@ export default {
           message: "你确定单位这么长的嘛？"
         }
       ],
-      planstartRules: [{ validate: val => !!val, message: "请选择开始时间" }],
+      timeRules: [{ validate: val => !!val, message: "请选择时间" }],
       argeeRules: [{ validate: val => !!val, message: "必须同意用户协议" }],
       validateForm: {
         planname: "",
         plantotal: "",
         planper: "",
-        plantype: 6
+        plantype: 6,
+        planstart: "",
+        planend: ""
       }
     };
   },
