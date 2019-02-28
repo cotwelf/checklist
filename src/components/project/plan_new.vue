@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mu-form ref="form" :model="validateForm" class="newplanmain" >
+    <mu-form ref="form" :model="validateForm" class="newplanmain">
       <mu-form-item
         label="计划名称"
         help-text="汉字、字母或字符，不要超过10个字"
@@ -37,38 +37,51 @@
           ></mu-radio>
         </mu-flex>
       </mu-form-item>
-      <mu-form-item label="开始时间" prop="planname" :rules="timeRules">
+      <mu-form-item label="开始时间" prop="planstart" :rules="timeRules">
         <!-- <mu-text-field color="pink200" v-model="validateForm.planname" ></mu-text-field> -->
         <mu-date-input
           id="start"
           color="pink200"
           v-model="validateForm.planstart"
-          label="请选择开始日期"
-          label-float
           full-width
           prop="planstart"
           no-display
+          container="bottomSheet"
         ></mu-date-input>
       </mu-form-item>
-      <mu-form-item label="结束" prop="planname" :rules="timeRules">
+      <mu-form-item label="结束时间" prop="planend" :rules="timeRules">
         <!-- <mu-text-field color="pink200" v-model="validateForm.planname" ></mu-text-field> -->
         <mu-date-input
           id="start"
           color="pink200"
           v-model="validateForm.planend"
-          label="请选择结束日期"
-          label-float
           full-width
           prop="planend"
           no-display
+          container="bottomSheet"
         ></mu-date-input>
+      </mu-form-item>
+      <mu-form-item label="所属项目" prop="projects">
+        <mu-flex
+          id="project"
+          class="select-control-row"
+          v-for="(project,index) in projects "
+          :key="index"
+        >
+          <mu-radio
+            color="pink200"
+            :value="project.id"
+            v-model="validateForm.project"
+            :label="project.name"
+            class="radios2"
+          ></mu-radio>
+        </mu-flex>
       </mu-form-item>
       <mu-form-item>
         <mu-button color="pink200" @click="submit">下一步</mu-button>
         <mu-button @click="clear">重置</mu-button>
       </mu-form-item>
     </mu-form>
-    <step2 class="newplanmain"></step2>
   </div>
 </template>
 <script>
@@ -80,6 +93,7 @@ export default {
         { name: "5天（月曜日-金曜日）", value: 5 },
         { name: "1天（土曜日限定）", value: 1 }
       ],
+      projects: [{ id: 1, name: "角虫养成" }, { id: 2, name: "大角虫养成" }],
       radio: {
         value1: []
       },
@@ -112,7 +126,8 @@ export default {
         planper: "",
         plantype: 6,
         planstart: "",
-        planend: ""
+        planend: "",
+        project: 1
       }
     };
   },

@@ -12,7 +12,8 @@
         <mu-bottom-nav-item
           value="todo"
           title="今日计划"
-          icon=":iconfont icon-yanchurili"
+          icon=":iconfont
+           icon-yanchurili"
           :to="{ name: 'home', params: { userId: 123 }}"
         ></mu-bottom-nav-item>
         <mu-bottom-nav-item

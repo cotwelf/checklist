@@ -3,21 +3,14 @@
     <mu-button fab color="pinkA100" class="add" @click="openFullscreenDialog">
       <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
     </mu-button>
-    <mu-dialog
-      width="360"
-      transition="slide-bottom"
-      scrollable
-      fullscreen
-      :open.sync="openFullscreen"
-    >
+    <mu-dialog width="360" scrollable padding="10" fullscreen :open.sync="openFullscreen">
       <mu-appbar color="pinkA100" title="新建计划" class="title">
         <mu-button slot="left" flat @click="closeFullscreenDialog">
           <mu-icon value=":iconfont icon-fanhui"></mu-icon>
         </mu-button>
       </mu-appbar>
-      <div style="padding: 10px;">
-        <newPlan class="newplanmain"></newPlan>
-      </div>
+
+      <newPlan class="newplanmain" style="padding: 10px;"></newPlan>
     </mu-dialog>
   </div>
 </template>
