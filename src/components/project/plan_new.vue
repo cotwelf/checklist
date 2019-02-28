@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mu-form ref="form" :model="validateForm" class="newplanmain">
+    <mu-form ref="form" :model="validateForm" class="newplanmain" >
       <mu-form-item
         label="计划名称"
         help-text="汉字、字母或字符，不要超过10个字"
@@ -143,7 +143,6 @@ export default {
 }
 .newplanmain {
   width: 100%;
-  margin-top: 15%;
-  height: 100%;
+  margin-top: 8%;
 }
 </style>

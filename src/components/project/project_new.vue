@@ -15,8 +15,8 @@
           <mu-icon value=":iconfont icon-fanhui"></mu-icon>
         </mu-button>
       </mu-appbar>
-      <div style="padding: 10px;" class="newplanmain">
-        <newPlan></newPlan>
+      <div style="padding: 10px;">
+        <newPlan class="newplanmain"></newPlan>
       </div>
     </mu-dialog>
   </div>
@@ -77,5 +77,8 @@ export default {
   position: fixed;
   width: 100%;
   top: 0;
+}
+.newplanmain {
+  height: 150%;
 }
 </style>
