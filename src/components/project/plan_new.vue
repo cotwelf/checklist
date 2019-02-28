@@ -62,41 +62,50 @@
         ></mu-date-input>
       </mu-form-item>
       <mu-form-item label="所属项目" prop="projects">
-        <mu-flex
-          id="project"
-          class="select-control-row"
-          v-for="(project,index) in projects "
-          :key="index"
-        >
+        <mu-flex id="project" class="select-control-row" v-for="(item,index) in list " :key="index">
           <mu-radio
             color="pink200"
-            :value="project.id"
+            :value="item.id"
             v-model="validateForm.project"
-            :label="project.name"
-            class="radios2"
+            :label="item.name"
+            class="radios"
           ></mu-radio>
+          <span class="radios" style="font-size:15px">{{item.created_at}}至{{item.end_str}}</span>
         </mu-flex>
       </mu-form-item>
+      <mu-form-item label="所属项目" prop="projects">
+        <div>2333333333</div>
+      </mu-form-item>
       <mu-form-item>
-        <mu-button color="pink200" @click="submit">下一步</mu-button>
+        <mu-button color="pink200" @click="openAlertDialog">下一步</mu-button>
         <mu-button @click="clear">重置</mu-button>
       </mu-form-item>
+      <mu-dialog
+        title="Use Google's location service?"
+        width="600"
+        max-width="80%"
+        :esc-press-close="false"
+        :overlay-close="false"
+        :open.sync="openAlert"
+      >Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+        <mu-button slot="actions" flat color="primary" @click="submit">Disagree</mu-button>
+        <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">Agree</mu-button>
+      </mu-dialog>
     </mu-form>
   </div>
 </template>
 <script>
 export default {
+  props: ["list"],
   data() {
     return {
+      openAlert: false,
       types: [
         { name: "6天（月曜日-土曜日）", value: 6 },
         { name: "5天（月曜日-金曜日）", value: 5 },
         { name: "1天（土曜日限定）", value: 1 }
       ],
       projects: [{ id: 1, name: "角虫养成" }, { id: 2, name: "大角虫养成" }],
-      radio: {
-        value1: []
-      },
       plannameRules: [
         { validate: val => !!val, message: "必须填写计划名称" },
         {
@@ -148,6 +157,15 @@ export default {
     },
     openFullscreenDialog() {
       this.openFullscreen = true;
+    },
+    openAlertDialog() {
+      this.openAlert = true;
+    },
+    closeAlertDialog() {
+      this.openAlert = false;
+    },
+    conputePer() {
+      console.log("233333");
     }
   }
 };

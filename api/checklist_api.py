@@ -157,6 +157,7 @@ def get_project_lsit():
         obj['name'] = row[1]
         obj['end_at'] = row[2]
         obj['created_at'] = str(row[3])
+        obj['end_str'] = str(row[2])
         res.append(obj)
     return jsonify(res)
     db.close()

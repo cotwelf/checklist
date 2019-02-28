@@ -39,7 +39,7 @@
       <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">返回</mu-button>
     </mu-dialog>
 
-    <newproject :open.sync="openFullscreen"></newproject>
+    <newproject :open.sync="openFullscreen" :list="list"></newproject>
   </div>
 </template>
 <script>

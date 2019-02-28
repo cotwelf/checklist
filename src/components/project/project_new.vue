@@ -10,13 +10,14 @@
         </mu-button>
       </mu-appbar>
 
-      <newPlan class="newplanmain" style="padding: 10px;"></newPlan>
+      <newPlan class="newplanmain" style="padding: 10px;" :list="list"></newPlan>
     </mu-dialog>
   </div>
 </template>
 <script>
 import newPlan from "./plan_new.vue";
 export default {
+  props: ["list"],
   components: {
     newPlan
   },
