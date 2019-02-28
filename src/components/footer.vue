@@ -19,7 +19,7 @@
           value="mine"
           title="我的"
           icon=":iconfont icon-wodedamaijihuo"
-          :to="{name:'mine',params:{userID: 123}}"
+          :to="{name:'mine',params:{userId: 123}}"
         ></mu-bottom-nav-item>
       </mu-bottom-nav>
     </mu-container>
