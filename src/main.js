@@ -26,8 +26,9 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 import header from "./components/header.vue";
 import footer from "./components/footer.vue";
-import Home from "./components/home.vue";
-import Project from "./components/project/project_list.vue";
+import Home from "./components/plan/plan_list.vue";
+import Project from "./components/project_1/project_list.vue";
+import NewProject from "./components/project_1/project_new.vue"
 import Mine from "./components/mine.vue";
 
 
@@ -51,6 +52,11 @@ let router = new VueRouter({
       name: "mine",
       path: "/mine",
       component: Mine
+    },
+    {
+      name: 'newproject',
+      path: '/projects/new',
+      component: NewProject
     }
   ]
 });

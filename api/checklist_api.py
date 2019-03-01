@@ -142,12 +142,13 @@ def update_plan():
     db.close()
 
 
-@app.route('/get_project_list')
+@app.route('/get_project_list', methods=['GET'])
 def get_project_lsit():
+    user_id = request.args.get('user_id')
     db = openDb()
     cursor = db.cursor()
-    sql = 'select id,name,end_at,created_at from projects where status = %s'
-    val = (0,)
+    sql = 'select id,name,end_at,created_at from projects where status = %s and user_id = %s'
+    val = (0, user_id)
     cursor.execute(sql, val)
     results = cursor.fetchall()
     res = []
@@ -160,6 +161,34 @@ def get_project_lsit():
         obj['end_str'] = str(row[2])
         res.append(obj)
     return jsonify(res)
+    db.close()
+# 创建项目资格
+@app.route('/ensure', methods=['GET'])
+def ensure():
+    userid = request.args.get('user_id')
+    db = openDb()
+    cursor = db.cursor()
+    sql = "select count(id) from projects where user_id=%s"
+    val = (userid,)
+    cursor.execute(sql, val)
+    results = cursor.fetchall()
+    return str(results[0][0])
+    db.close()
+# 创建项目
+@app.route('/create_project', methods=['POST'])
+def create_project():
+    data = json.loads(request.get_data())
+    name = data['name']
+    start = str(data['start'])[0:10]
+    end = str(data['end'])[0:10]
+    userid = data['user_id']
+    db = openDb()
+    cursor = db.cursor()
+    sql = "INSERT INTO projects (NAME,created_at, end_at,status,user_id) VALUES (%s,%s,%s,0,%s)"
+    val = (name, start, end, userid)
+    cursor.execute(sql, val)
+    db.commit()
+    return 'ok'
     db.close()
 
 
