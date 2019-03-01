@@ -38,7 +38,7 @@
       <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">编辑</mu-button>
       <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">返回</mu-button>
     </mu-dialog>
-    <mu-dialog title="你的项目菌们很蓝瘦" width="360" :open.sync="openSimple">你已经拥有了四个项目菌啦！先好好完成这些吧~
+    <mu-dialog title="你的项目菌们很蓝瘦" width="360" :open.sync="openSimple">你已经拥有4个项目菌啦！先好好对待他们~
       <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">宝宝们我错了</mu-button>
     </mu-dialog>
   </div>
@@ -123,9 +123,6 @@ export default {
       var time1 = Date.parse(new Date(date));
       var time2 = Date.parse(new Date());
       var remain = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));
-      // var remain = this.list.end_at - today;
-      // console.log(date);
-      // console.log(time2);
       return remain ? remain : 0;
     },
     openAlertDialog(index, p_id) {
@@ -142,7 +139,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .card {
   width: 100%;
   max-width: 375px;

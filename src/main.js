@@ -30,6 +30,7 @@ import Home from "./components/plan/plan_list.vue";
 import Project from "./components/project_1/project_list.vue";
 import NewProject from "./components/project_1/project_new.vue"
 import Mine from "./components/mine.vue";
+import NewPlan from "./components/plan/plan_new.vue"
 
 
 // project
@@ -57,6 +58,11 @@ let router = new VueRouter({
       name: 'newproject',
       path: '/projects/new',
       component: NewProject
+    },
+    {
+      name: 'newplan',
+      path: '/plan/new',
+      component: NewPlan
     }
   ]
 });

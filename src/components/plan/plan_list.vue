@@ -57,6 +57,9 @@
         </mu-list-item>
       </span>
     </mu-list>
+    <mu-button fab color="pinkA100" class="add" :to="{name:'newplan'}">
+      <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
+    </mu-button>
   </div>
 </template>
 <script>
@@ -155,7 +158,7 @@ export default {
   close: false
 };
 </script>
-<style>
+<style scoped>
 .list {
   margin-top: 10px;
 }
@@ -163,5 +166,10 @@ export default {
   width: 100%;
   max-width: 360px;
   overflow: hidden;
+}
+.add {
+  position: fixed;
+  bottom: 80px;
+  left: 10px;
 }
 </style>
