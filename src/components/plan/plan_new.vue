@@ -127,7 +127,7 @@ export default {
         { validate: val => !!val, message: "必须填写单位" },
         {
           validate: val => val.length <= 5,
-          message: "你确定单位这么长的嘛？"
+          message: "哇~单位这么长的嘛？"
         }
       ],
       validateForm: {
