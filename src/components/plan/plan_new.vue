@@ -66,7 +66,7 @@
         :overlay-close="false"
         :open.sync="openAlert"
       >
-        {{per}}
+        {{validateForm.per}}
         <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">返回修改</mu-button>
         <mu-button slot="actions" flat color="primary" @click="submit">领养计划</mu-button>
       </mu-dialog>
