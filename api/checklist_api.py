@@ -94,24 +94,12 @@ def get_todo_list():
     db.close()
 
 
-@app.route('/create_plan')
-def create_plan():
-    db = openDb()
-    cursor = db.cursor()
-    sql = "INSERT INTO plans(ver, name, p_id, total, done, per, level, status) VALUES(%s, %s, %s, %s, %s, %s, %s, %s)"
-    val = (1, 'Mohan', 20, 100, 55, 2, 1, 1)
-    cursor.execute(sql, val)
-    db.commit()
-    return 1
-    db.close()
-
-
 @app.route('/update_plan', methods=['POST'])
 def update_plan():
     db = openDb()
     cursor = db.cursor()
     data = json.loads(request.get_data())
-
+    print data
     id = int(data['id'])
     finish = int(data['finish'])
     nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -186,6 +174,31 @@ def create_project():
     cursor = db.cursor()
     sql = "INSERT INTO projects (NAME,created_at, end_at,status,user_id) VALUES (%s,%s,%s,0,%s)"
     val = (name, start, end, userid)
+    cursor.execute(sql, val)
+    db.commit()
+    return 'ok'
+    db.close()
+
+# 创建计划
+@app.route('/create_plan', methods=['POST'])
+def create_plan():
+    data = json.loads(request.get_data())
+    print data
+    p_ver = int(data['ver'])
+    p_name = str(data['name'])
+    p_created_at = str(data['created_at'])[0:10]
+    p_end_at = str(data['end_at'])[0:10]
+    p_total = str(data['total'])
+    p_per = str(data['per'])
+    p_unit = data['unit']
+    p_typ = data['typ']
+    p_level = data['level']
+    p_userid = data['userid']
+    db = openDb()
+    cursor = db.cursor()
+    sql = "INSERT INTO projects (ver,NAME,created_at,end_at,total,per,unit,level,type,user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    val = (p_ver, p_name, p_created_at, p_end_at,
+           p_total, p_per, p_unit, p_level, p_typ, p_userid)
     cursor.execute(sql, val)
     db.commit()
     return 'ok'

@@ -43,6 +43,28 @@
       >
         <mu-text-field color="pink200" v-model="validateForm.planunit" prop="planunit"></mu-text-field>
       </mu-form-item>
+      <mu-form-item label="类型" help-text="请选择每周安排几天时间" prop="planver">
+        <mu-flex class="select-control-row" v-for="(ver,index) in vers " :key="index">
+          <mu-radio
+            color="pink200"
+            :value="ver.value"
+            v-model="validateForm.planver"
+            :label="ver.name"
+            class="radios"
+          ></mu-radio>
+        </mu-flex>
+      </mu-form-item>
+      <mu-form-item label="优先级" help-text="请选择每周安排几天时间" prop="planlevel">
+        <mu-flex class="select-control-row" v-for="(level,index) in levels " :key="index">
+          <mu-radio
+            color="pink200"
+            :value="level.value"
+            v-model="validateForm.planlevel"
+            :label="level.name"
+            class="radios"
+          ></mu-radio>
+        </mu-flex>
+      </mu-form-item>
       <mu-form-item label="周重复天数" help-text="请选择每周安排几天时间" prop="plantype">
         <mu-flex class="select-control-row" v-for="(type,index) in types " :key="index">
           <mu-radio
@@ -59,16 +81,16 @@
         <mu-button :to="{name:'home'}">返回</mu-button>
       </mu-form-item>
       <mu-dialog
-        title="Use Google's location service?"
+        :title="'每日完成'+per+validateForm.planunit"
         width="600"
         max-width="80%"
         :esc-press-close="false"
         :overlay-close="false"
         :open.sync="openAlert"
       >
-        {{validateForm.per}}
+        可用天数{{remain_days}}
         <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">返回修改</mu-button>
-        <mu-button slot="actions" flat color="primary" @click="submit">领养计划</mu-button>
+        <mu-button slot="actions" flat color="primary" @click="createPlan">领养计划</mu-button>
       </mu-dialog>
     </mu-form>
   </div>
@@ -79,14 +101,6 @@ export default {
     this.$emit("getMessage", this.show);
   },
   created() {
-    // TODO
-    // console.log($(".project").length);
-    // for (var i = 0; i < $(".project").length; i++) {
-    //   if ($(".project").children[i].checked) {
-    //     var p_index = $(".project").children[i].attr("index");
-    //     console.log(p_index);
-    //   }
-    // }
     $("body,html").animate({ scrollTop: 0 }, 100);
     this.$axios
       .get("/api/get_project_list", { params: { user_id: 1 } })
@@ -99,14 +113,28 @@ export default {
   },
   data() {
     return {
+      levels: "",
+      remain_days: "",
       per: "",
       list: [],
-      show: "project",
+      show: "todo",
       openAlert: false,
+      end_date: "",
       types: [
         { name: "6天（月曜日-土曜日）", value: 6 },
         { name: "5天（月曜日-金曜日）", value: 5 },
         { name: "1天（土曜日限定）", value: 1 }
+      ],
+      vers: [
+        { name: "普通计划（当天完成定量）", value: 0 },
+        { name: "角虫养成计划（当天可多次完成）", value: 1 },
+        { name: "项目计划（当天完成定量，有目标）", value: 2 }
+      ],
+      levels: [
+        { name: "很重要（当天必须完成）", value: 1 },
+        { name: "一般重要（可以推到第二天）", value: 2 },
+        { name: "重要（没有明确规定完成时间）", value: 3 },
+        { name: "不重要（仅备忘）", value: 4 }
       ],
       projects: [{ id: 1, name: "角虫养成" }, { id: 2, name: "大角虫养成" }],
       plannameRules: [
@@ -135,7 +163,9 @@ export default {
         plantotal: "",
         planunit: "",
         plantype: 6,
-        project: 1
+        project: 1,
+        planver: 0,
+        planlevel: 1
       }
     };
   },
@@ -155,10 +185,58 @@ export default {
       var remain = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));
       return remain ? remain : 0;
     },
+    createPlan() {
+      var now = new Date();
+      now =
+        now.getFullYear() +
+        "-" +
+        (now.getMonth() + 1 > 9
+          ? now.getMonth() + 1
+          : "0" + (now.getMonth() + 1)) +
+        "-" +
+        (now.getDate() > 9 ? now.getDate() : "0" + now.getDate());
+      console.log("now===========" + now);
+      this.$axios
+        .post("/api/create_plan", {
+          params: {
+            ver: this.validateForm.planver,
+            name: this.validateForm.planname,
+            created_at: now,
+            end_at: this.end_date,
+            total: this.validateForm.plantotal,
+            per: this.per,
+            unit: this.validateForm.planunit,
+            level: this.validateForm.planlevel,
+            typ: this.validateForm.plantype,
+            userid: 1
+          }
+        })
+        .then(res => {})
+        .catch(err => {});
+    },
     submit() {
       this.$refs.form.validate().then(result => {
-        this.validateForm.plantotal;
-        this.openAlertDialog();
+        if (result) {
+          var p_length = $(".project > .mu-form-item-content").children()
+            .length;
+          for (var i = 0; i < p_length; i++) {
+            var checked_ele = $(
+              $(".project > .mu-form-item-content").children()[i]
+            ).find("input")[0];
+            if (checked_ele.checked) {
+              this.end_date = this.list[$(checked_ele).attr("index")].end_str;
+              var days =
+                (Number(this.remain(this.end_date)) / 7) *
+                Number(this.validateForm.plantype);
+              console.log(Number(this.remain(this.end_date)) / 7);
+              var _per = Number(this.validateForm.plantotal) / days;
+              this.remain_days = Math.floor(days);
+              this.per = Math.ceil(_per);
+            }
+          }
+          this.openAlertDialog();
+        }
+
         console.log("form valid: ", result);
       });
     }
