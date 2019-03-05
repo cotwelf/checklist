@@ -203,24 +203,39 @@ def create_project():
 # 创建计划
 @app.route('/create_plan', methods=['POST'])
 def create_plan():
-    data = json.loads(request.get_data())
-    print data
-    p_ver = data['ver']
-    p_name = data['name']
-    p_created_at = str(data['created_at'])[0:10]
-    p_end_at = str(data['end_at'])[0:10]
-    p_total = data['total']
-    p_per = data['per']
-    p_unit = data['unit']
-    p_typ = data['typ']
-    p_level = data['level']
-    p_userid = data['userid']
-    p_pid = data['pid']
+    try:
+        data = json.loads(request.get_data())
+        print data
+        p_ver = data['ver']
+        p_name = data['name']
+        p_created_at = str(data['created_at'])[0:10]
+        p_end_at = str(data['end_at'])[0:10]
+        p_total = data['total']
+        p_per = data['per']
+        p_unit = data['unit']
+        p_typ = data['typ']
+        p_level = data['level']
+        p_userid = data['userid']
+        val = (p_ver, p_name, p_created_at, p_end_at, p_total,
+               p_per, p_unit, p_level, p_typ, p_userid)
+        if(data['pid']):
+            p_pid = data['pid']
+            val = val+(p_pid,)
+            pid_str = "p_id,"
+            pid_val = "%s,"
+        else:
+            pid_str = ""
+            pid_val = ""
+
+    except ZeroDivisionError, e:
+        print e.message
+
     db = openDb()
     cursor = db.cursor()
-    sql = "INSERT INTO plans (ver,NAME,created_at,end_at,total,per,unit,level,type,user_id,p_id,status,done) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,0,0)"
-    val = (p_ver, p_name, p_created_at, p_end_at,
-           p_total, p_per, p_unit, p_level, p_typ, p_userid, p_pid)
+    sql = "INSERT INTO plans (ver,NAME,created_at,end_at,total,per,unit,level,type,user_id," + \
+        pid_str + \
+        "status,done) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"+pid_val+"0,0)"
+
     cursor.execute(sql, val)
     db.commit()
     return 'ok'

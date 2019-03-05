@@ -61,9 +61,25 @@
         </mu-list-item>
       </span>
     </mu-list>
-    <mu-button fab color="pinkA100" class="add" :to="{name:'newplan'}">
+    <mu-button fab color="pinkA100" class="add" @click="openBotttomSheet">
       <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
     </mu-button>
+    <mu-bottom-sheet :open.sync="open">
+      <mu-list>
+        <mu-sub-header>选择计划类型</mu-sub-header>
+        <mu-list-item
+          button
+          v-for="(ver,index) in vers"
+          :key="index"
+          :to="{name:'newplan',query:{ver:ver.value}}"
+        >
+          <mu-list-item-action>
+            <mu-icon value=":iconfont icon-weiguanzhu" color="red400"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>{{ver.name}}</mu-list-item-title>
+        </mu-list-item>
+      </mu-list>
+    </mu-bottom-sheet>
   </div>
 </template>
 <script>
@@ -96,10 +112,22 @@ export default {
       done: "",
       status: "",
       total: "",
-      tasks: ""
+      tasks: "",
+      open: false,
+      vers: [
+        { name: "普通计划（当天完成定量）", value: 0 },
+        { name: "角虫养成计划（当天可多次完成）", value: 1 },
+        { name: "项目计划（当天完成定量，有目标）", value: 2 }
+      ]
     };
   },
   methods: {
+    closeBottomSheet() {
+      this.open = false;
+    },
+    openBotttomSheet() {
+      this.open = true;
+    },
     remain(date) {
       var time1 = Date.parse(new Date(date));
       var time2 = Date.parse(new Date());
@@ -149,7 +177,9 @@ export default {
         this.$prompt(
           "今日已完成" +
             dose +
-            (ver == 1 ? "，剩余" + (total - done) + unit : ""),
+            (ver == 1
+              ? "，剩余" + Math.round((total - done) * 100) / 100 + unit
+              : ""),
           ver == 1 ? "请输入完成时间(min)" : "请输入当前进度",
           {
             validator(value) {

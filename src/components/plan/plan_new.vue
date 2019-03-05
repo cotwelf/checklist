@@ -1,15 +1,7 @@
 <template>
   <div>
     <mu-form ref="form" :model="validateForm" class="newplanmain">
-      <mu-form-item
-        label="计划名称"
-        help-text="汉字、字母或字符，不要超过10个字"
-        prop="planname"
-        :rules="plannameRules"
-      >
-        <mu-text-field color="pink200" v-model="validateForm.planname" prop="planname"></mu-text-field>
-      </mu-form-item>
-      <mu-form-item label="所属项目" class="project" prop="projects">
+      <mu-form-item label="所属项目" class="project" prop="projects" v-if="this.ver!=0">
         <mu-flex class="select-control-row" v-for="(item,index) in list " :key="index">
           <mu-radio
             :index="index"
@@ -22,6 +14,15 @@
           <span class="radios" style="font-size:15px">{{item.created_at}}至{{item.end_str}}</span>
         </mu-flex>
       </mu-form-item>
+      <mu-form-item
+        label="计划名称"
+        help-text="汉字、字母或字符，不要超过10个字"
+        prop="planname"
+        :rules="plannameRules"
+      >
+        <mu-text-field color="pink200" v-model="validateForm.planname" prop="planname"></mu-text-field>
+      </mu-form-item>
+
       <mu-form-item
         label="总目标"
         help-text="数字，如100，不要超过10位数"
@@ -43,17 +44,7 @@
       >
         <mu-text-field color="pink200" v-model="validateForm.planunit" prop="planunit"></mu-text-field>
       </mu-form-item>
-      <mu-form-item label="类型" help-text="请选择每周安排几天时间" prop="planver">
-        <mu-flex class="select-control-row" v-for="(ver,index) in vers " :key="index">
-          <mu-radio
-            color="pink200"
-            :value="ver.value"
-            v-model="validateForm.planver"
-            :label="ver.name"
-            class="radios"
-          ></mu-radio>
-        </mu-flex>
-      </mu-form-item>
+
       <mu-form-item label="优先级" help-text="请选择每周安排几天时间" prop="planlevel">
         <mu-flex class="select-control-row" v-for="(level,index) in levels " :key="index">
           <mu-radio
@@ -65,7 +56,7 @@
           ></mu-radio>
         </mu-flex>
       </mu-form-item>
-      <mu-form-item label="周重复天数" help-text="请选择每周安排几天时间" prop="plantype">
+      <mu-form-item label="周重复天数" help-text="请选择每周安排几天时间" prop="plantype" v-if="this.ver!=0">
         <mu-flex class="select-control-row" v-for="(type,index) in types " :key="index">
           <mu-radio
             color="pink200"
@@ -76,9 +67,10 @@
           ></mu-radio>
         </mu-flex>
       </mu-form-item>
-      <mu-form-item>
-        <mu-button color="pink200" @click="submit">下一步</mu-button>
-        <mu-button :to="{name:'home'}">返回</mu-button>
+      <mu-form-item style="margin:0 auto">
+        <mu-button color="pink200" @click="submit" style="width:45%">下一步</mu-button>
+
+        <mu-button :to="{name:'home'}" style="width:45%">返回</mu-button>
       </mu-form-item>
       <mu-dialog
         :title="'每日完成'+per+validateForm.planunit"
@@ -102,6 +94,7 @@ export default {
   },
   created() {
     $("body,html").animate({ scrollTop: 0 }, 100);
+    this.ver = this.$route.query.ver;
     this.$axios
       .get("/api/get_project_list", { params: { user_id: 1 } })
       .then(res => {
@@ -113,24 +106,20 @@ export default {
   },
   data() {
     return {
-      levels: "",
+      ver: "",
       checked_pid: "",
       remain_days: "",
       per: "",
+      now: "",
       list: [],
       show: "todo",
       openAlert: false,
       end_date: "",
       types: [
+        { name: "7天（每天都要加油鸭）", value: 7 },
         { name: "6天（月曜日-土曜日）", value: 6 },
         { name: "5天（月曜日-金曜日）", value: 5 },
-        { name: "1天（土曜日限定）", value: 1 },
-        { name: "7天", value: 7 }
-      ],
-      vers: [
-        { name: "普通计划（当天完成定量）", value: 0 },
-        { name: "角虫养成计划（当天可多次完成）", value: 1 },
-        { name: "项目计划（当天完成定量，有目标）", value: 2 }
+        { name: "1天（土曜日限定）", value: 1 }
       ],
       levels: [
         { name: "很重要（当天必须完成）", value: 1 },
@@ -164,7 +153,7 @@ export default {
         planname: "",
         plantotal: "",
         planunit: "",
-        plantype: 6,
+        plantype: 7,
         project: 1,
         planver: 0,
         planlevel: 1
@@ -189,7 +178,7 @@ export default {
     },
     createPlan() {
       var now = new Date();
-      now =
+      this.now =
         now.getFullYear() +
         "-" +
         (now.getMonth() + 1 > 9
@@ -200,12 +189,12 @@ export default {
       console.log("now===========" + now);
       this.$axios
         .post("/api/create_plan", {
-          ver: this.validateForm.planver,
+          ver: this.ver,
           name: this.validateForm.planname,
-          created_at: now,
-          end_at: this.end_date,
+          created_at: this.now,
+          end_at: this.end_date ? this.end_date : this.now,
           total: this.validateForm.plantotal,
-          per: this.per,
+          per: this.per ? this.per : this.validateForm.plantotal,
           unit: this.validateForm.planunit,
           level: this.validateForm.planlevel,
           typ: this.validateForm.plantype,
@@ -239,9 +228,13 @@ export default {
               this.per = Math.ceil(_per);
             }
           }
-          this.openAlertDialog();
+          if (this.ver != 0) {
+            this.openAlertDialog();
+          } else {
+            this.createPlan();
+          }
         }
-
+        console.log();
         console.log("form valid: ", result);
       });
     }
