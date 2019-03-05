@@ -8,7 +8,7 @@
         <span slot="subTitle">
           <b>{{remain(list.end_at)}}</b>天后结束
         </span>
-        <mu-button slot="action" icon @click="openAlertDialog(index,list.id)">
+        <mu-button slot="action" icon :to="{name:'pro_detail',query:{id : list.id}}">
           <mu-icon value=":iconfont icon-yanchurili"></mu-icon>
         </mu-button>
       </mu-grid-tile>

@@ -12,30 +12,7 @@
         >
           <mu-list-item-content>
             <mu-list-item-title>
-              <mu-icon
-                size="20"
-                value=":iconfont icon-weiguanzhu"
-                v-if="task.level == 1"
-                color="red400"
-              ></mu-icon>
-              <mu-icon
-                size="20"
-                value=":iconfont icon-weiguanzhu"
-                v-if="task.level ==2 "
-                color="yellow800"
-              ></mu-icon>
-              <mu-icon
-                size="20"
-                value=":iconfont icon-weiguanzhu"
-                v-if="task.level ==3 "
-                color="blue300"
-              ></mu-icon>
-              <mu-icon
-                size="20"
-                value=":iconfont icon-weiguanzhu"
-                v-if="task.level ==4 "
-                color="green200"
-              ></mu-icon>
+              <mu-icon size="20" value=":iconfont icon-weiguanzhu" :color="iconColor(task.level)"></mu-icon>
               {{task.name}}
               <mu-icon v-if="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
             </mu-list-item-title>
@@ -127,6 +104,18 @@ export default {
     },
     openBotttomSheet() {
       this.open = true;
+    },
+    iconColor(level) {
+      switch (level) {
+        case 1:
+          return "red400";
+        case 2:
+          return "yellow800";
+        case 3:
+          return "blue300";
+        case 4:
+          return "green200";
+      }
     },
     remain(date) {
       var time1 = Date.parse(new Date(date));

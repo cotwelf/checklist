@@ -31,6 +31,7 @@ import Project from "./components/project/project_list.vue";
 import NewProject from "./components/project/project_new.vue"
 import Mine from "./components/mine.vue";
 import NewPlan from "./components/plan/plan_new.vue"
+import ProjectDetail from "./components/project/project_detail.vue"
 
 
 // project
@@ -48,6 +49,11 @@ let router = new VueRouter({
       path: "/projects",
       component: Project,
       children: []
+    },
+    {
+      name: 'pro_detail',
+      path: "/project_detail",
+      component: ProjectDetail
     },
     {
       name: "mine",

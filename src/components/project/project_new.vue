@@ -86,7 +86,6 @@ export default {
         console.log($("#start").val() < $("#end").val());
         console.log();
         if (result) {
-          console.log("233333");
           this.$axios
             .post("api/create_project", {
               name: this.validateForm.projectname,
