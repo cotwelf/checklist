@@ -114,6 +114,7 @@ export default {
   data() {
     return {
       levels: "",
+      checked_pid: "",
       remain_days: "",
       per: "",
       list: [],
@@ -123,7 +124,8 @@ export default {
       types: [
         { name: "6天（月曜日-土曜日）", value: 6 },
         { name: "5天（月曜日-金曜日）", value: 5 },
-        { name: "1天（土曜日限定）", value: 1 }
+        { name: "1天（土曜日限定）", value: 1 },
+        { name: "7天", value: 7 }
       ],
       vers: [
         { name: "普通计划（当天完成定量）", value: 0 },
@@ -198,24 +200,26 @@ export default {
       console.log("now===========" + now);
       this.$axios
         .post("/api/create_plan", {
-          params: {
-            ver: this.validateForm.planver,
-            name: this.validateForm.planname,
-            created_at: now,
-            end_at: this.end_date,
-            total: this.validateForm.plantotal,
-            per: this.per,
-            unit: this.validateForm.planunit,
-            level: this.validateForm.planlevel,
-            typ: this.validateForm.plantype,
-            userid: 1
-          }
+          ver: this.validateForm.planver,
+          name: this.validateForm.planname,
+          created_at: now,
+          end_at: this.end_date,
+          total: this.validateForm.plantotal,
+          per: this.per,
+          unit: this.validateForm.planunit,
+          level: this.validateForm.planlevel,
+          typ: this.validateForm.plantype,
+          userid: 1,
+          pid: this.checked_pid
         })
-        .then(res => {})
+        .then(res => {
+          this.$router.push({ name: "home" });
+        })
         .catch(err => {});
     },
     submit() {
       this.$refs.form.validate().then(result => {
+        console.log(this.list);
         if (result) {
           var p_length = $(".project > .mu-form-item-content").children()
             .length;
@@ -225,6 +229,7 @@ export default {
             ).find("input")[0];
             if (checked_ele.checked) {
               this.end_date = this.list[$(checked_ele).attr("index")].end_str;
+              this.checked_pid = this.list[$(checked_ele).attr("index")].id;
               var days =
                 (Number(this.remain(this.end_date)) / 7) *
                 Number(this.validateForm.plantype);

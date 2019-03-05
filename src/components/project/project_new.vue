@@ -1,26 +1,51 @@
 <template>
   <div>
-    <mu-button fab color="pinkA100" class="add" @click="openFullscreenDialog">
-      <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
-    </mu-button>
-    <mu-dialog width="360" scrollable padding="10" fullscreen :open.sync="openFullscreen">
-      <mu-appbar color="pinkA100" title="新建计划" class="title">
-        <mu-button slot="left" flat @click="closeFullscreenDialog">
-          <mu-icon value=":iconfont icon-fanhui"></mu-icon>
-        </mu-button>
-      </mu-appbar>
-
-      <newPlan class="newplanmain" style="padding: 10px;" :list="list"></newPlan>
-    </mu-dialog>
+    <mu-form ref="form" :model="validateForm" class="projectform">
+      <mu-form-item
+        label="项目名称"
+        help-text="汉字、字母或字符，不要超过10个字"
+        prop="projectname"
+        :rules="projectnameRules"
+      >
+        <mu-text-field
+          id="name"
+          color="pink200"
+          v-model="validateForm.projectname"
+          prop="projectname"
+        ></mu-text-field>
+      </mu-form-item>
+      <mu-form-item label="开始时间" prop="projectstart" :rules="startRules">
+        <mu-date-input
+          id="start"
+          color="pink200"
+          v-model="validateForm.projectstart"
+          full-width
+          prop="projectstart"
+          no-display
+          container="bottomSheet"
+        ></mu-date-input>
+      </mu-form-item>
+      <mu-form-item label="结束时间" prop="projectend" :rules="endRules">
+        <mu-date-input
+          id="end"
+          color="pink200"
+          v-model="validateForm.projectend"
+          full-width
+          prop="projectend"
+          no-display
+          container="bottomSheet"
+        ></mu-date-input>
+      </mu-form-item>
+      <mu-form-item>
+        <mu-button color="pink200" @click="submit">创建</mu-button>
+        <mu-button :to="{name:'project'}">返回</mu-button>
+      </mu-form-item>
+    </mu-form>
   </div>
 </template>
 <script>
-import newPlan from "./plan_new.vue";
 export default {
   props: ["list"],
-  components: {
-    newPlan
-  },
   mounted: function() {
     this.$emit("getMessage", this.show);
   },
@@ -29,50 +54,71 @@ export default {
   },
   data() {
     return {
-      step: "1",
       show: "project",
-      openFullscreen: false,
-      items: [
+      openAlert: false,
+      projectnameRules: [
+        { validate: val => !!val, message: "必须填写项目名称" },
         {
-          text: "Dashboard",
-          disabled: false
-        },
-        {
-          text: "Link 1",
-          disabled: true
-        },
-        {
-          text: "Link 2",
-          disabled: true
+          validate: val => val.length < 11,
+          message: "项目名称太长啦臣妾记不住啊"
         }
-      ]
+      ],
+      startRules: [{ validate: val => !!val, message: "请选择时间" }],
+      endRules: [
+        { validate: val => !!val, message: "请选择时间" },
+        {
+          validate: val =>
+            $("#start").val() < $("#end").val() ||
+            $("#start").val() == $("#end").val(),
+          message: "结束时间不要小于开始时间哦~"
+        }
+      ],
+      validateForm: {
+        projectname: "",
+        projectstart: "",
+        projectend: ""
+      }
     };
   },
   methods: {
-    openFullscreenDialog() {
-      this.openFullscreen = true;
+    submit() {
+      this.$refs.form.validate().then(result => {
+        console.log($("#start").val() < $("#end").val());
+        console.log();
+        if (result) {
+          console.log("233333");
+          this.$axios
+            .post("api/create_project", {
+              name: this.validateForm.projectname,
+              start: this.validateForm.projectstart,
+              end: this.validateForm.projectend,
+              user_id: 1
+            })
+            .then(res => {
+              this.$router.push({ name: "project" });
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
+      });
     },
-    closeFullscreenDialog() {
-      this.openFullscreen = false;
+    openAlertDialog() {
+      this.openAlert = true;
     },
-    ifStep() {
-      this.step = step;
+    closeAlertDialog() {
+      this.openAlert = false;
     }
   }
 };
 </script>
 <style>
-.add {
-  position: fixed;
-  bottom: 80px;
-  left: 10px;
+.radios {
+  margin-top: 15px;
 }
-.title {
-  position: fixed;
-  width: 100%;
-  top: 0;
-}
-.newplanmain {
-  height: 150%;
+.projectform {
+  margin: 0 auto;
+  width: 90%;
+  margin-bottom: 12%;
 }
 </style>

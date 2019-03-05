@@ -39,9 +39,13 @@
               {{task.name}}
               <mu-icon v-if="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
             </mu-list-item-title>
-            <mu-list-item-sub-title
-              v-if="task.ver!=0"
-            >{{(task.per-task.dose)>0?'今日待完成'+(task.per-task.dose)+task.unit:'今日份已完成~加个鸡腿'}}</mu-list-item-sub-title>
+            <mu-list-item-sub-title v-if="task.ver!=0">
+              剩余{{remain(task.end_at)}}天,{{(task.per-task.dose)>0?'今日待完成'+(task.per-task.dose)+task.unit:'今日份已完成~加个鸡腿'}}
+              <span
+                class="tips"
+                v-if="realPer(task.end_at,task.total,task.per,index)[0]"
+              >,建议{{realPer(task.end_at,task.total,task.per,index)[1]}}{{task.unit}}</span>
+            </mu-list-item-sub-title>
           </mu-list-item-content>
           <mu-list-item-action>
             <!-- <mu-list-item-after-text>第12次</mu-list-item-after-text> -->
@@ -96,6 +100,12 @@ export default {
     };
   },
   methods: {
+    remain(date) {
+      var time1 = Date.parse(new Date(date));
+      var time2 = Date.parse(new Date());
+      var remain = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));
+      return remain ? remain : 0;
+    },
     showtask(status, dose, per, ver) {
       if (
         (status == 0) &
@@ -107,7 +117,11 @@ export default {
       }
     },
     finishTask(id, finish) {
-      this.$axios.post("/api/update_plan", { id: id, finish: finish });
+      this.$axios.post("/api/update_plan", {
+        id: id,
+        finish: finish,
+        user_id: 1
+      });
       this.$axios
         .get("/api/get_todo_list", { params: { user_id: "1", status: "0" } })
         .then(tasks => {
@@ -118,10 +132,18 @@ export default {
           console.log(err);
         });
     },
+    realPer(end_date, total, per, index) {
+      var now = new Date();
+      var r_per =
+        total / (this.remain(end_date) == 0 ? 1 : this.remain(end_date));
+      var res = [r_per > per, Math.ceil(r_per)];
+      return res;
+    },
     closeTask(id, ver, done, total, dose, unit, per) {
       if (ver == 0) {
         this.$toast.message("恭喜你，经验值+1");
         $("#" + id).fadeOut();
+        // todo
         this.finishTask(id, total);
       } else {
         this.$prompt(
@@ -171,5 +193,8 @@ export default {
   position: fixed;
   bottom: 80px;
   left: 10px;
+}
+.tips {
+  color: red;
 }
 </style>

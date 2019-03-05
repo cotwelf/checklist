@@ -8,11 +8,13 @@
         <span slot="subTitle">
           <b>{{remain(list.end_at)}}</b>天后结束
         </span>
-        <!-- <mu-button slot="action" icon :to="{name:'detail',params:{id:list.id}}"> -->
         <mu-button slot="action" icon @click="openAlertDialog(index,list.id)">
           <mu-icon value=":iconfont icon-yanchurili"></mu-icon>
         </mu-button>
       </mu-grid-tile>
+      <mu-button fab color="pinkA100" class="add" @click="ensure">
+        <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
+      </mu-button>
     </mu-grid-list>
     <mu-dialog
       :title="list[Number(indexes)].name"
@@ -23,9 +25,7 @@
     >
       <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
         <mu-card-header :title="list[Number(indexes)].created_at" sub-title="创建时间"></mu-card-header>
-
         <mu-card-title title="计划" sub-title="plans"></mu-card-title>
-
         <mu-list>
           <mu-divider shallow-inset></mu-divider>
           <mu-list-item v-for="(plan,index) in plans" :key="index" class="content">
@@ -38,8 +38,9 @@
       <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">编辑</mu-button>
       <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">返回</mu-button>
     </mu-dialog>
-
-    <newproject :open.sync="openFullscreen" :list="list"></newproject>
+    <mu-dialog title="你的项目菌们很蓝瘦" width="360" :open.sync="openSimple">你已经拥有4个项目菌啦！先好好对待他们~
+      <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">宝宝们我错了</mu-button>
+    </mu-dialog>
   </div>
 </template>
 <script>
@@ -56,7 +57,7 @@ export default {
   created() {
     $("body,html").animate({ scrollTop: 0 }, 100);
     this.$axios
-      .get("/api/get_project_list")
+      .get("/api/get_project_list", { params: { user_id: 1 } })
       .then(res => {
         this.list = res.data;
         // console.log(this.list);
@@ -87,6 +88,23 @@ export default {
     };
   },
   methods: {
+    closeSimpleDialog() {
+      this.openSimple = false;
+    },
+    ensure() {
+      this.$axios
+        .get("/api/ensure", { params: { user_id: 1 } })
+        .then(res => {
+          if (res.data > 4 || res.data == 4) {
+            this.openSimple = true;
+          } else {
+            this.$router.push({ name: "newproject" });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     donePercent(done, total) {
       return parseInt((done / total) * 100) + "%";
     },
@@ -105,9 +123,6 @@ export default {
       var time1 = Date.parse(new Date(date));
       var time2 = Date.parse(new Date());
       var remain = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));
-      // var remain = this.list.end_at - today;
-      // console.log(date);
-      // console.log(time2);
       return remain ? remain : 0;
     },
     openAlertDialog(index, p_id) {
@@ -124,7 +139,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .card {
   width: 100%;
   max-width: 375px;
@@ -139,5 +154,10 @@ export default {
 }
 .mu-list {
   height: 200px;
+}
+.add {
+  position: fixed;
+  bottom: 80px;
+  left: 10px;
 }
 </style>

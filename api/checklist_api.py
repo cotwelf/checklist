@@ -6,6 +6,7 @@ import time
 import json
 import datetime
 
+
 app = Flask(__name__)
 startTime = datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')
 endTime = datetime.datetime.now().strftime('%Y-%m-%d 23:59:59')
@@ -34,6 +35,25 @@ def get_todo_list():
 
     except ZeroDivisionError, e:
         print e.message
+
+    db = openDb()
+    cursor = db.cursor()
+    # 判断是否结束，置状态为9
+    sql = "SELECT id,end_at FROM plans WHERE user_id = %s"
+    val = (user_id,)
+    cursor.execute(sql, val)
+    results = cursor.fetchall()
+    for row in results:
+        id = row[0]
+        end_at = str(row[1])
+        # end_at = datetime.datetime.strptime(str(row[1]), "%Y-%m-%d")
+        print id
+        if (end_at < str(endTime)[0:10]):
+            sql = 'update plans set status = 9 where id =%s'
+            val = (id,)
+            cursor.execute(sql, val)
+            db.commit()
+
     val = (startTime, endTime)
     # user_id
     if(user_id):
@@ -54,11 +74,8 @@ def get_todo_list():
         val = val + (status,)
     else:
         status_str = ""
-    db = openDb()
-    cursor = db.cursor()
-
     # SQL 插入语句
-    sql = "select p.id,p.ver,p.name,p.p_id,p.status,p.total,p.done,p.per,p.level,p.type,p.unit,IFNULL(tb.dones,0) \
+    sql = "select p.id,p.ver,p.name,p.p_id,p.status,p.total,p.done,p.per,p.level,p.type,p.unit,IFNULL(tb.dones,0),p.end_at \
         from plans p LEFT JOIN (SELECT plan_id, sum(done) dones from finish_record \
             where finished_at BETWEEN %s and %s GROUP BY plan_id) tb on \
                 p.id=tb.plan_id  where p.name is not null "+user_id_str+p_id_str+status_str+" ORDER BY p.status,p.level"
@@ -80,6 +97,7 @@ def get_todo_list():
         obj['level'] = row[8]
         obj['unit'] = row[10]
         obj['dose'] = str(row[11])
+        obj['end_at'] = str(row[12])
         if(row[9] == 1):
             if(workDay() == 6):
                 res.append(obj)
@@ -89,6 +107,8 @@ def get_todo_list():
         elif(row[9] == 5):
             if(workDay() != 6 or workDay() != 7):
                 res.append(obj)
+        else:
+            res.append(obj)
     # print res
     return jsonify(res)
     db.close()
@@ -101,7 +121,8 @@ def update_plan():
     data = json.loads(request.get_data())
     print data
     id = int(data['id'])
-    finish = int(data['finish'])
+    finish = float(data['finish'])
+    user_id = data['user_id']
     nowTime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     sql = "update plans set done = (done + %s) where id =%s"
     val = (finish, id)
@@ -184,21 +205,22 @@ def create_project():
 def create_plan():
     data = json.loads(request.get_data())
     print data
-    p_ver = int(data['ver'])
-    p_name = str(data['name'])
+    p_ver = data['ver']
+    p_name = data['name']
     p_created_at = str(data['created_at'])[0:10]
     p_end_at = str(data['end_at'])[0:10]
-    p_total = str(data['total'])
-    p_per = str(data['per'])
+    p_total = data['total']
+    p_per = data['per']
     p_unit = data['unit']
     p_typ = data['typ']
     p_level = data['level']
     p_userid = data['userid']
+    p_pid = data['pid']
     db = openDb()
     cursor = db.cursor()
-    sql = "INSERT INTO projects (ver,NAME,created_at,end_at,total,per,unit,level,type,user_id) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+    sql = "INSERT INTO plans (ver,NAME,created_at,end_at,total,per,unit,level,type,user_id,p_id,status,done) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,0,0)"
     val = (p_ver, p_name, p_created_at, p_end_at,
-           p_total, p_per, p_unit, p_level, p_typ, p_userid)
+           p_total, p_per, p_unit, p_level, p_typ, p_userid, p_pid)
     cursor.execute(sql, val)
     db.commit()
     return 'ok'
