@@ -1,5 +1,9 @@
 <template>
-  <div>小姐姐还在开发中~</div>
+  <div>小姐姐还在开发中~
+    <mu-avatar>
+      <img src="../img/306240.jpg">
+    </mu-avatar>
+  </div>
 </template>
 <script>
 export default {
