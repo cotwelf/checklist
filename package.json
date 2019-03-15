@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "mint-ui": "^2.2.13",
+    "moment": "^2.24.0",
     "muse-ui": "^3.0.2",
     "muse-ui-message": "^0.2.1",
     "muse-ui-toast": "^0.3.0",

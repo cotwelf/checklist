@@ -3,7 +3,7 @@ import MuseUI from "muse-ui";
 import App from "./App.vue";
 import Axios from "axios";
 Vue.prototype.$axios = Axios;
-
+// Axios.defalts.baseURL = 
 import "muse-ui/dist/muse-ui.css";
 import "muse-ui-message/dist/muse-ui-message.css";
 import Message from "muse-ui-message";
@@ -11,7 +11,11 @@ import Toast from "muse-ui-toast";
 Vue.use(MuseUI);
 
 import "./img/icon/iconfont.css";
-
+import Moment from 'moment';
+// 定义全局过滤器
+Vue.filter('converDate', function (value) {
+  return Moment(value).format('YYYY-MM-DD')
+})
 Vue.use(Message);
 // Vue.use(Toast);
 Vue.use(Toast, {
@@ -40,8 +44,14 @@ Vue.component("headerVue", header);
 Vue.component("footerVue", footer);
 let router = new VueRouter({
   routes: [{
+      path: '/',
+      redirect: {
+        name: 'home'
+      }
+    },
+    {
       name: "home",
-      path: "/",
+      path: "/todo",
       component: Home
     },
     {
