@@ -17,7 +17,7 @@
               <mu-icon v-if="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
             </mu-list-item-title>
             <mu-list-item-sub-title v-if="task.ver!=0">
-              剩余{{remain(task.end_at)}}天,{{(task.per-task.dose)>0?'今日待完成'+(task.per-task.dose)+task.unit:'今日份已完成~加个鸡腿'}}
+              {{(task.per-task.dose)>0?'今日待完成'+(task.per-task.dose)+task.unit:'今日份已完成~加个鸡腿'}}
               <span
                 class="tips"
                 v-if="realPer(task.end_at,task.total,task.per,index)[0]"

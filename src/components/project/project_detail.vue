@@ -10,7 +10,7 @@
         {{plan.name}}
       </div>
       {{statusText(plan.status)}}，共{{plan.total}}{{plan.unit}},已完成{{plan.done}}{{plan.unit}},剩余{{plan.total-plan.done}}{{plan.unit}}，计划进行到{{Math.floor((plan.done/plan.total)*100)}}%
-      <mu-button slot="action" v-if="plan.status ==0" flat>结束这个计划</mu-button>
+      <mu-button slot="action" v-if="plan.status ==0" @click="kill" flat>结束这个计划</mu-button>
     </mu-expansion-panel>
   </div>
 </template>
