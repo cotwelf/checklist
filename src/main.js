@@ -28,66 +28,13 @@ Vue.use(Toast, {
 Vue.config.productionTip = false;
 
 // // routes
-import router from './router'
-// import VueRouter from "vue-router";
-// Vue.use(VueRouter);
-// import header from "./components/header.vue";
-// import footer from "./components/footer.vue";
-// import Home from "./components/plan/plan_list.vue";
-// import Project from "./components/project/project_list.vue";
-// import NewProject from "./components/project/project_new.vue"
-// import Mine from "./components/mine.vue";
-// import NewPlan from "./components/plan/plan_new.vue"
-// import ProjectDetail from "./components/project/project_detail.vue"
+import router from './router';
+import store from './store';
 
-
-// project
-
-// Vue.component("headerVue", header);
-// Vue.component("footerVue", footer);
-// let router = new VueRouter({
-//   routes: [{
-//       path: '/',
-//       redirect: {
-//         name: 'home'
-//       }
-//     },
-//     {
-//       name: "home",
-//       path: "/todo",
-//       component: Home
-//     },
-//     {
-//       name: "project",
-//       path: "/projects",
-//       component: Project,
-//       children: []
-//     },
-//     {
-//       name: 'pro_detail',
-//       path: "/project_detail",
-//       component: ProjectDetail
-//     },
-//     {
-//       name: "mine",
-//       path: "/mine",
-//       component: Mine
-//     },
-//     {
-//       name: 'newproject',
-//       path: '/projects/new',
-//       component: NewProject
-//     },
-//     {
-//       name: 'newplan',
-//       path: '/plan/new',
-//       component: NewPlan
-//     }
-//   ]
-// });
 new Vue({
   el: "#app",
   router,
+  store,
   // router: router,
   render: h => h(App)
 });
