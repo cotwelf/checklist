@@ -61,21 +61,36 @@
 </template>
 <script>
 export default {
-  mounted: function() {
-    this.$emit("getMessage", this.show);
+  conputed: function() {
+    // this.$store.dispatch("getPlanList", { user_id: "1", status: "0" });
+    // console.log(this.$store.state.planlist);
+    // this.tasks = this.$store.state.planlist;
   },
   created() {
+    this.$emit("getMessage", this.show);
     $("body,html").animate({ scrollTop: 0 }, 100);
-    // 假设1是userid
-    this.$axios
-      .get("/api/get_todo_list", { params: { user_id: "1", status: "0" } })
-      .then(tasks => {
-        this.tasks = tasks.data;
-        console.log(this.tasks);
-      })
-      .catch(err => {
-        console.log(err);
+    // this.$store.dispatch("getPlanList", { user_id: "1", status: "0" });
+    // var that = this;
+    // function log(that) {
+    //   console.log(that.$store.state.planlist);
+    // }
+    // log(that);
+    // this.tasks = this.$store.state.planlist;
+    // setTimeout(log(that), 3000);
+    var that = this;
+    async function getplanlist(obj) {
+      var getdata = await obj.$store.dispatch("getPlanList", {
+        user_id: "1",
+        status: "0"
       });
+      obj.tasks = obj.$store.state.planlist;
+    }
+    getplanlist(that);
+
+    // console.log("以下为vue文件打印");
+    // console.log(this.$store.state.planlist);
+
+    // 假设1是userid
   },
   data() {
     return {
