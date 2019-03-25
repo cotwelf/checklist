@@ -2,7 +2,7 @@
   <div>
     <mu-list textline="two-line">
       <mu-sub-header>今天也要元气满满加油鸭O(∩_∩)O~~</mu-sub-header>
-      <span v-for="(task,index) in tasks" :key="index">
+      <span v-for="(task,index) in getData()" :key="index">
         <mu-list-item
           avatar
           :ripple="false"
@@ -61,31 +61,31 @@
 </template>
 <script>
 export default {
-  conputed: function() {
+  conputed: {
+    getData() {
+      return this.$store.state.planlist;
+    }
     // this.$store.dispatch("getPlanList", { user_id: "1", status: "0" });
     // console.log(this.$store.state.planlist);
     // this.tasks = this.$store.state.planlist;
   },
   created() {
+    this.$store.dispatch("getPlanList", { user_id: "1", status: "0" });
+    // console.log(this.$store.state.planlist);
+    // this.tasks = this.$store.state.planlist;
+
     this.$emit("getMessage", this.show);
     $("body,html").animate({ scrollTop: 0 }, 100);
-    // this.$store.dispatch("getPlanList", { user_id: "1", status: "0" });
     // var that = this;
-    // function log(that) {
-    //   console.log(that.$store.state.planlist);
+    // async function getplanlist(obj) {
+    //   var getdata = await obj.$store.dispatch("getPlanList", {
+    //     user_id: "1",
+    //     status: "0"
+    //   });
+    //   obj.tasks = obj.$store.state.planlist;
+    //   console.log(obj.tasks);
     // }
-    // log(that);
-    // this.tasks = this.$store.state.planlist;
-    // setTimeout(log(that), 3000);
-    var that = this;
-    async function getplanlist(obj) {
-      var getdata = await obj.$store.dispatch("getPlanList", {
-        user_id: "1",
-        status: "0"
-      });
-      obj.tasks = obj.$store.state.planlist;
-    }
-    getplanlist(that);
+    // getplanlist(that);
 
     // console.log("以下为vue文件打印");
     // console.log(this.$store.state.planlist);
