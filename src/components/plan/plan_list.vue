@@ -61,36 +61,20 @@
 </template>
 <script>
 export default {
-  conputed: {
-    getData() {
-      return this.$store.state.planlist;
-    }
-    // this.$store.dispatch("getPlanList", { user_id: "1", status: "0" });
-    // console.log(this.$store.state.planlist);
-    // this.tasks = this.$store.state.planlist;
-  },
   created() {
-    this.$store.dispatch("getPlanList", { user_id: "1", status: "0" });
-    // console.log(this.$store.state.planlist);
-    // this.tasks = this.$store.state.planlist;
+    if (localStorage.tests) {
+      console.log("ok");
+    } else {
+      console.log("qqq");
+    }
+    var tests = [{ name: "test", id: 2332 }, { name: "222", id: 233 }];
+    tests.push({ name: "222222", id: 222222 });
+    localStorage.test = JSON.stringify(tests);
+
+    console.log(JSON.parse(localStorage.test));
 
     this.$emit("getMessage", this.show);
     $("body,html").animate({ scrollTop: 0 }, 100);
-    // var that = this;
-    // async function getplanlist(obj) {
-    //   var getdata = await obj.$store.dispatch("getPlanList", {
-    //     user_id: "1",
-    //     status: "0"
-    //   });
-    //   obj.tasks = obj.$store.state.planlist;
-    //   console.log(obj.tasks);
-    // }
-    // getplanlist(that);
-
-    // console.log("以下为vue文件打印");
-    // console.log(this.$store.state.planlist);
-
-    // 假设1是userid
   },
   data() {
     return {
