@@ -44,12 +44,15 @@
   </div>
 </template>
 <script>
+import { addProject, randomId } from "../../utils/data.js";
 export default {
   props: ["list"],
   mounted: function() {
     this.$emit("getMessage", this.show);
   },
   created() {
+    var projects = localStorage.projects;
+    console.log(projects);
     $("body,html").animate({ scrollTop: 0 }, 100);
   },
   data() {
@@ -67,9 +70,8 @@ export default {
       endRules: [
         { validate: val => !!val, message: "请选择时间" },
         {
-          validate: val =>
-            $("#start").val() < $("#end").val() ||
-            $("#start").val() == $("#end").val(),
+          validate: val => $("#start").val() < $("#end").val(),
+          // $("#start").val() == $("#end").val(),
           message: "结束时间不要小于开始时间哦~"
         }
       ],
@@ -83,22 +85,16 @@ export default {
   methods: {
     submit() {
       this.$refs.form.validate().then(result => {
-        console.log($("#start").val() < $("#end").val());
-        console.log();
         if (result) {
-          this.$axios
-            .post("api/create_project", {
-              name: this.validateForm.projectname,
-              start: this.validateForm.projectstart,
-              end: this.validateForm.projectend,
-              user_id: 1
-            })
-            .then(res => {
-              this.$router.push({ name: "project" });
-            })
-            .catch(err => {
-              console.log(err);
-            });
+          const project = {};
+          project.id = randomId();
+          project.name = this.validateForm.projectname;
+          project.start_at = this.validateForm.projectstart.toLocaleDateString();
+          project.end_at = this.validateForm.projectend.toLocaleDateString();
+          console.log(project);
+          addProject(project);
+          console.log(localStorage.projects);
+          this.$router.push({ name: "project" });
         }
       });
     },

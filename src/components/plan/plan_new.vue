@@ -11,7 +11,7 @@
             :label="item.name"
             class="radios"
           ></mu-radio>
-          <span class="radios" style="font-size:15px">{{item.created_at}}至{{item.end_str}}</span>
+          <span class="radios" style="font-size:15px">{{item.created_at}}至{{item.end_at}}</span>
         </mu-flex>
       </mu-form-item>
       <mu-form-item
@@ -88,6 +88,7 @@
   </div>
 </template>
 <script>
+import { remainDays, addPlans } from "../../utils/data.js";
 export default {
   mounted: function() {
     this.$emit("getMessage", this.show);
@@ -95,14 +96,9 @@ export default {
   created() {
     $("body,html").animate({ scrollTop: 0 }, 100);
     this.ver = this.$route.query.ver;
-    this.$axios
-      .get("/api/get_project_list", { params: { user_id: 1 } })
-      .then(res => {
-        this.list = res.data;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    const projects = JSON.parse(localStorage.projects);
+    this.list = projects;
+    console.log(projects);
   },
   data() {
     return {
@@ -171,10 +167,7 @@ export default {
       this.openAlert = false;
     },
     remain(date) {
-      var time1 = Date.parse(new Date(date));
-      var time2 = Date.parse(new Date());
-      var remain = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));
-      return remain ? remain : 0;
+      return remainDays(date);
     },
     createPlan() {
       var now = new Date();
@@ -187,24 +180,20 @@ export default {
         "-" +
         (now.getDate() > 9 ? now.getDate() : "0" + now.getDate());
       console.log("now===========" + now);
-      this.$axios
-        .post("/api/create_plan", {
-          ver: this.ver,
-          name: this.validateForm.planname,
-          created_at: this.now,
-          end_at: this.end_date ? this.end_date : this.now,
-          total: this.validateForm.plantotal,
-          per: this.per ? this.per : this.validateForm.plantotal,
-          unit: this.validateForm.planunit,
-          level: this.validateForm.planlevel,
-          typ: this.validateForm.plantype,
-          userid: 1,
-          pid: this.checked_pid
-        })
-        .then(res => {
-          this.$router.push({ name: "home" });
-        })
-        .catch(err => {});
+      const plan = {};
+      plan.ver = this.ver;
+      plan.name = this.validateForm.planname;
+      plan.created_at = this.now;
+      plan.end_at = this.end_date ? this.end_date : this.now;
+      plan.total = this.validateForm.plantotal;
+      plan.per = this.per ? this.per : this.validateForm.plantotal;
+      plan.unit = this.validateForm.planunit;
+      plan.level = this.validateForm.planlevel;
+      plan.type = this.validateForm.plantype;
+      plan.pid = this.checked_pid;
+      console.log(plan);
+      addPlans(plan);
+      this.$router.push({ name: "home" });
     },
     submit() {
       this.$refs.form.validate().then(result => {
@@ -217,12 +206,13 @@ export default {
               $(".project > .mu-form-item-content").children()[i]
             ).find("input")[0];
             if (checked_ele.checked) {
-              this.end_date = this.list[$(checked_ele).attr("index")].end_str;
+              this.end_date = this.list[$(checked_ele).attr("index")].end_at;
               this.checked_pid = this.list[$(checked_ele).attr("index")].id;
               var days =
                 (Number(this.remain(this.end_date)) / 7) *
                 Number(this.validateForm.plantype);
               console.log(Number(this.remain(this.end_date)) / 7);
+              console.log(this.end_date);
               var _per = Number(this.validateForm.plantotal) / days;
               this.remain_days = Math.floor(days);
               this.per = Math.ceil(_per);

@@ -38,7 +38,8 @@
       <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">编辑</mu-button>
       <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">返回</mu-button>
     </mu-dialog>
-    <mu-dialog title="你的项目菌们很蓝瘦" width="360" :open.sync="openSimple">你已经拥有4个项目菌啦！先好好对待他们~
+    <mu-dialog title="你的项目菌们很蓝瘦" width="360" :open.sync="openSimple">
+      你已经拥有4个项目菌啦！先好好对待他们~
       <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">宝宝们我错了</mu-button>
     </mu-dialog>
   </div>
@@ -46,6 +47,7 @@
 <script>
 import newproject from "./project_new.vue";
 import img from "../../img/306240.jpg";
+import { remainDays } from "../../utils/data.js";
 export default {
   components: {
     newproject
@@ -55,16 +57,17 @@ export default {
     this.$emit("getMessage", this.show);
   },
   created() {
+    // localStorage.clear();
+    if (!localStorage.projects) {
+      localStorage.projects = "[]";
+    } else if (JSON.parse(localStorage.projects).length > 0) {
+      console.log(this.list);
+      console.log(JSON.parse(localStorage.projects));
+      const projects = JSON.parse(localStorage.projects);
+      this.list = projects;
+    }
+
     $("body,html").animate({ scrollTop: 0 }, 100);
-    this.$axios
-      .get("/api/get_project_list", { params: { user_id: 1 } })
-      .then(res => {
-        this.list = res.data;
-        // console.log(this.list);
-      })
-      .catch(err => {
-        console.log(err);
-      });
   },
   data() {
     return {
@@ -80,7 +83,7 @@ export default {
       list: [
         {
           id: "1",
-          name: "Breakfast",
+          name: "这是项目名称",
           end_at: "2020-02-02",
           created_at: "2018-01-01"
         }
@@ -92,45 +95,23 @@ export default {
       this.openSimple = false;
     },
     ensure() {
-      this.$axios
-        .get("/api/ensure", { params: { user_id: 1 } })
-        .then(res => {
-          if (res.data > 4 || res.data == 4) {
-            this.openSimple = true;
-          } else {
-            this.$router.push({ name: "newproject" });
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      if (this.list.length > 4 || this.list.length == 4) {
+        this.openSimple = true;
+      } else {
+        this.$router.push({ name: "newproject" });
+      }
     },
     donePercent(done, total) {
       return parseInt((done / total) * 100) + "%";
     },
-    getPlanList(p_id) {
-      this.$axios
-        .get("/api/get_todo_list", { params: { user_id: "1", p_id: p_id } })
-        .then(res => {
-          this.plans = res.data;
-          console.log(this.plans);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     remain(date) {
-      var time1 = Date.parse(new Date(date));
-      var time2 = Date.parse(new Date());
-      var remain = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));
-      return remain ? remain : 0;
+      return remainDays(date);
     },
     openAlertDialog(index, p_id) {
       // console.log(this.list);
       this.indexes = index;
       this.getPlanList(p_id);
       console.log(this.plans);
-
       this.openAlert = true;
     },
     closeAlertDialog() {

@@ -2,7 +2,7 @@
   <div>
     <mu-list textline="two-line">
       <mu-sub-header>今天也要元气满满加油鸭O(∩_∩)O~~</mu-sub-header>
-      <span v-for="(task,index) in getData()" :key="index">
+      <span v-for="(task,index) in tasks" :key="index">
         <mu-list-item
           avatar
           :ripple="false"
@@ -60,18 +60,12 @@
   </div>
 </template>
 <script>
+import { addPlan, remainDays } from "../../utils/data.js";
 export default {
   created() {
-    if (localStorage.tests) {
-      console.log("ok");
-    } else {
-      console.log("qqq");
+    if (!localStorage.tasks) {
+      localStorage.tasks = "[]";
     }
-    var tests = [{ name: "test", id: 2332 }, { name: "222", id: 233 }];
-    tests.push({ name: "222222", id: 222222 });
-    localStorage.test = JSON.stringify(tests);
-
-    console.log(JSON.parse(localStorage.test));
 
     this.$emit("getMessage", this.show);
     $("body,html").animate({ scrollTop: 0 }, 100);
@@ -117,10 +111,7 @@ export default {
       }
     },
     remain(date) {
-      var time1 = Date.parse(new Date(date));
-      var time2 = Date.parse(new Date());
-      var remain = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));
-      return remain ? remain : 0;
+      return remainDays(date);
     },
     showtask(status, dose, per, ver) {
       if (
