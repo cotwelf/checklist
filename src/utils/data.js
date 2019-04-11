@@ -1,3 +1,7 @@
+import {
+    saveAs
+} from "file-saver";
+
 export function addProject(obj) {
     const projects = JSON.parse(localStorage.projects)
     projects.push(obj)
@@ -20,4 +24,12 @@ export function addPlans(obj) {
     const plans = JSON.parse(localStorage.plans)
     plans.push(obj)
     localStorage.plans = JSON.stringify(plans)
+}
+
+export function saveStorage(dataObj, name) {
+    var content = JSON.stringify(dataObj);
+    var blob = new Blob([content], {
+        type: "text/plain;charset=utf-8"
+    });
+    saveAs(blob, name + ".json");
 }

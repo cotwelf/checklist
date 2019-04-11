@@ -7,7 +7,7 @@
           avatar
           :ripple="false"
           button
-          v-if="showtask(task.status,task.dose,task.per,task.ver)"
+          v-if="showtask(task.status,task.dose,task.per,task.ver,task.type)"
           :id="task.id"
         >
           <mu-list-item-content>
@@ -63,10 +63,14 @@
 import { addPlan, remainDays } from "../../utils/data.js";
 export default {
   created() {
-    if (!localStorage.tasks) {
-      localStorage.tasks = "[]";
+    if (!localStorage.plans) {
+      localStorage.plans = "[]";
+    } else if (JSON.parse(localStorage.plans).length > 0) {
+      // console.log(JSON.parse(localStorage.plans));
+      const plans = JSON.parse(localStorage.plans);
+      this.tasks = plans;
     }
-
+    console.log(this.tasks);
     this.$emit("getMessage", this.show);
     $("body,html").animate({ scrollTop: 0 }, 100);
   },
@@ -113,14 +117,42 @@ export default {
     remain(date) {
       return remainDays(date);
     },
-    showtask(status, dose, per, ver) {
-      if (
-        (status == 0) &
-        ((Number(dose) > Number(per)) | (Number(dose) == Number(per)))
-      ) {
-        return ver == 1 ? 1 : 0;
-      } else {
-        return status == 0 ? 1 : 0;
+    weekly(type) {
+      const mydate = new Date();
+      const today = mydate.getDay(); //0:周日-6:周六
+      switch (type) {
+        case 7:
+          return 1;
+        case 6:
+          if (today == 0) {
+            return 0;
+          } else {
+            return 1;
+          }
+        case 5:
+          if (today == 6 || today == 0) {
+            return 0;
+          } else {
+            return 1;
+          }
+        case 1:
+          if (today == 6) {
+            return 1;
+          } else {
+            return 0;
+          }
+      }
+    },
+    showtask(status, dose, per, ver, type) {
+      if (this.weekly(type)) {
+        if (
+          status == 0 &&
+          (Number(dose) > Number(per)) | (Number(dose) == Number(per))
+        ) {
+          return ver == 1 ? 1 : 0;
+        } else {
+          return status == 0 ? 1 : 0;
+        }
       }
     },
     finishTask(id, finish) {

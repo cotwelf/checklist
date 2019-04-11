@@ -191,6 +191,7 @@ export default {
       plan.level = this.validateForm.planlevel;
       plan.type = this.validateForm.plantype;
       plan.pid = this.checked_pid;
+      plan.status = 0;
       console.log(plan);
       addPlans(plan);
       this.$router.push({ name: "home" });
