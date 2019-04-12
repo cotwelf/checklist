@@ -88,7 +88,7 @@
   </div>
 </template>
 <script>
-import { remainDays, addPlans } from "../../utils/data.js";
+import { remainDays, pushData, randomId } from "../../utils/data.js";
 export default {
   mounted: function() {
     this.$emit("getMessage", this.show);
@@ -157,6 +157,7 @@ export default {
     };
   },
   methods: {
+    freshData() {},
     openFullscreenDialog() {
       this.openFullscreen = true;
     },
@@ -171,16 +172,10 @@ export default {
     },
     createPlan() {
       var now = new Date();
-      this.now =
-        now.getFullYear() +
-        "-" +
-        (now.getMonth() + 1 > 9
-          ? now.getMonth() + 1
-          : "0" + (now.getMonth() + 1)) +
-        "-" +
-        (now.getDate() > 9 ? now.getDate() : "0" + now.getDate());
+      this.now = now.toLocaleDateString();
       console.log("now===========" + now);
       const plan = {};
+      plan.id = randomId();
       plan.ver = this.ver;
       plan.name = this.validateForm.planname;
       plan.created_at = this.now;
@@ -192,8 +187,7 @@ export default {
       plan.type = this.validateForm.plantype;
       plan.pid = this.checked_pid;
       plan.status = 0;
-      console.log(plan);
-      addPlans(plan);
+      pushData("plans", plan);
       this.$router.push({ name: "home" });
     },
     submit() {

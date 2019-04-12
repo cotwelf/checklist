@@ -7,7 +7,7 @@
           avatar
           :ripple="false"
           button
-          v-if="showtask(task.status,task.dose,task.per,task.ver,task.type)"
+          v-if="showtask(task.status,Number(task.dose),Number(task.per),task.ver,task.type)"
           :id="task.id"
         >
           <mu-list-item-content>
@@ -17,11 +17,11 @@
               <mu-icon v-if="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
             </mu-list-item-title>
             <mu-list-item-sub-title v-if="task.ver!=0">
-              {{(task.per-task.dose)>0?'今日待完成'+(task.per-task.dose)+task.unit:'今日份已完成~加个鸡腿'}}
+              {{(Number(task.per)-Number(task.dose))>0?'今日待完成'+(Number(task.per)-Number(task.dose))+task.unit:'今日份已完成~加个鸡腿'}}
               <span
                 class="tips"
-                v-if="realPer(task.end_at,task.total,task.per,index)[0]"
-              >,建议{{realPer(task.end_at,task.total,task.per,index)[1]}}{{task.unit}}</span>
+                v-if="realPer(task.end_at,Number(task.total),Number(task.per),index)[0]"
+              >,建议{{realPer(task.end_at,Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span>
             </mu-list-item-sub-title>
           </mu-list-item-content>
           <mu-list-item-action>
@@ -32,7 +32,7 @@
               :value="task.id"
               uncheck-icon=":iconfont icon-xuanzhong"
               checked-icon=":iconfont icon-xuanzhong"
-              @click="closeTask(task.id,task.ver,task.done,task.total,task.dose,task.unit,task.per)"
+              @click="closeTask(task.id,task.ver,Number(task.done),Number(task.dose),Number(task.total),task.unit,Number(task.per))"
             ></mu-checkbox>
           </mu-list-item-action>
         </mu-list-item>
@@ -60,22 +60,25 @@
   </div>
 </template>
 <script>
-import { addPlan, remainDays } from "../../utils/data.js";
+import {
+  remainDays,
+  addRecord,
+  getData,
+  updatePlan,
+  today
+} from "../../utils/data.js";
 export default {
   created() {
-    if (!localStorage.plans) {
-      localStorage.plans = "[]";
-    } else if (JSON.parse(localStorage.plans).length > 0) {
-      // console.log(JSON.parse(localStorage.plans));
-      const plans = JSON.parse(localStorage.plans);
-      this.tasks = plans;
-    }
-    console.log(this.tasks);
+    // localStorage.clear();
+    this.today = today();
+    this.refresh();
     this.$emit("getMessage", this.show);
     $("body,html").animate({ scrollTop: 0 }, 100);
   },
   data() {
     return {
+      records: [],
+      today: "",
       ture: "",
       show: "todo",
       openSimple: false,
@@ -96,6 +99,29 @@ export default {
     };
   },
   methods: {
+    refresh() {
+      this.tasks = getData(localStorage.plans);
+      var tasks = this.tasks;
+      var records = localStorage.records ? getData(localStorage.records) : [];
+      for (var i = 0; i < tasks.length; i++) {
+        tasks[i].dose = 0;
+      }
+      if (records.length > 0) {
+        for (var i = 0; i < records.length; i++) {
+          var plan_id = records[i].plan_id;
+          if (records[i].finished_at == this.today) {
+            var done = records[i].done;
+            for (var j = 0; j < tasks.length; j++) {
+              if (tasks[j].id == plan_id) {
+                tasks[j].dose = done;
+              }
+            }
+          }
+        }
+      }
+
+      this.tasks = tasks;
+    },
     closeBottomSheet() {
       this.open = false;
     },
@@ -119,24 +145,24 @@ export default {
     },
     weekly(type) {
       const mydate = new Date();
-      const today = mydate.getDay(); //0:周日-6:周六
+      const w_today = mydate.getDay(); //0:周日-6:周六
       switch (type) {
         case 7:
           return 1;
         case 6:
-          if (today == 0) {
+          if (w_today == 0) {
             return 0;
           } else {
             return 1;
           }
         case 5:
-          if (today == 6 || today == 0) {
+          if (w_today == 6 || w_today == 0) {
             return 0;
           } else {
             return 1;
           }
         case 1:
-          if (today == 6) {
+          if (w_today == 6) {
             return 1;
           } else {
             return 0;
@@ -155,21 +181,10 @@ export default {
         }
       }
     },
-    finishTask(id, finish) {
-      this.$axios.post("/api/update_plan", {
-        id: id,
-        finish: finish,
-        user_id: 1
-      });
-      this.$axios
-        .get("/api/get_todo_list", { params: { user_id: "1", status: "0" } })
-        .then(tasks => {
-          this.tasks = tasks.data;
-          console.log(this.tasks);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    finishTask(plan_id, done) {
+      updatePlan(plan_id, done);
+      addRecord(plan_id, done);
+      this.refresh();
     },
     realPer(end_date, total, per, index) {
       var now = new Date();
@@ -178,11 +193,10 @@ export default {
       var res = [r_per > per, Math.ceil(r_per)];
       return res;
     },
-    closeTask(id, ver, done, total, dose, unit, per) {
+    closeTask(id, ver, done, dose, total, unit, per) {
       if (ver == 0) {
         this.$toast.message("恭喜你，经验值+1");
         $("#" + id).fadeOut();
-        // todo
         this.finishTask(id, total);
       } else {
         this.$prompt(
@@ -204,7 +218,7 @@ export default {
           if (result) {
             this.$toast.message("你输入的时间：" + value);
             // $("#" + id).fadeOut(); 状态变为已完成，但还可以继续做
-            (ver == 1) | (Number(dose) + value < Number(per))
+            (ver == 1) | (Number(dose) + Number(value) < Number(per))
               ? ""
               : $("#" + id).fadeOut();
             this.selects = [];

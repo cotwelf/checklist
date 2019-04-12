@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import { addProject, randomId } from "../../utils/data.js";
+import { pushData, randomId } from "../../utils/data.js";
 export default {
   props: ["list"],
   mounted: function() {
@@ -92,7 +92,7 @@ export default {
           project.start_at = this.validateForm.projectstart.toLocaleDateString();
           project.end_at = this.validateForm.projectend.toLocaleDateString();
           console.log(project);
-          addProject(project);
+          pushData("projects", project);
           console.log(localStorage.projects);
           this.$router.push({ name: "project" });
         }
