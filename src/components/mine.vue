@@ -1,10 +1,15 @@
 <template>
-  <div>
-    小姐姐还在开发中~
-    <mu-avatar>
-      <img src="../img/306240.jpg">
-    </mu-avatar>
-    <mu-button slot="actions" flat color="primary" @click="update">保留数据</mu-button>
+  <div style="height:100%">
+    <mu-paper :z-depth="1" style="height:100%">
+      <mu-list>
+        <mu-list-item button @click="update">
+          <mu-list-item-action>
+            <mu-icon value=":iconfont icon-fenxiang"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>保留数据</mu-list-item-title>
+        </mu-list-item>
+      </mu-list>
+    </mu-paper>
   </div>
 </template>
 <script>
@@ -16,6 +21,7 @@ export default {
   },
   created() {
     $("body,html").animate({ scrollTop: 0 }, 100);
+    this.$emit("getMessage", this.show);
     console.log(data);
   },
   data() {
