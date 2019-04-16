@@ -4,7 +4,7 @@
     <mu-paper :z-depth="1">
       <router-view class="main" @getMessage="showMsg"></router-view>
     </mu-paper>
-    <footer-vue class="footer" :show="show"></footer-vue>
+    <footer-vue class="footer" style="width:100%" :show="show"></footer-vue>
   </div>
 </template>
 
@@ -47,9 +47,9 @@ export default {
   z-index: 999;
 }
 .main {
-  top: 66px;
+  top: 80px;
   position: absolute;
-  height: 100%;
+  height: 111%;
   width: 100%;
 }
 mu-paper {

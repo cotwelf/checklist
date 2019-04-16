@@ -210,7 +210,7 @@ export default {
               console.log(this.end_date);
               var _per = Number(this.validateForm.plantotal) / days;
               this.remain_days = Math.floor(days);
-              this.per = Math.ceil(_per);
+              this.per = Math.ceil(_per * 100) / 100;
             }
           }
           if (this.ver != 0) {

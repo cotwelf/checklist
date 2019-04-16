@@ -121,21 +121,21 @@ export default {
 };
 </script>
 <style scoped>
-.card {
+/* .card {
   width: 100%;
   max-width: 375px;
   margin: 0 auto;
   position: absolute;
   top: 0px;
   display: none;
-}
-.card_list {
+} */
+/* .card_list {
   height: 300px;
   overflow: scroll;
 }
 .mu-list {
   height: 200px;
-}
+} */
 .add {
   position: fixed;
   bottom: 80px;

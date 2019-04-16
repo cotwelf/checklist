@@ -45,6 +45,7 @@
       <mu-list>
         <mu-sub-header>选择计划类型</mu-sub-header>
         <mu-list-item
+          style="height:80px"
           button
           v-for="(ver,index) in vers"
           :key="index"
@@ -203,7 +204,9 @@ export default {
           "今日已完成" +
             dose +
             (ver == 1
-              ? "，剩余" + Math.round((total - done) * 100) / 100 + unit
+              ? "，剩余" +
+                (done ? Math.round((total - done) * 100) / 100 : total) +
+                unit
               : ""),
           ver == 1 ? "请输入完成时间(min)" : "请输入当前进度",
           {

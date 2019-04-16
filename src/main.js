@@ -1,16 +1,16 @@
-import Vue from "vue";
-import MuseUI from "muse-ui";
 import App from "./App.vue";
+import Vue from "vue";
+
+
 import Vuex from 'vuex';
 Vue.use(Vuex);
 import Axios from "axios";
 Vue.prototype.$axios = Axios;
 // Axios.defalts.baseURL = 
+import MuseUI from "muse-ui";
+Vue.use(MuseUI);
 import "muse-ui/dist/muse-ui.css";
 import "muse-ui-message/dist/muse-ui-message.css";
-import Message from "muse-ui-message";
-import Toast from "muse-ui-toast";
-Vue.use(MuseUI);
 
 import "./img/icon/iconfont.css";
 import Moment from 'moment';
@@ -18,6 +18,9 @@ import Moment from 'moment';
 Vue.filter('converDate', function (value) {
   return Moment(value).format('YYYY-MM-DD')
 })
+
+import Message from "muse-ui-message";
+import Toast from "muse-ui-toast";
 Vue.use(Message);
 // Vue.use(Toast);
 Vue.use(Toast, {
