@@ -2,7 +2,7 @@
 <template>
   <div>
     <mu-container>
-      <mu-bottom-nav :value.sync="show" color="pinkA100" shift >
+      <mu-bottom-nav :value.sync="show" color="pink200" shift>
         <mu-bottom-nav-item
           value="project"
           title="项目进度"

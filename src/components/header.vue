@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mu-appbar color="pinkA100">
+    <mu-appbar color="pink200" style="height:100px;padding-top:10%">
       {{title}}
       <!-- <mu-button flat slot="right">
         <i class="iconfont icon-shezhi" style="font-size: 30px"></i>
@@ -19,6 +19,6 @@ export default {
   methods: {}
 };
 </script>
-<style>
+<style scoped>
 </style>
 

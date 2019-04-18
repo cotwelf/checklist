@@ -47,7 +47,7 @@ export default {
   z-index: 999;
 }
 .main {
-  top: 80px;
+  top: 110px;
   position: absolute;
   height: 111%;
   width: 100%;

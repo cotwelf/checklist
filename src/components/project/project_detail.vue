@@ -10,12 +10,22 @@
         {{plan.name}}
       </div>
       {{statusText(plan.status)}}，共{{plan.total}}{{plan.unit}},已完成{{plan.done}}{{plan.unit}},剩余{{plan.total-plan.done}}{{plan.unit}}，计划进行到{{Math.floor((plan.done/plan.total)*100)}}%
-      <mu-button slot="action" v-if="plan.status ==0" @click="kill" flat>结束这个计划</mu-button>
+      <mu-button slot="action" v-if="plan.status ==0" @click="kill(plan.id)" flat>结束这个计划</mu-button>
     </mu-expansion-panel>
+    <mu-form-item style="margin:0 auto;position:absolute;top:200px">
+      <mu-button color="pink200" @click="submit" style="width:45%">下一步</mu-button>
+    </mu-form-item>
   </div>
 </template>
 <script>
 import newproject from "./project_new.vue";
+import {
+  remainDays,
+  addRecord,
+  getData,
+  updatePlan,
+  today
+} from "../../utils/data.js";
 import img from "../../img/306240.jpg";
 export default {
   components: {
@@ -28,15 +38,7 @@ export default {
   created() {
     $("body,html").animate({ scrollTop: 0 }, 100);
     this.p_id = this.$route.query.id;
-    this.$axios
-      .get("/api/get_todo_list", { params: { user_id: "1", p_id: this.p_id } })
-      .then(res => {
-        this.plans = res.data;
-        console.log(this.plans);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.refresh();
   },
   data() {
     return {
@@ -47,6 +49,11 @@ export default {
     };
   },
   methods: {
+    refresh() {
+      this.plans = getData(localStorage.plans);
+      console.log(this.plans);
+      console.log(this.p_id);
+    },
     iconColor(level) {
       switch (level) {
         case 1:
@@ -78,6 +85,19 @@ export default {
         case 9:
           return "很遗憾，任务已结束";
       }
+    },
+    kill(plan_id) {
+      console.log(this.plans.length);
+      for (var i = 0; i < this.plans.length; i++) {
+        console.log("233");
+        var t = i;
+        console.log(t);
+        if (this.plans[i].id == plan_id) {
+          this.plans[t].status = 10;
+        }
+      }
+      console.log(this.plans);
+      localStorage.plans = JSON.stringify(this.plans);
     }
   }
 };

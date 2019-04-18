@@ -1,10 +1,10 @@
 <template>
   <div>
     <mu-grid-list class="project">
-      <mu-sub-header>进行中</mu-sub-header>
+      <mu-sub-header>{{list.length?"进行中":"点击下方按钮新建项目吧~"}}</mu-sub-header>
       <mu-grid-tile v-for="(list, index) in list" :key="index">
         <img :src="image">
-        <span slot="title">{{list.name}}</span>
+        <span slot="title">{{list.length?list.name:""}}</span>
         <span slot="subTitle">
           <b>{{remain(list.end_at)}}</b>天后结束
         </span>
@@ -12,19 +12,19 @@
           <mu-icon value=":iconfont icon-yanchurili"></mu-icon>
         </mu-button>
       </mu-grid-tile>
-      <mu-button fab color="pinkA100" class="add" @click="ensure">
+      <mu-button fab color="pink200" class="add" @click="ensure">
         <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
       </mu-button>
     </mu-grid-list>
     <mu-dialog
-      :title="list[Number(indexes)].name"
+      :title="list.length?list[Number(indexes)].name:''"
       width="600"
       max-width="80%"
       :esc-press-close="false"
       :open.sync="openAlert"
     >
       <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
-        <mu-card-header :title="list[Number(indexes)].created_at" sub-title="创建时间"></mu-card-header>
+        <mu-card-header :title="list.length?list[Number(indexes)].created_at:''" sub-title="创建时间"></mu-card-header>
         <mu-card-title title="计划" sub-title="plans"></mu-card-title>
         <mu-list>
           <mu-divider shallow-inset></mu-divider>
@@ -80,14 +80,7 @@ export default {
       image: img,
       plans: "",
       openFullscreen: false,
-      list: [
-        {
-          id: "1",
-          name: "这是项目名称",
-          end_at: "2020-02-02",
-          created_at: "2018-01-01"
-        }
-      ]
+      list: []
     };
   },
   methods: {

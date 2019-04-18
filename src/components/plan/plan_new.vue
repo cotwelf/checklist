@@ -6,7 +6,7 @@
           <mu-radio
             :index="index"
             color="pink200"
-            :value="item.id"
+            :value="index"
             v-model="validateForm.project"
             :label="item.name"
             class="radios"
@@ -96,13 +96,17 @@ export default {
   created() {
     $("body,html").animate({ scrollTop: 0 }, 100);
     this.ver = this.$route.query.ver;
+
     const projects = JSON.parse(localStorage.projects);
     this.list = projects;
-    console.log(projects);
+    this.default_pid = projects[0].id;
+    console.log(projects[0].id);
+    console.log(this.default_pid);
   },
   data() {
     return {
       ver: "",
+      default_pid: "",
       checked_pid: "",
       remain_days: "",
       per: "",
@@ -123,7 +127,6 @@ export default {
         { name: "重要（没有明确规定完成时间）", value: 3 },
         { name: "不重要（仅备忘）", value: 4 }
       ],
-      projects: [{ id: 1, name: "角虫养成" }, { id: 2, name: "大角虫养成" }],
       plannameRules: [
         { validate: val => !!val, message: "必须填写计划名称" },
         {
@@ -150,7 +153,7 @@ export default {
         plantotal: "",
         planunit: "",
         plantype: 7,
-        project: 1,
+        project: 0,
         planver: 0,
         planlevel: 1
       }

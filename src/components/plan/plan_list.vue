@@ -7,7 +7,7 @@
           avatar
           :ripple="false"
           button
-          v-if="showtask(task.status,Number(task.dose),Number(task.per),task.ver,task.type)"
+          v-if="showtask(task.status,Number(task.dose),Number(task.per),task.ver,task.type)  && (Number(task.per)-Number(task.dose))>0"
           :id="task.id"
         >
           <mu-list-item-content>
@@ -17,7 +17,7 @@
               <mu-icon v-if="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
             </mu-list-item-title>
             <mu-list-item-sub-title v-if="task.ver!=0">
-              {{(Number(task.per)-Number(task.dose))>0?'今日待完成'+(Number(task.per)-Number(task.dose))+task.unit:'今日份已完成~加个鸡腿'}}
+              {{'今日待完成'+Math.round((Number(task.per)-Number(task.dose)),2)+task.unit}}
               <span
                 class="tips"
                 v-if="realPer(task.end_at,Number(task.total),Number(task.per),index)[0]"
@@ -38,7 +38,45 @@
         </mu-list-item>
       </span>
     </mu-list>
-    <mu-button fab color="pinkA100" class="add" @click="openBotttomSheet">
+    <mu-list textline="two-line" v-if="tasks.length">
+      <mu-sub-header>以下为今日份已完成的任务菌们</mu-sub-header>
+      <span v-for="(task,index) in tasks" :key="index">
+        <mu-list-item
+          avatar
+          :ripple="false"
+          button
+          v-if="showtask(task.status,Number(task.dose),Number(task.per),task.ver,task.type)  && !((Number(task.per)-Number(task.dose))>0)"
+          :id="task.id"
+        >
+          <mu-list-item-content>
+            <mu-list-item-title>
+              <mu-icon size="20" value=":iconfont icon-weiguanzhu" color="blueGrey100"></mu-icon>
+              {{task.name}}
+              <mu-icon v-if="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
+            </mu-list-item-title>
+            <mu-list-item-sub-title v-if="task.ver!=0">
+              今日份已完成~加个鸡腿
+              <span
+                class="tips"
+                v-if="realPer(task.end_at,Number(task.total),Number(task.per),index)[0]"
+              >,建议{{realPer(task.end_at,Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span>
+            </mu-list-item-sub-title>
+          </mu-list-item-content>
+          <mu-list-item-action>
+            <!-- <mu-list-item-after-text>第12次</mu-list-item-after-text> -->
+            <mu-checkbox
+              color="yellow700"
+              v-model="selects"
+              :value="task.id"
+              uncheck-icon=":iconfont icon-xuanzhong"
+              checked-icon=":iconfont icon-xuanzhong"
+              @click="closeTask(task.id,task.ver,Number(task.done),Number(task.dose),Number(task.total),task.unit,Number(task.per))"
+            ></mu-checkbox>
+          </mu-list-item-action>
+        </mu-list-item>
+      </span>
+    </mu-list>
+    <mu-button fab color="pink200" class="add" @click="openBotttomSheet">
       <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
     </mu-button>
     <mu-bottom-sheet :open.sync="open">
@@ -74,6 +112,7 @@ export default {
     this.today = today();
     this.refresh();
     this.$emit("getMessage", this.show);
+    console.log(this.tasks);
     $("body,html").animate({ scrollTop: 0 }, 100);
   },
   data() {
@@ -114,7 +153,7 @@ export default {
             var done = records[i].done;
             for (var j = 0; j < tasks.length; j++) {
               if (tasks[j].id == plan_id) {
-                tasks[j].dose = done;
+                tasks[j].dose = Math.round(done * 100) / 100;
               }
             }
           }
@@ -202,13 +241,13 @@ export default {
       } else {
         this.$prompt(
           "今日已完成" +
-            dose +
+            Math.round(dose * 100) / 100 +
             (ver == 1
               ? "，剩余" +
                 (done ? Math.round((total - done) * 100) / 100 : total) +
                 unit
               : ""),
-          ver == 1 ? "请输入完成时间(min)" : "请输入当前进度",
+          ver == 1 ? "请输入完成量" : "请输入当前进度",
           {
             validator(value) {
               return {
@@ -219,7 +258,7 @@ export default {
           }
         ).then(({ result, value }) => {
           if (result) {
-            this.$toast.message("你输入的时间：" + value);
+            this.$toast.message("经验值+" + value);
             // $("#" + id).fadeOut(); 状态变为已完成，但还可以继续做
             (ver == 1) | (Number(dose) + Number(value) < Number(per))
               ? ""
