@@ -20,8 +20,8 @@
               {{'今日待完成'+Math.round((Number(task.per)-Number(task.dose)),2)+task.unit}}
               <span
                 class="tips"
-                v-if="realPer(task.end_at,Number(task.total),Number(task.per),index)[0]"
-              >,建议{{realPer(task.end_at,Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span>
+                v-if="realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[0]"
+              >,建议{{realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span>
             </mu-list-item-sub-title>
           </mu-list-item-content>
           <mu-list-item-action>
@@ -58,8 +58,8 @@
               今日份已完成~加个鸡腿
               <span
                 class="tips"
-                v-if="realPer(task.end_at,Number(task.total),Number(task.per),index)[0]"
-              >,建议{{realPer(task.end_at,Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span>
+                v-if="realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[0]"
+              >,建议{{realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span>
             </mu-list-item-sub-title>
           </mu-list-item-content>
           <mu-list-item-action>
@@ -226,10 +226,12 @@ export default {
       addRecord(plan_id, done);
       this.refresh();
     },
-    realPer(end_date, total, per, index) {
-      var now = new Date();
+    realPer(end_date, done, total, per, index) {
       var r_per =
-        total / (this.remain(end_date) == 0 ? 1 : this.remain(end_date));
+        (total - done ? done : 0) /
+        (this.remain(end_date) == 0 ? 1 : this.remain(end_date));
+      console.log(total);
+      console.log("剩余时间" + this.remain(end_date));
       var res = [r_per > per, Math.ceil(r_per)];
       return res;
     },

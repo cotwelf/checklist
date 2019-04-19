@@ -4,7 +4,7 @@
       <mu-sub-header>{{list.length?"进行中":"点击下方按钮新建项目吧~"}}</mu-sub-header>
       <mu-grid-tile v-for="(list, index) in list" :key="index">
         <img :src="image">
-        <span slot="title">{{list.length?list.name:""}}</span>
+        <span slot="title">{{list.name}}</span>
         <span slot="subTitle">
           <b>{{remain(list.end_at)}}</b>天后结束
         </span>
