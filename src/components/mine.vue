@@ -2,7 +2,7 @@
   <div style="height:100%">
     <mu-paper :z-depth="1" style="height:100%">
       <mu-list>
-        <mu-list-item button @click="clear">
+        <mu-list-item button @click="openAlert=true">
           <mu-list-item-action>
             <mu-icon value=":iconfont icon-fenxiang"></mu-icon>
           </mu-list-item-action>
@@ -15,12 +15,23 @@
           <mu-list-item-title>保留数据</mu-list-item-title>
         </mu-list-item>
       </mu-list>
+      <mu-dialog
+        title="确定要清除数据吗？"
+        width="600"
+        max-width="80%"
+        :esc-press-close="false"
+        :overlay-close="false"
+        :open.sync="openAlert"
+      >
+        删除后不可恢复
+        <mu-button slot="actions" flat color="primary" @click="openAlert = false">手滑了</mu-button>
+        <mu-button slot="actions" flat color="primary" @click="clear">是的</mu-button>
+      </mu-dialog>
     </mu-paper>
   </div>
 </template>
 <script>
 import { saveStorage } from "../utils/data.js";
-// import projects from "../../db/projects.json";
 export default {
   mounted: function() {
     this.$emit("getMassage", this.show);
@@ -31,6 +42,7 @@ export default {
   },
   data() {
     return {
+      openAlert: false,
       show: "mine"
     };
   },
@@ -48,6 +60,7 @@ export default {
     },
     clear() {
       localStorage.clear();
+      this.openAlert = false;
     }
   }
 };

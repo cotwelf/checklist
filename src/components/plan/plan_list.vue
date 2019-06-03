@@ -17,7 +17,7 @@
               <mu-icon v-if="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
             </mu-list-item-title>
             <mu-list-item-sub-title v-if="task.ver!=0">
-              {{'今日待完成'+Math.round((Number(task.per)-Number(task.dose)),2)+task.unit}}
+              {{'今日待完成'+(Number(task.per)-Number(task.dose))+task.unit}}
               <span
                 class="tips"
                 v-if="realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[0]"
@@ -232,7 +232,7 @@ export default {
         (this.remain(end_date) == 0 ? 1 : this.remain(end_date));
       console.log(total);
       console.log("剩余时间" + this.remain(end_date));
-      var res = [r_per > per, Math.ceil(r_per)];
+      var res = [r_per > per, Math.round(r_per * 100) / 100];
       return res;
     },
     closeTask(id, ver, done, dose, total, unit, per) {
