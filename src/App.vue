@@ -66,6 +66,6 @@ mu-paper {
   z-index: -999;
   width: 100%;
   height: 100%;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 </style>

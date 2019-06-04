@@ -42,5 +42,8 @@ export default {
   margin: 0;
   padding: 0;
 }
+.mu-bottom-nav {
+  height: 65px;
+}
 </style>
 
