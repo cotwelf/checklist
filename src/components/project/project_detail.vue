@@ -12,9 +12,6 @@
       {{statusText(plan.status)}}，共{{plan.total}}{{plan.unit}},已完成{{plan.done}}{{plan.unit}},剩余{{plan.total-plan.done}}{{plan.unit}}，计划进行到{{Math.floor((plan.done/plan.total)*100)}}%
       <mu-button slot="action" v-if="plan.status ==0" @click="kill(plan.id)" flat>结束这个计划</mu-button>
     </mu-expansion-panel>
-    <mu-form-item style="margin:0 auto;position:absolute;top:200px">
-      <mu-button color="pink200" @click="submit" style="width:45%">下一步</mu-button>
-    </mu-form-item>
   </div>
 </template>
 <script>
@@ -50,9 +47,14 @@ export default {
   },
   methods: {
     refresh() {
-      this.plans = getData(localStorage.plans);
-      console.log(this.plans);
-      console.log(this.p_id);
+      var res = getData(localStorage.plans);
+      for (var i = 0; i < res.length; i++) {
+        var index = i;
+        console.log(res[i].pid);
+        if (res[index].pid == this.p_id) {
+          this.plans.push(res[index]);
+        }
+      }
     },
     iconColor(level) {
       switch (level) {
