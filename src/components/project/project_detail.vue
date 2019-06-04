@@ -23,7 +23,6 @@ import {
   updatePlan,
   today
 } from "../../utils/data.js";
-import img from "../../img/306240.jpg";
 export default {
   components: {
     newproject

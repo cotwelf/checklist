@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="plan_list_box">
     <mu-list textline="two-line">
       <mu-sub-header>今天也要元气满满加油鸭O(∩_∩)O~~</mu-sub-header>
       <span v-for="(task,index) in tasks" :key="index">
@@ -38,7 +38,7 @@
         </mu-list-item>
       </span>
     </mu-list>
-    <mu-list textline="two-line" v-if="tasks.length">
+    <mu-list class="add_margin" textline="two-line" v-if="tasks.length">
       <mu-sub-header>以下为今日份已完成的任务菌们</mu-sub-header>
       <span v-for="(task,index) in tasks" :key="index">
         <mu-list-item
@@ -283,11 +283,6 @@ export default {
 .list {
   margin-top: 10px;
 }
-.demo-list-wrap {
-  width: 100%;
-  max-width: 360px;
-  overflow: hidden;
-}
 .add {
   position: fixed;
   bottom: 80px;
@@ -295,5 +290,8 @@ export default {
 }
 .tips {
   color: red;
+}
+.add_margin {
+  margin-bottom: 8rem;
 }
 </style>

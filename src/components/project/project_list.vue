@@ -46,7 +46,7 @@
 </template>
 <script>
 import newproject from "./project_new.vue";
-import img from "../../img/306240.jpg";
+import img from "../../img/project_img/1.jpg";
 import { remainDays } from "../../utils/data.js";
 export default {
   components: {
@@ -114,21 +114,6 @@ export default {
 };
 </script>
 <style scoped>
-/* .card {
-  width: 100%;
-  max-width: 375px;
-  margin: 0 auto;
-  position: absolute;
-  top: 0px;
-  display: none;
-} */
-/* .card_list {
-  height: 300px;
-  overflow: scroll;
-}
-.mu-list {
-  height: 200px;
-} */
 .add {
   position: fixed;
   bottom: 80px;

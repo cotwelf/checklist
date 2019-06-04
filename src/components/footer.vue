@@ -37,3 +37,10 @@ export default {
   methods: {}
 };
 </script>
+<style scope>
+.container {
+  margin: 0;
+  padding: 0;
+}
+</style>
+

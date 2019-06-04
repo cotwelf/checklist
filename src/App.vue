@@ -1,5 +1,6 @@
 <template>
   <div>
+    <img class="bg" src="../src/img/bgm/2.jpg" alt>
     <header-vue :title="title" class="header"></header-vue>
     <mu-paper :z-depth="1">
       <router-view class="main" @getMessage="showMsg"></router-view>
@@ -49,7 +50,7 @@ export default {
 .main {
   top: 110px;
   position: absolute;
-  height: 111%;
+  height: 80%;
   width: 100%;
 }
 mu-paper {
@@ -59,5 +60,12 @@ mu-paper {
   position: fixed;
   bottom: 0;
   width: 100%;
+}
+.bg {
+  position: absolute;
+  z-index: -999;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
 }
 </style>
