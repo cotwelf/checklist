@@ -72,6 +72,7 @@ export default {
         {
           validate: val => $("#start").val() < $("#end").val(),
           // $("#start").val() == $("#end").val(),
+          // TODO 提示出现时机不对
           message: "结束时间不要小于开始时间哦~"
         }
       ],

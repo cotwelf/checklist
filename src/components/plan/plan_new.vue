@@ -68,6 +68,7 @@
         </mu-flex>
       </mu-form-item>
       <mu-form-item style="margin:0 auto">
+        <!-- TODO 按钮离底部太近 -->
         <mu-button color="pink200" @click="submit" style="width:45%">下一步</mu-button>
 
         <mu-button :to="{name:'home'}" style="width:45%">返回</mu-button>
