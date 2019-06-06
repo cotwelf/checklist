@@ -6,7 +6,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 import Axios from "axios";
 Vue.prototype.$axios = Axios;
-// Axios.defalts.baseURL = 
+
 import MuseUI from "muse-ui";
 Vue.use(MuseUI);
 import "muse-ui/dist/muse-ui.css";

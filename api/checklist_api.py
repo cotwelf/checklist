@@ -8,6 +8,7 @@ import datetime
 
 
 app = Flask(__name__)
+app.run(port=5200)
 startTime = datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')
 endTime = datetime.datetime.now().strftime('%Y-%m-%d 23:59:59')
 
@@ -18,7 +19,7 @@ def workDay():
 
 def openDb():
     # 打开数据库连接
-    return MySQLdb.connect("localhost", "root", "812811926",
+    return MySQLdb.connect("172.19.0.10:3306", "xiu", "xiu",
                            "checklist", charset='utf8')
 
     db = openDb()
@@ -26,6 +27,7 @@ def openDb():
     cursor = db.cursor()
 
 
+print 'success'
 @app.route('/get_todo_list', methods=['GET'])
 def get_todo_list():
     try:
@@ -243,7 +245,7 @@ def create_plan():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5200)
 
 
 print 'done'

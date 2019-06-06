@@ -25,7 +25,7 @@
       >
         删除后不可恢复
         <mu-button slot="actions" flat color="primary" @click="openAlert = false">手滑了</mu-button>
-        <mu-button slot="actions" flat color="primary" @click="clear">是的</mu-button>
+        <!-- <mu-button slot="actions" flat color="primary" @click="clear">是的</mu-button> -->
       </mu-dialog>
     </mu-paper>
   </div>

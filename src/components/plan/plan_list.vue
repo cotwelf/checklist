@@ -108,6 +108,14 @@ import {
 } from "../../utils/data.js";
 export default {
   created() {
+    this.$axios
+      .get("/api/update_plan")
+      .then(res => {
+        console.log(response.data);
+      })
+      .catch(err=> {
+        console.log(error);
+      });
     // localStorage.clear();
     this.today = today();
     this.refresh();

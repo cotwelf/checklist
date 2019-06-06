@@ -1,5 +1,4 @@
 const getters = {
-  planlist: state => state.app.planlist,
-  count: state => state.app.count,
+  test: state => state.projects.test,
 }
 export default getters
