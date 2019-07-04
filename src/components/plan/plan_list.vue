@@ -114,14 +114,14 @@ export default {
       // .get("/api/update_plan")
       .get("/api/data")
       .then(res => {
+        this.tasks = res.data.data.items;
         console.log(res.data.data.items);
       });
     // .catch(err => {
     //   console.log(error);
     // });
-    // localStorage.clear();
     this.today = today();
-    this.refresh();
+    // this.refresh();
     this.$emit("getMessage", this.show);
     console.log(this.tasks);
     $("body,html").animate({ scrollTop: 0 }, 100);
