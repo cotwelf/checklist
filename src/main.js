@@ -33,7 +33,8 @@ Vue.config.productionTip = false;
 // // routes
 import router from './router';
 import store from './store';
-
+// 引入mockjs
+require('./mock.js')
 new Vue({
   el: "#app",
   router,
