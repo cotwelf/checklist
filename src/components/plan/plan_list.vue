@@ -108,14 +108,17 @@ import {
 } from "../../utils/data.js";
 export default {
   created() {
+    console.log("2333333");
+
     this.$axios
-      .get("/api/update_plan")
+      // .get("/api/update_plan")
+      .get("/api/data")
       .then(res => {
-        console.log(response.data);
-      })
-      .catch(err=> {
-        console.log(error);
+        console.log(res.data.data.items);
       });
+    // .catch(err => {
+    //   console.log(error);
+    // });
     // localStorage.clear();
     this.today = today();
     this.refresh();
@@ -169,6 +172,7 @@ export default {
       }
 
       this.tasks = tasks;
+      console.log(tasks);
     },
     closeBottomSheet() {
       this.open = false;
