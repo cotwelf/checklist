@@ -1,0 +1,51 @@
+  dd,
+  p,
+  h2,
+  h3,
+  h4,
+  html,
+  body {
+      font-weight: normal;
+      margin: 0;
+      padding: 0
+  }
+
+  body {
+      max-width: 750px;
+      width: 100%;
+      margin: 0 auto;
+      font: 12px/1.5 "Microsoft Yahei", arial, tahoma, "Hiragino Sans GB",
+          \5b8b\4f53;
+      color: #323232;
+      background: #f1f1f1;
+      /* background: #f8f8f8 */
+  }
+
+  a {
+      text-decoration: none;
+      color: inherit
+  }
+
+  @media only screen and (min-width: 720px) {
+      html {
+          font-size: 27px;
+      }
+  }
+
+  @media only screen and (max-width: 399px) and (min-width: 375px) {
+      html {
+          font-size: 14.0625px;
+      }
+  }
+
+  @media only screen and (max-width: 374px) and (min-width: 360px) {
+      html {
+          font-size: 13.5px;
+      }
+  }
+
+  @media only screen and (max-width: 359px) {
+      html {
+          font-size: 12px
+      }
+  }
