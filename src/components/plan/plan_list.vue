@@ -31,7 +31,7 @@
             <mu-icon
               size="20"
               value=":iconfont icon-xuanzhong"
-              @click="doTask(task.id, task.dose, task.done, task.total, task.remain_day,task.unit)"
+              @click="doTask(task.id, task.dose, task.done, task.total, task.remain_day,task.per,task.unit)"
             ></mu-icon>
           </mu-list-item-action>
         </mu-list-item>
@@ -69,7 +69,7 @@
               size="20"
               value=":iconfont icon-xuanzhong"
               color="yellow700"
-              @click="doTask(task.id, task.dose, task.done, task.total, task.remain_day,task.unit)"
+              @click="doTask(task.id, task.dose, task.done, task.total, task.remain_day,task.per,task.unit)"
             ></mu-icon>
           </mu-list-item-action>
         </mu-list-item>
@@ -114,6 +114,7 @@ export default {
   created() {
     this.today = today();
     this.refresh();
+
     this.$emit("getMessage", this.show);
     $("body,html").animate({ scrollTop: 0 }, 100);
   },
@@ -130,7 +131,7 @@ export default {
       done: "",
       status: "",
       total: "",
-      tasks: "",
+      tasks: [],
       open: false,
       vers: [
         { name: "普通计划（当天完成定量）", value: 0 },
@@ -166,7 +167,7 @@ export default {
       }
     },
     check(per, done, total, remain_day) {
-      let real_per = this.real_per(done, total, remain_day);
+      let real_per = this.real_per(done, total, remain_day, per);
       console.log(real_per);
       if (real_per > per) {
         return false;
@@ -200,8 +201,8 @@ export default {
       addRecord(plan_id, done);
       this.refresh();
     },
-    doTask(id, dose, done, total, remain_day, unit) {
-      let real_per = this.real_per(done, total, remain_day);
+    doTask(id, dose, done, total, remain_day, per, unit) {
+      let real_per = this.real_per(done, total, remain_day, per);
       this.$prompt(
         "计划完成" +
           real_per +
@@ -280,3 +281,5 @@ export default {
   border: none !important;
 } */
 </style>
+
+
