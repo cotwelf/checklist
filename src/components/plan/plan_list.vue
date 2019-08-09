@@ -21,7 +21,7 @@
             <mu-list-item-sub-title
               v-if="!check(task.per,task.done,task.total,task.remain_day)"
               style="color:red"
-            >{{'今日待完成'+(real_per(task.done, task.total, task.remain_day))+task.unit}}</mu-list-item-sub-title>
+            >{{'今日待完成'+(real_per(task.done, task.total, task.remain_day,task.per))+task.unit}}</mu-list-item-sub-title>
             <!-- 计划尽在掌握 -->
             <mu-list-item-sub-title
               v-if="check(task.per,task.done,task.total,task.remain_day)"
@@ -223,7 +223,7 @@ export default {
         if (result) {
           this.$toast.message("经验值+" + value);
           // $("#" + id).fadeOut(); 状态变为已完成，但还可以继续做
-          real_per > dose ? "" : $("#" + id).fadeOut();
+          // real_per > dose ? "" : $("#" + id).fadeOut();
           this.finishTask(id, value);
         } else {
           this.$toast.message("少年还需努力啊");
