@@ -5,6 +5,7 @@ import MySQLdb
 import time
 import json
 import datetime
+import mysql.connector
 
 
 app = Flask(__name__)
