@@ -1,3 +1,10 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+from flask import Flask, jsonify, request
+import MySQLdb
+import time
+import json
+import datetime
 import mysql.connector
 
 mydb = mysql.connector.connect(
