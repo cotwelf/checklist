@@ -45,7 +45,7 @@
         <mu-text-field color="pink200" v-model="validateForm.planunit" prop="planunit"></mu-text-field>
       </mu-form-item>
 
-      <mu-form-item label="优先级" help-text="请选择每周安排几天时间" prop="planlevel">
+      <mu-form-item label="优先级" prop="planlevel">
         <mu-flex class="select-control-row" v-for="(level,index) in levels " :key="index">
           <mu-radio
             color="pink200"
@@ -56,7 +56,7 @@
           ></mu-radio>
         </mu-flex>
       </mu-form-item>
-      <mu-form-item label="周重复天数" help-text="请选择每周安排几天时间" prop="plantype" v-if="this.ver!=0">
+      <mu-form-item label="周重复天数" prop="plantype" v-if="this.ver!=0">
         <mu-flex class="select-control-row" v-for="(type,index) in types " :key="index">
           <mu-radio
             color="pink200"
@@ -67,11 +67,11 @@
           ></mu-radio>
         </mu-flex>
       </mu-form-item>
-      <mu-form-item style="margin:0 auto">
+      <mu-form-item class="button_box">
         <!-- TODO 按钮离底部太近 -->
-        <mu-button color="pink200" @click="submit" style="width:45%">下一步</mu-button>
+        <mu-button color="pink200" @click="submit" >下一步</mu-button>
 
-        <mu-button :to="{name:'home'}" style="width:45%">返回</mu-button>
+        <mu-button :to="{name:'home'}" >返回</mu-button>
       </mu-form-item>
       <mu-dialog
         :title="'每日完成'+per+validateForm.planunit"
@@ -230,13 +230,18 @@ export default {
   }
 };
 </script>
-<style>
-.radios {
-  margin-top: 15px;
+<style scoped>
+.main {
+  padding:8rem 1rem;
 }
-.newplanmain {
-  margin: 0 auto;
+.button_box{
+  margin-bottom: 5rem;
+  text-align: center
+}
+.mu-form-item-content>.mu-button{
   width: 90%;
-  margin-bottom: 12%;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  height: 3rem
 }
 </style>

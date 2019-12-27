@@ -2,46 +2,46 @@
   <div>
     <mu-grid-list class="project">
       <mu-sub-header>{{list.length?"进行中":"先点击下方按钮新建项目吧~"}}</mu-sub-header>
-        <mu-expansion-panel class="project_list" v-for="(list, index) in list" :key="index" >
-          <div slot="header" >{{list.name}}  <b>{{remain(list.end_at)}}</b>天后结束</div>
-          <template slot-scope="scope">
-            <td>{{scope.row.name}}</td>
-            <td class="is-right">{{scope.row.calories}}</td>
-            <td class="is-right">{{scope.row.fat}}</td>
-            <td class="is-right">{{scope.row.carbs}}</td>
-            <td class="is-right">{{scope.row.protein}}</td>
-            <td class="is-right">{{scope.row.iron}}%</td>
-          </template>
-          <mu-button slot="action" flat color="primary" @click="openBotttomSheet">新建计划</mu-button>
-        </mu-expansion-panel>
+      <mu-grid-tile v-for="(list, index) in list" :key="index">
+        <img :src="image">
+        <span slot="title">{{list.name}}</span>
+        <span slot="subTitle">
+          <b>{{remain(list.end_at)}}</b>天后结束
+        </span>
+        <mu-button slot="action" icon :to="{name:'pro_detail',query:{id : list.id}}">
+          <mu-icon value=":iconfont icon-yanchurili"></mu-icon>
+        </mu-button>
+      </mu-grid-tile>
       <mu-button fab color="pink200" class="add" @click="ensure">
         <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
       </mu-button>
     </mu-grid-list>
-
+    <mu-dialog
+      :title="list.length?list[Number(indexes)].name:''"
+      width="600"
+      max-width="80%"
+      :esc-press-close="false"
+      :open.sync="openAlert"
+    >
+      <mu-card style="width: 100%; max-width: 375px; margin: 0 auto;">
+        <mu-card-header :title="list.length?list[Number(indexes)].created_at:''" sub-title="创建时间"></mu-card-header>
+        <mu-card-title title="计划" sub-title="plans"></mu-card-title>
+        <mu-list>
+          <mu-divider shallow-inset></mu-divider>
+          <mu-list-item v-for="(plan,index) in plans" :key="index" class="content">
+            <mu-list-item-content>
+              <mu-list-item-title>{{plan.name}}，已完成{{donePercent(plan.done,plan.total)}}</mu-list-item-title>
+            </mu-list-item-content>
+          </mu-list-item>
+        </mu-list>
+      </mu-card>
+      <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">编辑</mu-button>
+      <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">返回</mu-button>
+    </mu-dialog>
     <mu-dialog title="你的项目菌们很蓝瘦" width="360" :open.sync="openSimple">
       你已经拥有4个项目菌啦！先好好对待他们~
       <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">宝宝们我错了</mu-button>
     </mu-dialog>
-    <!-- 新建计划start -->
-        <mu-bottom-sheet :open.sync="open">
-      <mu-list>
-        <mu-sub-header>选择计划类型</mu-sub-header>
-        <mu-list-item
-          style="height:80px"
-          button
-          v-for="(ver,index) in vers"
-          :key="index"
-          :to="{name:'newplan',query:{ver:ver.value}}"
-        >
-          <mu-list-item-action>
-            <mu-icon value=":iconfont icon-weiguanzhu" color="red400"></mu-icon>
-          </mu-list-item-action>
-          <mu-list-item-title>{{ver.name}}</mu-list-item-title>
-        </mu-list-item>
-      </mu-list>
-    </mu-bottom-sheet>
-    <!-- 新建计划end -->
   </div>
 </template>
 <script>
@@ -75,27 +75,15 @@ export default {
       indexes: "",
       tasks: "",
       ture: "",
-      open:false,
       show: "project",
       openSimple: false,
       image: img,
       plans: "",
       openFullscreen: false,
-      list: [],
-      vers: [
-        { name: "普通计划（当天完成定量）", value: 0 },
-        { name: "角虫养成计划（当天可多次完成）", value: 1 },
-        { name: "项目计划（当天完成定量，有目标）", value: 2 }
-      ]
+      list: []
     };
   },
   methods: {
-        closeBottomSheet() {
-      this.open = false;
-    },
-    openBotttomSheet() {
-      this.open = true;
-    },
     closeSimpleDialog() {
       this.openSimple = false;
     },
@@ -130,9 +118,5 @@ export default {
   position: fixed;
   bottom: 80px;
   left: 10px;
-}
-.project_list{
-  width: 100%;
-  margin: 0.5rem 0.5rem
 }
 </style>

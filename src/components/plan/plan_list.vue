@@ -1,6 +1,7 @@
 <template>
   <div class="plan_list_box">
-    <mu-list textline="two-line">
+    <mu-button v-show="!tasks" color="pink200" :to="{name:'project'}">没有进行中的计划，戳我去添加~</mu-button>
+    <mu-list textline="two-line" v-show="tasks">
       <mu-sub-header>今天也要元气满满加油鸭O(∩_∩)O~~</mu-sub-header>
       <span v-for="(task,index) in tasks" :key="index">
         <mu-list-item
@@ -76,9 +77,9 @@
         </mu-list-item>
       </span>
     </mu-list>
-    <mu-button fab color="pink200" class="add" @click="openBotttomSheet">
+    <!-- <mu-button fab color="pink200" class="add" @click="openBotttomSheet">
       <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
-    </mu-button>
+    </mu-button> -->
     <mu-bottom-sheet :open.sync="open">
       <mu-list>
         <mu-sub-header>选择计划类型</mu-sub-header>
@@ -105,17 +106,14 @@ import {
   getData,
   updatePlan,
   today
-} from "../../utils/data.js";
+} from "@/utils/data.js";
+import getList from'@/api/plan.js'
 export default {
   created() {
     console.log("2333333");
-
-    this.$axios
-      // .get("/api/update_plan")
-      .get("/api/data")
-      .then(res => {
-        console.log(res.data.data.items);
-      });
+    getList.getList().then(response =>{
+      console.log(response.data.items)
+    })
     // .catch(err => {
     //   console.log(error);
     // });
@@ -123,7 +121,7 @@ export default {
     this.today = today();
     this.refresh();
     this.$emit("getMessage", this.show);
-    console.log(this.tasks);
+    // console.log(this.tasks);
     $("body,html").animate({ scrollTop: 0 }, 100);
   },
   data() {

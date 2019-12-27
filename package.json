@@ -11,7 +11,7 @@
     "axios": "^0.18.0",
     "file-saver": "^2.0.1",
     "mint-ui": "^2.2.13",
-    "mockjs": "^1.0.1-beta3",
+    "mockjs": "^1.1.0",
     "moment": "^2.24.0",
     "muse-ui": "^3.0.2",
     "muse-ui-message": "^0.2.1",

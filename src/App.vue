@@ -48,8 +48,9 @@ export default {
   z-index: 999;
 }
 .main {
-  top: 110px;
   position: absolute;
+  padding: 1rem 1rem;
+  padding-top:7rem;
   height: 80%;
   width: 100%;
 }
