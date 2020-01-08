@@ -8,14 +8,15 @@ import {
   } from "@/utils/data.js";
 export default{
 
-    getProjects(){
+    getProjects(id){
         // switch：Mock
 
         const req = request({
             method:'get',
             url:'/api/getprojects',
             data:{
-                status:0,               
+                status:0,
+                id:id?id:''     
             }
         })
         return req

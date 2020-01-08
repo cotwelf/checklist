@@ -9,7 +9,7 @@ import {
 export default{
 
     getList(){
-        // switch：Mock
+        // switch：Mock       
 
         const req = request({
             method:'get',
@@ -19,5 +19,14 @@ export default{
             }
         })
         return req
-    }
+    },
+    createPlan(data){
+        console.log(data)
+        const req = request({
+            method:'post',
+            url:'/api/create-plan',
+            data
+        })
+    },
+
 }

@@ -107,7 +107,7 @@ import {
   updatePlan,
   today
 } from "@/utils/data.js";
-import getList from'@/api/plan.js'
+import getList from'@/api/plans'
 export default {
   created() {
     console.log("2333333");

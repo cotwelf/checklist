@@ -27,6 +27,7 @@ Mock.mock('/api/getplans/mock', (req, res) => {
 import storageUtils from '@/mock/storageUtils'
 Mock.mock('/api/getplans', (req, res) => {
     console.log('plan_storage')
+
     const data = storageUtils.getData(localStorage.plans)
     console.log(data)
     const todo = []
@@ -35,7 +36,6 @@ Mock.mock('/api/getplans', (req, res) => {
       let status = data[index].status
       status==0?todo.push(data[index]):''
     }
-    console.log(todo)
     //     var records = storageUtils.getData(localStorage.records);
     //     console.log(records)
     //     for (var i = 0; i < tasks.length; i++) {
