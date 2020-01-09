@@ -6,9 +6,10 @@ export function today() {
     return now.toLocaleDateString()
 }
 export function getData(storagename) { //object 为赋值对象
+    console.log(storagename)
     if (!storagename) {
         storagename = "[]";
-        return ''
+        return []
     } else if (JSON.parse(storagename).length > 0) {
         const content = JSON.parse(storagename);
         return content;
@@ -28,7 +29,7 @@ export function randomId() {
     return mydate.getTime()
 }
 
-export function remainDays(date) { //date 是未来的日期，计算未来时期到今天的日期差
+export function remainDays(date) { //date 是未来的日期字符串，计算未来时期到今天的日期差
     const time1 = Date.parse(date);
     var time2 = Date.parse(new Date());
     var remain = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24));

@@ -71,14 +71,14 @@
         <mu-button :to="{name:'home'}" >返回</mu-button>
       </mu-form-item>
       <mu-dialog
-        :title="'每日完成'+per+validateForm.planunit"
+        :title="'每日完成'+validateForm.per+validateForm.planunit"
         width="600"
         max-width="80%"
         :esc-press-close="false"
         :overlay-close="false"
         :open.sync="openAlert"
       >
-        可用天数{{remain_days}}
+        剩余{{remain_days}}天
         <mu-button slot="actions" flat color="primary" @click="closeAlertDialog">返回修改</mu-button>
         <mu-button slot="actions" flat color="primary" @click="createPlan">领养计划</mu-button>
       </mu-dialog>
@@ -86,7 +86,7 @@
   </div>
 </template>
 <script>
-import { remainDays, pushData, randomId } from "../../utils/data.js";
+import { remainDays, pushData, randomId, today } from "../../utils/data.js";
 import getProject from'@/api/projects'
 import getPlan from '@/api/plans'
 export default {
@@ -98,21 +98,19 @@ export default {
     $("body,html").animate({ scrollTop: 0 }, 100);
     const pid = this.$route.query.pid
     getProject.getProjects(pid).then(response=>{
-      this.end_date = response.data.end_at
-      console.log(this.end_date)
-      console.log(this.end_date>'2022/2/1')
+      console.log(response.data)
+      this.validateForm.end_at = response.data.end_at
+      this.validateForm.pid = pid
     })
   },
   data() {
     return {
       ver: "",
       remain_days: "",
-      per: "",
       now: "",
       list: [],
       show: "project",
       openAlert: false,
-      end_date: "",
       types: [
         { name: "7天（周一~周日）", value: 7 },
         { name: "6天（周一~周六）", value: 6 },
@@ -151,15 +149,19 @@ export default {
       // ],
       validateForm: {
         // 新建计划
+        id:randomId(),
         planname: "",
         plantotal: "",
+        per:'',
         planunit: "",
         plantype: 7,
-        project: 0,
+        pid: 0,
         planver: 0,
         planlevel: 1,
         created_at:'',
         end_at:'',
+        status:0,
+        done:0
       }
     };
   },
@@ -174,67 +176,21 @@ export default {
     closeAlertDialog() {
       this.openAlert = false;
     },
-    remain(date) {
-      return remainDays(date);
-    },
     createPlan() {
-      getPlan.createPlan(this.validateForm).then(response=>{
+      getPlan.updatePlan(this.validateForm).then(response=>{
         console.log(response)
       })
-
-
-      // var now = new Date();
-      // this.now = now.toLocaleDateString();
-      // console.log("now===========" + now);
-      // const plan = {};
-      // plan.id = randomId();
-      // plan.ver = this.ver;
-      // plan.name = this.validateForm.planname;
-      // plan.created_at = this.now;
-      // plan.end_at = this.end_date ? this.end_date : this.now;
-      // plan.total = this.validateForm.plantotal;
-      // plan.per = this.per ? this.per : this.validateForm.plantotal;
-      // plan.unit = this.validateForm.planunit;
-      // plan.level = this.validateForm.planlevel;
-      // plan.type = this.validateForm.plantype;
-      // plan.pid = this.pid;
-      // plan.status = 0;
-      // pushData("plans", plan);
-      // this.$router.push({ name: "home" });
+      // this.$router.push({ name: "project" });
     },
     submit() {
-      console.log(this.validateForm.end_at.toLocaleDateString())
       this.$refs.form.validate().then(result => {
-        console.log(this.list);
+        this.validateForm.created_at = today()
+        this.remain_days = remainDays(this.validateForm.end_at)
         if (result) {
-          var p_length = $(".project > .mu-form-item-content").children()
-            .length;
-          for (var i = 0; i < p_length; i++) {
-            var checked_ele = $(
-              $(".project > .mu-form-item-content").children()[i]
-            ).find("input")[0];
-            if (checked_ele.checked) {
-              this.end_date = this.list[$(checked_ele).attr("index")].end_at;
-              this.checked_pid = this.list[$(checked_ele).attr("index")].id;
-              var days =
-                (Number(this.remain(this.end_date)) / 7) *
-                Number(this.validateForm.plantype);
-              console.log(Number(this.remain(this.end_date)) / 7);
-              console.log(this.end_date);
-              var _per = Number(this.validateForm.plantotal) / days;
-              this.remain_days = Math.floor(days);
-              this.per = Math.ceil(_per * 100) / 100;
-            }
-          }
+          // 计算每天完成数量this.validateForm.per
+          this.validateForm.per = (this.validateForm.plantotal/this.remain_days).toFixed(2)
           this.openAlertDialog();
-          // if (this.ver != 0) {
-          //   this.openAlertDialog();
-          // } else {
-          //   this.createPlan();
-          // }
         }
-        console.log();
-        console.log("form valid: ", result);
       });
     }
   }
