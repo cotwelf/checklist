@@ -20,5 +20,13 @@ export default{
             }
         })
         return req
+    },
+    updateProject(data){
+        const req = request({
+            method:'post',
+            url:'/api/update_project',
+            data
+        })
+        return req
     }
 }

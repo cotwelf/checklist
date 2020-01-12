@@ -28,7 +28,7 @@ import storageUtils from '@/mock/storageUtils'
 Mock.mock('/api/getplans', (req, res) => {
     console.log('plan_storage')
 
-    const data = storageUtils.getData(localStorage.plans)
+    const data = storageUtils.checkStorage("plans")
     console.log(data)
     const todo = []
     for(var i=0;i<data.length;i++){

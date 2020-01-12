@@ -45,6 +45,7 @@
 </template>
 <script>
 import { pushData, randomId } from "../../utils/data.js";
+import getProject from'@/api/projects';
 export default {
   props: ["list"],
   mounted: function() {
@@ -86,6 +87,7 @@ export default {
   methods: {
     submit() {
       this.$refs.form.validate().then(result => {
+        console.log(55555)
         if (result) {
           const project = {};
           project.id = randomId();
@@ -93,9 +95,13 @@ export default {
           project.start_at = this.validateForm.projectstart.toLocaleDateString();
           project.end_at = this.validateForm.projectend.toLocaleDateString();
           console.log(project);
-          pushData("projects", project);
+          // pushData("projects", project);
+          console.log(55555)
+          getProject.updateProject(project).then(response=>{
+            console.log(response)
+          })
           console.log(localStorage.projects);
-          this.$router.push({ name: "project" });
+          // this.$router.push({ name: "project" });
         }
       });
     },

@@ -58,7 +58,7 @@ export default {
   created() {
     projectsApi.getProjects().then(response=>{
       const list=response.data
-          plansApi.getList().then(response=>{
+      plansApi.getList().then(response=>{
       console.log('66666')
       const plans = response.data
       for(var i=0;i<list.length;i++){
