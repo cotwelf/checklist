@@ -107,12 +107,12 @@ import {
   updatePlan,
   today
 } from "@/utils/data.js";
-import getList from'@/api/plans'
+import plansApi from '@/api/plans'
 export default {
   created() {
     console.log("2333333");
-    getList.getList().then(response =>{
-      console.log(response.data.items)
+    plansApi.getList().then(response =>{
+      console.log(JSON.parse(response.data.items))
     })
     // .catch(err => {
     //   console.log(error);
@@ -190,9 +190,6 @@ export default {
           return "green200";
       }
     },
-    remain(date) {
-      return remainDays(date);
-    },
     weekly(type) {
       const mydate = new Date();
       const w_today = mydate.getDay(); //0:周日-6:周六
@@ -246,20 +243,14 @@ export default {
       return res;
     },
     closeTask(id, ver, done, dose, total, unit, per) {
-      if (ver == 0) {
-        this.$toast.message("恭喜你，经验值+1");
-        $("#" + id).fadeOut();
-        this.finishTask(id, total);
-      } else {
         this.$prompt(
           "今日已完成" +
             Math.round(dose * 100) / 100 +
-            (ver == 1
-              ? "，剩余" +
+            ( "，剩余" +
                 (done ? Math.round((total - done) * 100) / 100 : total) +
                 unit
-              : ""),
-          ver == 1 ? "请输入完成量" : "请输入当前进度",
+              ),
+           "请输入完成量",
           {
             validator(value) {
               return {
@@ -282,7 +273,6 @@ export default {
             this.$toast.message("少年还需努力啊");
           }
         });
-      }
     }
   },
   position: "bottom-end",

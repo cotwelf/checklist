@@ -3,9 +3,7 @@ import storageUtils from '@/mock/storageUtils'
 // localStorage
 Mock.mock('/api/update_project',(req,res)=>{
     let update= JSON.parse(req.body)
-    console.log(this)
-    let data = localStorage.projects?JSON.parse(localStorage.projects):[]
-    let data = storageUtils.checkStorage("projects")
+    let data = storageUtils.getData("projects")
     console.log(data)
     console.log("data.length"+data.length)
     let count=0

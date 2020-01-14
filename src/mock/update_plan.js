@@ -5,7 +5,7 @@ Mock.mock('/api/update_plan',(req,res)=>{
     console.log('update')
     console.log(req)
     let update= JSON.parse(req.body)
-    let data = storageUtils.getData(localStorage.plans)
+    let data = storageUtils.getData("plans")
     let count=0
     console.log(data)
         // 更新计划

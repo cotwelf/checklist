@@ -23,36 +23,20 @@ Mock.mock('/api/getplans/mock', (req, res) => {
     return data
 })
 
-// storage 获取plan
+// storage 获取todoplan
 import storageUtils from '@/mock/storageUtils'
 Mock.mock('/api/getplans', (req, res) => {
-    console.log('plan_storage')
-
-    const data = storageUtils.checkStorage("plans")
+    let reqStatus = JSON.parse(req.body).status;
+    const plans = storageUtils.getData("plans")
     console.log(data)
-    const todo = []
+    const record = storageUtils.getData("record")
+    console.log(record)
+    const list = []
+    // 正在进行中的项目
     for(var i=0;i<data.length;i++){
       let index = i
       let status = data[index].status
-      status==0?todo.push(data[index]):''
+      status==reqStatus?list.push(data[index]):''
     }
-    //     var records = storageUtils.getData(localStorage.records);
-    //     console.log(records)
-    //     for (var i = 0; i < tasks.length; i++) {
-    //       tasks[i].dose = 0;
-    //     }
-    //     if (records.length > 0) {
-    //       for (var i = 0; i < records.length; i++) {
-    //         var plan_id = records[i].plan_id;
-    //         if (records[i].finished_at == this.today) {
-    //           var done = records[i].done;
-    //           for (var j = 0; j < tasks.length; j++) {
-    //             if (tasks[j].id == plan_id) {
-    //               tasks[j].dose = Math.round(done * 100) / 100;
-    //             }
-    //           }
-    //         }
-    //       }
-    //     }
     return data
 })

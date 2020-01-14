@@ -1,18 +1,12 @@
 
     const checkLocalStorage={
         
-      checkStorage(storagename){
-        console.log("storagename======"+storagename)
-        console.log(that)
-        console.log(typeof(storagename))
-        if (!localStorage[storagename]) {
-            console.log('check')
+      getData(storagename){
+        if (!window.localStorage[storagename]) {
             const arr=[]
             return arr
         } else{
-            const content = JSON.parse(localStorage[storagename]);
-            console.log(content)
-            console.log(content[0])
+            const content = JSON.parse(window.localStorage[storagename]);
             return content;
         }
         },

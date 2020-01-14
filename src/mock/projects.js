@@ -1,8 +1,8 @@
 const Mock = require('mockjs')
-
+import storageUtils from '@/mock/storageUtils'
 Mock.mock('/api/getprojects',(req,res)=>{
     
-    const data = localStorage.projects?JSON.parse(localStorage.projects):'';
+    const data = storageUtils.getData("projects");
     const obj = JSON.parse(req.body)
     if(obj){
         var project = {}
