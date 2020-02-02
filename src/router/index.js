@@ -15,7 +15,8 @@ import ProjectDetail from "./../components/project/project_detail.vue"
 
 Vue.component("headerVue", header);
 Vue.component("footerVue", footer);
-export const constantRouterMap = [{
+export const constantRouterMap = [
+  {
     path: '/',
     redirect: {
       name: 'home'

@@ -56,23 +56,25 @@ export default {
     this.$emit("getMessage", this.show);
   },
   created() {
+    
     projectsApi.getProjects().then(response=>{
-      const list=response.data
-      plansApi.getList().then(response=>{
-      console.log('66666')
-      const plans = response.data
-      for(var i=0;i<list.length;i++){
-        var index = i;
-        var arr = []
-        for(var j=0;j<plans.length;j++){
-          plans[j].pid==list[index].id?arr.push(plans[j]):''
-        }
-        list[index].plans = arr
-      }
-      this.list=list
-      console.log(this.list)
       
-    })
+      const list=response.data
+    //   plansApi.getList().then(response=>{
+    //   console.log('66666')
+    //   const plans = response.data
+    //   for(var i=0;i<list.length;i++){
+    //     var index = i;
+    //     var arr = []
+    //     for(var j=0;j<plans.length;j++){
+    //       plans[j].pid==list[index].id?arr.push(plans[j]):''
+    //     }
+    //     list[index].plans = arr
+    //   }
+      this.list=list
+    //   console.log(this.list)
+      
+    // })
     })
 
     // $("body,html").animate({ scrollTop: 0 }, 100);

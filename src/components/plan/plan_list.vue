@@ -19,10 +19,10 @@
             </mu-list-item-title>
             <mu-list-item-sub-title v-if="task.ver!=0">
               {{'今日待完成'+(Number(task.per)-Number(task.dose))+task.unit}}
-              <span
+              <!-- <span
                 class="tips"
                 v-if="realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[0]"
-              >,建议{{realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span>
+              >,建议{{realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span> -->
             </mu-list-item-sub-title>
           </mu-list-item-content>
           <mu-list-item-action>
@@ -53,14 +53,14 @@
             <mu-list-item-title>
               <mu-icon size="20" value=":iconfont icon-weiguanzhu" color="blueGrey100"></mu-icon>
               {{task.name}}
-              <mu-icon v-if="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
+              <mu-icon v-show="task.ver==1" size="18" value=":iconfont icon-huiyuan" color="red"></mu-icon>
             </mu-list-item-title>
             <mu-list-item-sub-title v-if="task.ver!=0">
               今日份已完成~加个鸡腿
-              <span
+              <!-- <span
                 class="tips"
                 v-if="realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[0]"
-              >,建议{{realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span>
+              >,建议{{realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span> -->
             </mu-list-item-sub-title>
           </mu-list-item-content>
           <mu-list-item-action>
@@ -233,15 +233,15 @@ export default {
       addRecord(plan_id, done);
       this.refresh();
     },
-    realPer(end_date, done, total, per, index) {
-      var r_per =
-        (total - done ? done : 0) /
-        (this.remain(end_date) == 0 ? 1 : this.remain(end_date));
-      console.log(total);
-      console.log("剩余时间" + this.remain(end_date));
-      var res = [r_per > per, Math.round(r_per * 100) / 100];
-      return res;
-    },
+    // realPer(end_date, done, total, per, index) {
+      // var r_per =
+        // (total - done ? done : 0) /
+        // (this.remain(end_date) == 0 ? 1 : this.remain(end_date));
+      // console.log(total);
+      // console.log("剩余时间" + this.remain(end_date));
+      // var res = [r_per > per, Math.round(r_per * 100) / 100];
+    //   return res;
+    // },
     closeTask(id, ver, done, dose, total, unit, per) {
         this.$prompt(
           "今日已完成" +

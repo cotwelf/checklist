@@ -26,17 +26,16 @@ Mock.mock('/api/getplans/mock', (req, res) => {
 // storage 获取todoplan
 import storageUtils from '@/mock/storageUtils'
 Mock.mock('/api/getplans', (req, res) => {
+    console.log(JSON.parse(req.body).status===0)
     let reqStatus = JSON.parse(req.body).status;
     const plans = storageUtils.getData("plans")
-    console.log(data)
-    const record = storageUtils.getData("record")
-    console.log(record)
+    console.log(plans)
     const list = []
     // 正在进行中的项目
-    for(var i=0;i<data.length;i++){
+    for(var i=0;i<plans.length;i++){
       let index = i
-      let status = data[index].status
-      status==reqStatus?list.push(data[index]):''
+      let status = plans[index].status
+      status==reqStatus?list.push(plans[index]):''
     }
-    return data
+    return plans
 })
