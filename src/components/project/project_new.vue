@@ -71,7 +71,7 @@ export default {
       endRules: [
         { validate: val => !!val, message: "请选择时间" },
         {
-          validate: val => $("#start").val() < $("#end").val(),
+          validate: val => $("#end").val() >= $("#start").val(),
           // $("#start").val() == $("#end").val(),
           // TODO 提示出现时机不对
           message: "结束时间不要小于开始时间哦~"

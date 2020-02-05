@@ -164,6 +164,13 @@ export default {
       }
     };
   },
+  watch:{
+    validateForm:{
+      deep:true,
+      handler:function(newItems, oldItems){ 
+        console.log(newItems.planlevel) 
+    }}
+  },
   methods: {
     freshData() {},
     openFullscreenDialog() {
@@ -176,6 +183,7 @@ export default {
       this.openAlert = false;
     },
     createPlan() {
+      console.log(this.validateForm)
       getPlan.updatePlan(this.validateForm).then(response=>{
         this.$router.push({ name: "project" });
       })
@@ -183,7 +191,7 @@ export default {
     submit() {
       this.$refs.form.validate().then(result => {
         this.validateForm.created_at = today()
-        this.remain_days = remainDays(this.validateForm.end_at)
+        this.remain_days = remainDays(this.validateForm.end_at)?remainDays(this.validateForm.end_at):1
         if (result) {
           // 计算每天完成数量this.validateForm.per
           this.validateForm.per = (this.validateForm.plantotal/this.remain_days).toFixed(2)
@@ -191,7 +199,7 @@ export default {
         }
       });
     }
-  }
+  },
 };
 </script>
 <style scoped>

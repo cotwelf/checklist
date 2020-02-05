@@ -105,7 +105,7 @@ import {
 import plansApi from "@/api/plans";
 export default {
   created() {
-    console.log("2333333");
+    console.log(!this.tasks);
     // console.log(this.$store.state.projects)
     this.getPlans()
     // localStorage.clear();
@@ -209,15 +209,6 @@ export default {
       addRecord(plan_id, done);
       this.refresh();
     },
-    // realPer(end_date, done, total, per, index) {
-    // var r_per =
-    // (total - done ? done : 0) /
-    // (this.remain(end_date) == 0 ? 1 : this.remain(end_date));
-    // console.log(total);
-    // console.log("剩余时间" + this.remain(end_date));
-    // var res = [r_per > per, Math.round(r_per * 100) / 100];
-    //   return res;
-    // },
     closeTask(id, ver, done, dose, total, unit, per) {
       this.$prompt(
         "今日已完成" +

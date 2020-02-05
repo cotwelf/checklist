@@ -4,6 +4,7 @@ import storageUtils from '@/mock/storageUtils'
 Mock.mock('/api/update_plan', (req, res) => {
     console.log('update')
     let update = JSON.parse(req.body)
+    console.log(update)
     update.update_time = storageUtils.today()
     let data = storageUtils.getData("plans")
     // 更新计划

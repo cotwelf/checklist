@@ -26,9 +26,7 @@ Mock.mock('/api/getplans/mock', (req, res) => {
 // storage 获取todoplan
 import storageUtils from '@/mock/storageUtils'
 Mock.mock('/api/getplans', (req, res) => {
-    console.log(storageUtils.today())
     const plans = storageUtils.getData("plans")
-    console.log(plans)
     const list = {}
     // 1.更新计划
     plans.forEach(item=>{
@@ -44,6 +42,29 @@ Mock.mock('/api/getplans', (req, res) => {
     })
     list.todo = plans.filter(item => (item.status==0))
     list.done = plans.filter(item => (item.status==10))
-    list.dead = plans.filter(item => (item.status==9))    
+    list.dead = plans.filter(item => (item.status==9))
+    list.show = plans.filter(item =>{
+        const today = new Date()
+        const week = today.getDay() //0:周日-6:周六
+        // 2.显示计划
+        // 2-1.计划内的正常显示
+        if(item.type==1&&week==0){
+            return item
+        }else if(item.type == 5&& week!=6 && week!=0){
+            return item
+        }else if(item.type == 6 && week!=0){
+            return item
+        }else if(item.type == 7){
+            return item
+        }
+        // 2-2.只剩1天的显示
+        if(item.end_at == storageUtils.today()){
+            return item
+        }
+        // 2-3.和计划相比，每天需要增加量的显示
+        if((item.total-item.done)/storageUtils.remainDays(item.end_at)>item.per){
+            return item
+        }
+    })  
     return list
 })

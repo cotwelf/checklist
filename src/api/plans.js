@@ -21,7 +21,6 @@ export default{
         return req
     },
     updatePlan(data){
-        console.log('66666666')
         const req = request({
             method:'post',
             url:'/api/update_plan',
@@ -34,7 +33,7 @@ export default{
                 total:data.plantotal,
                 per:data.per,
                 unit:data.planunit,
-                level:'',
+                level:data.planlevel,
                 type:data.plantype,
                 pid:data.pid,
                 status:data.status,
