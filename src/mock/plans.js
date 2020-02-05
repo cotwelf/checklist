@@ -26,16 +26,24 @@ Mock.mock('/api/getplans/mock', (req, res) => {
 // storage 获取todoplan
 import storageUtils from '@/mock/storageUtils'
 Mock.mock('/api/getplans', (req, res) => {
-    console.log(JSON.parse(req.body).status===0)
-    let reqStatus = JSON.parse(req.body).status;
+    console.log(storageUtils.today())
     const plans = storageUtils.getData("plans")
     console.log(plans)
-    const list = []
-    // 正在进行中的项目
-    for(var i=0;i<plans.length;i++){
-      let index = i
-      let status = plans[index].status
-      status==reqStatus?list.push(plans[index]):''
-    }
-    return plans
+    const list = {}
+    // 1.更新计划
+    plans.forEach(item=>{
+        if(item.total==item.done||item.total<item.done){
+            // 1-1.检查计划是否已完成(10完成)
+            item.status=10
+        }else if(Date.parse(item.end_at)<Date.parse(storageUtils.today())){
+            // 1-2.检查计划是否延期(9烂尾)
+            item.status=9
+        }else{
+            item.status=0
+        }
+    })
+    list.todo = plans.filter(item => (item.status==0))
+    list.done = plans.filter(item => (item.status==10))
+    list.dead = plans.filter(item => (item.status==9))    
+    return list
 })

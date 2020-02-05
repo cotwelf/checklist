@@ -1,25 +1,20 @@
-const Mock =  require('mockjs')
+const Mock = require('mockjs')
 import storageUtils from '@/mock/storageUtils'
 // localStorage
-Mock.mock('/api/update_plan',(req,res)=>{
+Mock.mock('/api/update_plan', (req, res) => {
     console.log('update')
-    console.log(req)
-    let update= JSON.parse(req.body)
+    let update = JSON.parse(req.body)
+    update.update_time = storageUtils.today()
     let data = storageUtils.getData("plans")
-    let count=0
-    console.log(data)
-        // 更新计划
-        for(let n in data){
-            if(data[n].id == update.id){
-                console.log(data[n].id +'=='+ update.id)
-                console.log('update')
-                count++
-            }        
-        }
-        // 新建计划
-        if(count==0){
-            data.push(update)
-            localStorage.plans = JSON.stringify(data)
-        }
+    // 更新计划
+    const plan = data.filter(item => item.id == update.id)
+    console.log(plan)
+    // 新建计划
+    if (plan) {
+        console.log('new')
+        update.today_done = 0
+        data.push(update)
+        localStorage.plans = JSON.stringify(data)
+    }
     return data
 })

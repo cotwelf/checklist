@@ -47,6 +47,14 @@ export default {
   methods: {
     refresh() {
       var res = getData(localStorage.plans);
+      res.filter(function(item){
+        console.log(item.id)
+        console.log(item)
+      })
+      console.log('foreach')
+      res.forEach((item)=>{ //res.forEach(function(item){
+        console.log(item)
+      })
       for (var i = 0; i < res.length; i++) {
         var index = i;
         console.log(res[i].pid);

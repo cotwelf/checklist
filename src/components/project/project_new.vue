@@ -91,7 +91,7 @@ export default {
         if (result) {
           const project = {};
           project.id = randomId();
-          project.name = this.validateForm.projectname;
+          project.name = this.validateForm.projectname.trim();
           project.start_at = this.validateForm.projectstart.toLocaleDateString();
           project.end_at = this.validateForm.projectend.toLocaleDateString();
           console.log(project);

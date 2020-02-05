@@ -40,5 +40,5 @@ new Vue({
   router,
   store,
   // router: router,
-  render: h => h(App)
+  render: h => h(App) //相当于template: '<App/>,但它没有编译和渲染功能，此处直接用render渲染组件即可
 });

@@ -15,7 +15,7 @@ export default{
             method:'get',
             url:'/api/getplans',
             data:{
-                status:0,               
+                // status:0,               
             }
         })
         return req

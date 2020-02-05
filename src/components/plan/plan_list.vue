@@ -19,14 +19,9 @@
             </mu-list-item-title>
             <mu-list-item-sub-title v-if="task.ver!=0">
               {{'今日待完成'+(Number(task.per)-Number(task.dose))+task.unit}}
-              <!-- <span
-                class="tips"
-                v-if="realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[0]"
-              >,建议{{realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span> -->
             </mu-list-item-sub-title>
           </mu-list-item-content>
           <mu-list-item-action>
-            <!-- <mu-list-item-after-text>第12次</mu-list-item-after-text> -->
             <mu-checkbox
               color="yellow700"
               v-model="selects"
@@ -60,7 +55,7 @@
               <!-- <span
                 class="tips"
                 v-if="realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[0]"
-              >,建议{{realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span> -->
+              >,建议{{realPer(task.end_at,Number(task.done),Number(task.total),Number(task.per),index)[1]}}{{task.unit}}</span>-->
             </mu-list-item-sub-title>
           </mu-list-item-content>
           <mu-list-item-action>
@@ -79,7 +74,7 @@
     </mu-list>
     <!-- <mu-button fab color="pink200" class="add" @click="openBotttomSheet">
       <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
-    </mu-button> -->
+    </mu-button>-->
     <mu-bottom-sheet :open.sync="open">
       <mu-list>
         <mu-sub-header>选择计划类型</mu-sub-header>
@@ -107,19 +102,14 @@ import {
   updatePlan,
   today
 } from "@/utils/data.js";
-import plansApi from '@/api/plans'
+import plansApi from "@/api/plans";
 export default {
   created() {
     console.log("2333333");
-    plansApi.getList().then(response =>{
-      console.log(JSON.parse(response.data.items))
-    })
-    // .catch(err => {
-    //   console.log(error);
-    // });
+    // console.log(this.$store.state.projects)
+    this.getPlans()
     // localStorage.clear();
     this.today = today();
-    this.refresh();
     this.$emit("getMessage", this.show);
     // console.log(this.tasks);
     $("body,html").animate({ scrollTop: 0 }, 100);
@@ -148,29 +138,15 @@ export default {
     };
   },
   methods: {
-    refresh() {
-      this.tasks = getData(localStorage.plans);
-      var tasks = this.tasks;
-      var records = localStorage.records ? getData(localStorage.records) : [];
-      for (var i = 0; i < tasks.length; i++) {
-        tasks[i].dose = 0;
-      }
-      if (records.length > 0) {
-        for (var i = 0; i < records.length; i++) {
-          var plan_id = records[i].plan_id;
-          if (records[i].finished_at == this.today) {
-            var done = records[i].done;
-            for (var j = 0; j < tasks.length; j++) {
-              if (tasks[j].id == plan_id) {
-                tasks[j].dose = Math.round(done * 100) / 100;
-              }
-            }
-          }
-        }
-      }
-
-      this.tasks = tasks;
-      console.log(tasks);
+    getPlans() {
+      plansApi
+        .getList()
+        .then(response => {
+          this.tasks = response.data.todo;
+        })
+        .catch(err => {
+          alert(error);
+        });
     },
     closeBottomSheet() {
       this.open = false;
@@ -234,45 +210,44 @@ export default {
       this.refresh();
     },
     // realPer(end_date, done, total, per, index) {
-      // var r_per =
-        // (total - done ? done : 0) /
-        // (this.remain(end_date) == 0 ? 1 : this.remain(end_date));
-      // console.log(total);
-      // console.log("剩余时间" + this.remain(end_date));
-      // var res = [r_per > per, Math.round(r_per * 100) / 100];
+    // var r_per =
+    // (total - done ? done : 0) /
+    // (this.remain(end_date) == 0 ? 1 : this.remain(end_date));
+    // console.log(total);
+    // console.log("剩余时间" + this.remain(end_date));
+    // var res = [r_per > per, Math.round(r_per * 100) / 100];
     //   return res;
     // },
     closeTask(id, ver, done, dose, total, unit, per) {
-        this.$prompt(
-          "今日已完成" +
-            Math.round(dose * 100) / 100 +
-            ( "，剩余" +
-                (done ? Math.round((total - done) * 100) / 100 : total) +
-                unit
-              ),
-           "请输入完成量",
-          {
-            validator(value) {
-              return {
-                valid: /[0-9]/.test(value),
-                message: "请输入正确时间"
-              };
-            }
+      this.$prompt(
+        "今日已完成" +
+          Math.round(dose * 100) / 100 +
+          ("，剩余" +
+            (done ? Math.round((total - done) * 100) / 100 : total) +
+            unit),
+        "请输入完成量",
+        {
+          validator(value) {
+            return {
+              valid: /[0-9]/.test(value),
+              message: "请输入正确时间"
+            };
           }
-        ).then(({ result, value }) => {
-          if (result) {
-            this.$toast.message("经验值+" + value);
-            // $("#" + id).fadeOut(); 状态变为已完成，但还可以继续做
-            (ver == 1) | (Number(dose) + Number(value) < Number(per))
-              ? ""
-              : $("#" + id).fadeOut();
-            this.selects = [];
-            this.finishTask(id, value);
-          } else {
-            this.selects = [];
-            this.$toast.message("少年还需努力啊");
-          }
-        });
+        }
+      ).then(({ result, value }) => {
+        if (result) {
+          this.$toast.message("经验值+" + value);
+          // $("#" + id).fadeOut(); 状态变为已完成，但还可以继续做
+          (ver == 1) | (Number(dose) + Number(value) < Number(per))
+            ? ""
+            : $("#" + id).fadeOut();
+          this.selects = [];
+          this.finishTask(id, value);
+        } else {
+          this.selects = [];
+          this.$toast.message("少年还需努力啊");
+        }
+      });
     }
   },
   position: "bottom-end",

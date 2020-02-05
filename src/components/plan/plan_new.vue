@@ -67,7 +67,6 @@
       <mu-form-item class="button_box">
         <!-- TODO 按钮离底部太近 -->
         <mu-button color="pink200" @click="submit" >下一步</mu-button>
-
         <mu-button :to="{name:'home'}" >返回</mu-button>
       </mu-form-item>
       <mu-dialog
@@ -178,9 +177,8 @@ export default {
     },
     createPlan() {
       getPlan.updatePlan(this.validateForm).then(response=>{
-        console.log(response)
+        this.$router.push({ name: "project" });
       })
-      // this.$router.push({ name: "project" });
     },
     submit() {
       this.$refs.form.validate().then(result => {
