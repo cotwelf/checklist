@@ -28,23 +28,23 @@ export default {
             method: 'post',
             url: '/api/update_plan',
             data: {
-                id: data.id,
-                ver: data.planver,
-                name: data.planname,
-                created_at: data.created_at,
-                end_at: data.end_at,
-                total: data.plantotal,
-                per: data.per,
-                unit: data.planunit,
-                level: data.planlevel,
-                type: data.plantype,
-                pid: data.pid,
-                status: data.status,
-                done: data.done,
-                update_value: value | '',
-                update_time: data.update_time | '',
-                today_done: data.today_done | '',
-                per_now: data.per_now | ''
+                plan: {
+                    id: data.id,
+                    ver: data.planver,
+                    name: data.planname,
+                    created_at: data.created_at,
+                    end_at: data.end_at,
+                    total: data.plantotal,
+                    per: data.per,
+                    unit: data.planunit,
+                    level: data.planlevel,
+                    type: data.plantype,
+                    pid: data.pid,
+                    status: data.status,
+                    done: data.done,
+                    today_done: data.today_done | '',
+                    per_now: data.per_now | data.per
+                }, update_value: JSON.stringify(value),
             }
         })
         return req

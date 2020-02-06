@@ -14,6 +14,12 @@
           </mu-list-item-action>
           <mu-list-item-title>保留数据</mu-list-item-title>
         </mu-list-item>
+        <mu-list-item button @click="loadData">
+          <mu-list-item-action>
+            <mu-icon value=":iconfont icon-fenxiang"></mu-icon>
+          </mu-list-item-action>
+          <mu-list-item-title>导入测试数据</mu-list-item-title>
+        </mu-list-item>
       </mu-list>
       <mu-dialog
         title="确定要清除数据吗？"
@@ -32,6 +38,8 @@
 </template>
 <script>
 import { saveStorage } from "@/utils/data.js";
+import plans from './../../db/test_db/plans.json';
+import projects from './../../db/test_db/projects.json';
 export default {
   mounted: function() {
     this.$emit("getMassage", this.show);
@@ -47,6 +55,10 @@ export default {
     };
   },
   methods: {
+    loadData(){
+      localStorage.plans = JSON.stringify(plans)
+      localStorage.projects = JSON.stringify(projects)
+    },
     update() {
       localStorage.projects
         ? saveStorage(JSON.parse(localStorage.projects), "projects")

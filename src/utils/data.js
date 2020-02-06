@@ -35,26 +35,6 @@ export function remainDays(date) { //date 是未来的日期字符串，计算�
     var remain = Math.abs(parseInt((time2 - time1) / 1000 / 3600 / 24))+1;
     return remain ? remain : 0;
 }
-
-// todo
-export function updatePlan(plan_id, done) {
-    const list = getData(localStorage.plans);
-    for (var i = 0; i < list.length; i++) {
-        if (list[i].done) {
-            if (list[i].id == plan_id) {
-                list[i].done = Number(list[i].done) + Number(done);
-                if (Number(list[i].done) > Number(list[i].total) || Number(list[i].done) == Number(list[i].total)) {
-                    list[i].status = 10
-                }
-            }
-        } else {
-            list[i].done = done
-        }
-
-    }
-    localStorage.plans = JSON.stringify(list);
-}
-
 export function addRecord(plan_id, done) {
     var now = new Date()
     var today = now.toLocaleDateString()

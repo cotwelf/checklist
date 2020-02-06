@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import { remainDays, addRecord, getData, updatePlan } from "@/utils/data.js";
+import { remainDays, addRecord} from "@/utils/data.js";
 import plansApi from "@/api/plans";
 import planItem from "@/components/plan_list/plan_item.vue";
 export default {
