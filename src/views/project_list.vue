@@ -42,15 +42,11 @@
   </div>
 </template>
 <script>
-import newproject from "./project_new.vue";
-import img from "../../img/project_img/1.jpg";
-import { remainDays } from "../../utils/data.js";
+import img from "@/img/project_img/1.jpg";
+import { remainDays } from "@/utils/data.js";
 import projectsApi from "@/api/projects"
 import plansApi from '@/api/plans'
 export default {
-  components: {
-    newproject
-  },
   computed: {},
   mounted: function() {
     this.$emit("getMessage", this.show);

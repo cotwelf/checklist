@@ -31,7 +31,7 @@
   </div>
 </template>
 <script>
-import { saveStorage } from "../utils/data.js";
+import { saveStorage } from "@/utils/data.js";
 export default {
   mounted: function() {
     this.$emit("getMassage", this.show);

@@ -15,18 +15,14 @@
   </div>
 </template>
 <script>
-import newproject from "./project_new.vue";
 import {
   remainDays,
   addRecord,
   getData,
   updatePlan,
   today
-} from "../../utils/data.js";
+} from "@/utils/data.js";
 export default {
-  components: {
-    newproject
-  },
   computed: {},
   mounted: function() {
     this.$emit("getMessage", this.show);

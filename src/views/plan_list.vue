@@ -101,7 +101,7 @@ import {
   updatePlan,
 } from "@/utils/data.js";
 import plansApi from "@/api/plans";
-import planItem from "@/components/plan/plan_item.vue";
+import planItem from "@/components/plan_list/plan_item.vue";
 export default {
   components:{
     planItem

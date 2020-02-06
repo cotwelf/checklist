@@ -3,11 +3,11 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 import header from "./../components/header.vue";
 import footer from "./../components/footer.vue";
-import Home from "./../components/plan/plan_list.vue";
-import Project from "./../components/project/project_list.vue";
-import NewProject from "./../components/project/project_new.vue"
-import Mine from "./../components/mine.vue";
-import NewPlan from "./../components/plan/plan_new.vue"
+import Home from "./../views/plan_list.vue";
+import Project from "./../views/project_list.vue";
+import NewProject from "./../views/project_new.vue"
+import Mine from "./../views/mine.vue";
+import NewPlan from "./../views/plan_new.vue"
 import ProjectDetail from "./../components/project/project_detail.vue"
 
 

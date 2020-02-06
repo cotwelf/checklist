@@ -85,7 +85,7 @@
   </div>
 </template>
 <script>
-import { remainDays, pushData, randomId, today } from "../../utils/data.js";
+import { remainDays, pushData, randomId, today } from "@/utils/data.js";
 import getProject from'@/api/projects'
 import getPlan from '@/api/plans'
 export default {

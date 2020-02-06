@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import { pushData, randomId } from "../../utils/data.js";
+import { pushData, randomId } from "@/utils/data.js";
 import getProject from'@/api/projects';
 export default {
   props: ["list"],
@@ -71,9 +71,7 @@ export default {
       endRules: [
         { validate: val => !!val, message: "请选择时间" },
         {
-          validate: val => $("#end").val() >= $("#start").val(),
-          // $("#start").val() == $("#end").val(),
-          // TODO 提示出现时机不对
+          validate: val => Date.parse(val) >= Date.parse($("#start").val()),
           message: "结束时间不要小于开始时间哦~"
         }
       ],
@@ -96,7 +94,6 @@ export default {
           project.end_at = this.validateForm.projectend.toLocaleDateString();
           console.log(project);
           // pushData("projects", project);
-          console.log(55555)
           getProject.updateProject(project).then(response=>{
             console.log(response)
           })
