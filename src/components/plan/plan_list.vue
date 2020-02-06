@@ -3,12 +3,12 @@
     <mu-button v-show="!tasks" color="pink200" :to="{name:'project'}">没有进行中的计划，戳我去添加~</mu-button>
     <mu-list textline="two-line" v-show="tasks">
       <mu-sub-header>今天也要元气满满加油鸭O(∩_∩)O~~</mu-sub-header>
+      <plan-item v-for='task in tasks' :key='task.id' :plan='task' @id='getId'></plan-item>
       <span v-for="(task,index) in tasks" :key="index">
         <mu-list-item
           avatar
           :ripple="false"
           button
-          v-if="showtask(task.status,Number(task.dose),Number(task.per),task.ver,task.type)  && (Number(task.per)-Number(task.dose))>0"
           :id="task.id"
         >
           <mu-list-item-content>
@@ -41,7 +41,6 @@
           avatar
           :ripple="false"
           button
-          v-if="showtask(task.status,Number(task.dose),Number(task.per),task.ver,task.type)  && !((Number(task.per)-Number(task.dose))>0)"
           :id="task.id"
         >
           <mu-list-item-content>
@@ -100,35 +99,28 @@ import {
   addRecord,
   getData,
   updatePlan,
-  today
 } from "@/utils/data.js";
 import plansApi from "@/api/plans";
+import planItem from "@/components/plan/plan_item.vue";
 export default {
+  components:{
+    planItem
+  },
   created() {
     console.log(!this.tasks);
     // console.log(this.$store.state.projects)
     this.getPlans()
     // localStorage.clear();
-    this.today = today();
     this.$emit("getMessage", this.show);
-    // console.log(this.tasks);
     $("body,html").animate({ scrollTop: 0 }, 100);
   },
   data() {
     return {
-      records: [],
-      today: "",
-      ture: "",
       show: "todo",
       openSimple: false,
       selects: [],
-      id: "",
-      name: "",
-      per: "",
-      done: "",
-      status: "",
-      total: "",
-      tasks: "",
+      getId:'',
+      tasks: [],
       open: false,
       vers: [
         { name: "普通计划（当天完成定量）", value: 0 },
@@ -142,7 +134,7 @@ export default {
       plansApi
         .getList()
         .then(response => {
-          this.tasks = response.data.todo;
+          this.tasks = response.data.show;
         })
         .catch(err => {
           alert(error);
@@ -164,44 +156,6 @@ export default {
           return "blue300";
         case 4:
           return "green200";
-      }
-    },
-    weekly(type) {
-      const mydate = new Date();
-      const w_today = mydate.getDay(); //0:周日-6:周六
-      switch (type) {
-        case 7:
-          return 1;
-        case 6:
-          if (w_today == 0) {
-            return 0;
-          } else {
-            return 1;
-          }
-        case 5:
-          if (w_today == 6 || w_today == 0) {
-            return 0;
-          } else {
-            return 1;
-          }
-        case 1:
-          if (w_today == 6) {
-            return 1;
-          } else {
-            return 0;
-          }
-      }
-    },
-    showtask(status, dose, per, ver, type) {
-      if (this.weekly(type)) {
-        if (
-          status == 0 &&
-          (Number(dose) > Number(per)) | (Number(dose) == Number(per))
-        ) {
-          return ver == 1 ? 1 : 0;
-        } else {
-          return status == 0 ? 1 : 0;
-        }
       }
     },
     finishTask(plan_id, done) {
