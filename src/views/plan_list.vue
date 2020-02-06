@@ -7,12 +7,12 @@
     </mu-list>
     <mu-list class="add_margin" textline="two-line" v-if="done_list.length">
       <mu-sub-header>以下为今日份已完成的任务菌们</mu-sub-header>
-      <plan-item v-for="task in done" :key="task.id" :plan="task" @checked-plan="checkedPlan"></plan-item>
+      <plan-item v-for="task in done_list" :key="task.id" :plan="task" @checked-plan="checkedPlan" :done='1'></plan-item>
     </mu-list>
   </div>
 </template>
 <script>
-import { remainDays, addRecord} from "@/utils/data.js";
+import { remainDays, addRecord } from "@/utils/data.js";
 import plansApi from "@/api/plans";
 import planItem from "@/components/plan_list/plan_item.vue";
 export default {
@@ -20,7 +20,6 @@ export default {
     planItem
   },
   created() {
-    console.log(this.checkPlan);
     // console.log(this.$store.state.projects)
     this.getPlans();
     // localStorage.clear();
@@ -48,12 +47,22 @@ export default {
         .getList()
         .then(response => {
           console.log(response.data);
-          this.todo_list = response.data.show.filter(
-            item => item.per_now > item.today_done
-          );
-          this.done_list = response.data.show.filter(
-            item => item.per_now <= item.today_done
-          );
+          this.todo_list = response.data.show.filter(item => {
+            if (!item.delay && item.today_done < item.per) {
+              return item;
+            } else if ((item.delay && item.today_done < item.per_now)) {
+              return item;
+            }
+          });
+          this.done_list = response.data.show.filter(item => {
+            if (!item.delay && item.today_done >= item.per) {
+              return item;
+            } else if (
+              (item.delay && item.today_done >= item.per_now)
+            ) {
+              return item;
+            }
+          });
         })
         .catch(err => {
           alert(error);
@@ -64,8 +73,8 @@ export default {
       console.log("checkedPlan");
       this.$prompt(
         "今日已完成" +
-          plan.today_done +
-          ("，剩余" + (plan.per_now - plan.today_done) + plan.unit),
+          (plan.today_done).toFixed(2) +
+          ("，全部剩余" + ((plan.total - plan.done)*100/plan.total).toFixed(2) + "%"),
         "请输入完成量",
         {
           validator(value) {
@@ -78,20 +87,18 @@ export default {
       ).then(({ result, value }) => {
         if (result) {
           plansApi
-            .updatePlan(plan,value)
+            .updatePlan(plan, value)
             .then(response => {
-              console.log(response)
-              console.log("update_done");
+              this.getPlans();
               this.$toast.message("继续加油鸭");
               plan.today_done > plan.per_now ? "" : $("#" + id).fadeOut();
-              this.getPlans();
             })
             .catch(err => {});
         } else {
           this.$toast.message("少年还需努力啊");
         }
       });
-    },
+    }
   },
   position: "bottom-end",
   close: false

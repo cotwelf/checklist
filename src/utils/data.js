@@ -15,13 +15,13 @@ export function getData(storagename) { //object 为赋值对象
         return content;
     }
 }
-export function pushData(storagename, obj) { //storagename:str
-    if (!localStorage[storagename]) {
-        localStorage[storagename] = "[]"
-    }
-    const lists = JSON.parse(localStorage[storagename])
-    lists.push(obj)
-    localStorage[storagename] = JSON.stringify(lists)
+
+export function plansSort(plans){
+    const arr=[1,2,3,4]
+    const new_plans=[]
+    for(let i = 0;i<arr.length;i++){
+        new_plans.push(plans.filter(item=>item.level==i))
+    }  
 }
 
 export function randomId() {

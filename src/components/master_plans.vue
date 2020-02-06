@@ -101,8 +101,6 @@ export default {
   methods: {
     handleClose() {},
     CloseTask(index) {
-      //   console.log("2333");
-
       $("#" + index).fadeOut();
     },
     OpenTask(index) {

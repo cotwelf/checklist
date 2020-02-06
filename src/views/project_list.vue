@@ -2,15 +2,7 @@
   <div>
     <mu-grid-list class="project">
       <mu-sub-header>{{list.length?"进行中":"先点击下方按钮新建项目吧~"}}</mu-sub-header>
-        <mu-expansion-panel class="project_list" v-for="(list, index) in list" :key="index" >
-          <div slot="header" >{{list.name}}  <b>{{remain(list.end_at)}}</b>天后结束</div>
-         <!-- list -->
-         <div class='list' v-for="(plan,pid) in list.plans " :key="pid">{{plan.name}}</div>
-
-               
-<!-- list -->
-          <mu-button slot="action" flat color="primary" @click="openBotttomSheet(list.id)" :to="{name:'newplan',query:{pid:list.id}}">新建计划</mu-button>
-        </mu-expansion-panel>
+      <project-item v-for="item in projects" :key="item.id" :project="item" class="project_list" />
       <mu-button fab color="pink200" class="add" @click="ensure">
         <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
       </mu-button>
@@ -20,66 +12,33 @@
       你已经拥有4个项目菌啦！先好好对待他们~
       <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">宝宝们我错了</mu-button>
     </mu-dialog>
-    <!-- 新建计划start -->
-        <!-- <mu-bottom-sheet :open.sync="open">
-      <mu-list>
-        <mu-sub-header>选择计划类型</mu-sub-header>
-        <mu-list-item
-          style="height:80px"
-          button
-          v-for="(ver,index) in vers"
-          :key="index"
-          :to="{name:'newplan',query:{ver:ver.value}}"
-        >
-          <mu-list-item-action>
-            <mu-icon value=":iconfont icon-weiguanzhu" color="red400"></mu-icon>
-          </mu-list-item-action>
-          <mu-list-item-title>{{ver.name}}</mu-list-item-title>
-        </mu-list-item>
-      </mu-list>
-    </mu-bottom-sheet> -->
-    <!-- 新建计划end -->
   </div>
 </template>
 <script>
 import img from "@/img/project_img/1.jpg";
-import { remainDays } from "@/utils/data.js";
-import projectsApi from "@/api/projects"
-import plansApi from '@/api/plans'
+import projectsApi from "@/api/projects";
+import plansApi from "@/api/plans";
+import projectItem from "@/components/project/project_item.vue";
 export default {
+  components: {
+    projectItem
+  },
   computed: {},
   mounted: function() {
     this.$emit("getMessage", this.show);
   },
   created() {
-    
-    projectsApi.getProjects().then(response=>{
-      
-      const list=response.data
-    //   plansApi.getList().then(response=>{
-    //   console.log('66666')
-    //   const plans = response.data
-    //   for(var i=0;i<list.length;i++){
-    //     var index = i;
-    //     var arr = []
-    //     for(var j=0;j<plans.length;j++){
-    //       plans[j].pid==list[index].id?arr.push(plans[j]):''
-    //     }
-    //     list[index].plans = arr
-    //   }
-      this.list=list
-    //   console.log(this.list)
-      
-    // })
-    })
-
-    // $("body,html").animate({ scrollTop: 0 }, 100);
+    projectsApi.getProjects().then(response => {
+      this.projects = response.data;
+    });
+    $("body,html").animate({ scrollTop: 0 }, 100);
   },
   data() {
     return {
+      projects: [],
       openAlert: false,
       indexes: "",
-      open:false,
+      open: false,
       show: "project",
       openSimple: false,
       plans: "",
@@ -90,18 +49,10 @@ export default {
         { name: "角虫养成计划（当天可多次完成）", value: 1 },
         { name: "项目计划（当天完成定量，有目标）", value: 2 }
       ],
-      project_id:''
+      project_id: ""
     };
   },
   methods: {
-    closeBottomSheet() {
-      this.project_id=''
-      this.open = false;
-    },
-    openBotttomSheet(project_id) {
-      this.project_id=project_id
-      this.open = true;
-    },
     closeSimpleDialog() {
       this.openSimple = false;
     },
@@ -111,22 +62,6 @@ export default {
       } else {
         this.$router.push({ name: "newproject" });
       }
-    },
-    donePercent(done, total) {
-      return parseInt((done / total) * 100) + "%";
-    },
-    remain(date) {
-      return remainDays(date);
-    },
-    openAlertDialog(index, p_id) {
-      // console.log(this.list);
-      this.indexes = index;
-      this.getPlanList(p_id);
-      console.log(this.plans);
-      this.openAlert = true;
-    },
-    closeAlertDialog() {
-      this.openAlert = false;
     }
   }
 };
@@ -137,12 +72,12 @@ export default {
   bottom: 80px;
   left: 10px;
 }
-.project_list{
+.project_list {
   width: 100%;
-  margin: 0.5rem 0.5rem
+  margin: 0.5rem 0.5rem;
 }
-.list{
+.list {
   /* background: pink; */
-  margin: 5px 1px
+  margin: 5px 1px;
 }
 </style>

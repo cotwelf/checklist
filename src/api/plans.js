@@ -8,22 +8,18 @@ import {
 } from "@/utils/data.js";
 export default {
 
-    getList() {
+    getList(pid) {
         // switch：Mock       
-
         const req = request({
             method: 'get',
             url: '/api/getplans',
             data: {
-                // status:0,               
+                pid,               
             }
         })
         return req
     },
     updatePlan(data, value) {
-        console.log('planapi_updatePlan')
-        console.log(data)
-        console.log(value)
         const req = request({
             method: 'post',
             url: '/api/update_plan',

@@ -36,9 +36,9 @@
           container="bottomSheet"
         ></mu-date-input>
       </mu-form-item>
-      <mu-form-item style="margin:0 auto">
-        <mu-button color="pink200" @click="submit" style="width:45%">创建</mu-button>
-        <mu-button :to="{name:'project'}" style="width:45%">返回</mu-button>
+      <mu-form-item class="button_box">
+        <mu-button color="pink200" @click="submit" >创建</mu-button>
+        <mu-button :to="{name:'project'}" >返回</mu-button>
       </mu-form-item>
     </mu-form>
   </div>
@@ -46,6 +46,7 @@
 <script>
 import { pushData, randomId } from "@/utils/data.js";
 import getProject from'@/api/projects';
+import globalCss from '@/assets/css/global.css'
 export default {
   props: ["list"],
   mounted: function() {
@@ -111,13 +112,11 @@ export default {
   }
 };
 </script>
-<style>
-.radios {
-  margin-top: 15px;
-}
+<style scoped>
 .projectform {
   margin: 0 auto;
   width: 90%;
   margin-bottom: 12%;
 }
+
 </style>
