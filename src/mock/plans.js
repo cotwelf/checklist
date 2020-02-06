@@ -45,6 +45,8 @@ Mock.mock('/api/getplans', (req, res) => {
     list.dead = plans.filter(item => (item.status==9))
     list.show = plans.filter(item =>{
         const today = new Date()
+        // 假设计划尚未滞后
+        item.per_now = item.per
         const week = today.getDay() //0:周日-6:周六
         // 2.显示计划
         // 2-1.计划内的正常显示
@@ -61,8 +63,9 @@ Mock.mock('/api/getplans', (req, res) => {
         if(item.end_at == storageUtils.today()){
             return item
         }
-        // 2-3.和计划相比，每天需要增加量的显示
+        // 2-3.和计划相比，每天需要增加量的显示，并添加per_now字段（当前每天应该完成数量）
         if((item.total-item.done)/storageUtils.remainDays(item.end_at)>item.per){
+            item.per_now = (item.total-item.done)/storageUtils.remainDays(item.end_at)
             return item
         }
     })  
