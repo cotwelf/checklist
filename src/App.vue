@@ -47,6 +47,10 @@ export default {
   width: 100%;
   z-index: 999;
 }
+.mu-appbar-title{
+  position: fixed;
+  top: 3rem;
+}
 .main {
   position: absolute;
   padding: 1rem 1rem;

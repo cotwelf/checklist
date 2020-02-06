@@ -203,21 +203,4 @@ export default {
 };
 </script>
 <style scoped>
-.main {
-  padding:8rem 1rem;
-}
-.button_box{
-  margin-bottom: 5rem;
-  text-align: center
-}
-.mu-form-item-content>.mu-button{
-  width: 90%;
-  margin: 0 auto;
-  margin-bottom: 1rem;
-  height: 3rem
-}
-.select-control-row,.radio>div{
-  flex-direction: column !important; 
-  align-self: flex-start !important
-}
 </style>

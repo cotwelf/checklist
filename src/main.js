@@ -25,7 +25,7 @@ Vue.use(Message);
 // Vue.use(Toast);
 Vue.use(Toast, {
   close: false,
-  position: "top-end"
+  position: "bottom"
 });
 
 Vue.config.productionTip = false;

@@ -37,16 +37,16 @@
         ></mu-date-input>
       </mu-form-item>
       <mu-form-item class="button_box">
-        <mu-button color="pink200" @click="submit" >创建</mu-button>
-        <mu-button :to="{name:'project'}" >返回</mu-button>
+        <mu-button color="pink200" @click="submit">创建</mu-button>
+        <mu-button :to="{name:'project'}">返回</mu-button>
       </mu-form-item>
     </mu-form>
   </div>
 </template>
 <script>
 import { pushData, randomId } from "@/utils/data.js";
-import getProject from'@/api/projects';
-import globalCss from '@/assets/css/global.css'
+import getProject from "@/api/projects";
+import globalCss from "@/assets/css/global.css";
 export default {
   props: ["list"],
   mounted: function() {
@@ -86,7 +86,7 @@ export default {
   methods: {
     submit() {
       this.$refs.form.validate().then(result => {
-        console.log(55555)
+        console.log(55555);
         if (result) {
           const project = {};
           project.id = randomId();
@@ -95,9 +95,9 @@ export default {
           project.end_at = this.validateForm.projectend.toLocaleDateString();
           console.log(project);
           // pushData("projects", project);
-          getProject.updateProject(project).then(response=>{
-            console.log(response)
-          })
+          getProject.updateProject(project).then(response => {
+            console.log(response);
+          });
           console.log(localStorage.projects);
           // this.$router.push({ name: "project" });
         }
@@ -113,10 +113,5 @@ export default {
 };
 </script>
 <style scoped>
-.projectform {
-  margin: 0 auto;
-  width: 90%;
-  margin-bottom: 12%;
-}
 
 </style>
