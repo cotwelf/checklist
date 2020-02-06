@@ -84,7 +84,7 @@ export default {
               console.log("update_done");
               this.$toast.message("继续加油鸭");
               plan.today_done > plan.per_now ? "" : $("#" + id).fadeOut();
-              this.finishTask(id, value);
+              this.getPlans();
             })
             .catch(err => {});
         } else {
@@ -92,55 +92,6 @@ export default {
         }
       });
     },
-    iconColor(level) {
-      switch (level) {
-        case 1:
-          return "red400";
-        case 2:
-          return "yellow800";
-        case 3:
-          return "blue300";
-        case 4:
-          return "green200";
-      }
-    },
-    finishTask(plan) {
-      updatePlan(plan_id, done);
-      addRecord(plan_id, done);
-      this.refresh();
-    },
-
-    closeTask(id, ver, done, dose, total, unit, per) {
-      this.$prompt(
-        "今日已完成" +
-          Math.round(dose * 100) / 100 +
-          ("，剩余" +
-            (done ? Math.round((total - done) * 100) / 100 : total) +
-            unit),
-        "请输入完成量",
-        {
-          validator(value) {
-            return {
-              valid: /[0-9]/.test(value),
-              message: "请输入正确时间"
-            };
-          }
-        }
-      ).then(({ result, value }) => {
-        if (result) {
-          this.$toast.message("经验值+" + value);
-          // $("#" + id).fadeOut(); 状态变为已完成，但还可以继续做
-          (ver == 1) | (Number(dose) + Number(value) < Number(per))
-            ? ""
-            : $("#" + id).fadeOut();
-          this.selects = [];
-          this.finishTask(id, value);
-        } else {
-          this.selects = [];
-          this.$toast.message("少年还需努力啊");
-        }
-      });
-    }
   },
   position: "bottom-end",
   close: false

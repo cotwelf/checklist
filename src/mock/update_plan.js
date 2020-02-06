@@ -25,7 +25,6 @@ Mock.mock('/api/update_plan', (req, res) => {
             //③更新每日计划per_now
             item.per_now = (item.total-item.done)/storageUtils.remainDays(item.end_at)
         }
-        
     })
     console.log(data)
     // 新建计划
@@ -34,7 +33,6 @@ Mock.mock('/api/update_plan', (req, res) => {
         update.plan.today_done = 0
         update.plan.update_time = storageUtils.today()
         data.push(update.plan)
-        
     }
     localStorage.plans = JSON.stringify(data)
     // return data
