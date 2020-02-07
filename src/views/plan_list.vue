@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import { remainDays, addRecord } from "@/utils/data.js";
+import { remainDays, addRecord, numberHelper } from "@/utils/data.js";
 import plansApi from "@/api/plans";
 import planItem from "@/components/plan_list/plan_item.vue";
 export default {
@@ -73,8 +73,8 @@ export default {
       console.log("checkedPlan");
       this.$prompt(
         "今日已完成" +
-          (plan.today_done).toFixed(2) +
-          ("，全部剩余" + ((plan.total - plan.done)*100/plan.total).toFixed(2) + "%"),
+          numberHelper(plan.today_done) +
+          ("，全部剩余" + numberHelper((plan.total - plan.done)*100/plan.total) + "%"),
         "请输入完成量",
         {
           validator(value) {
