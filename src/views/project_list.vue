@@ -3,7 +3,7 @@
     <mu-grid-list class="project">
       <mu-sub-header>{{list.length?"进行中":"先点击下方按钮新建项目吧~"}}</mu-sub-header>
       <project-item v-for="item in projects" :key="item.id" :project="item" class="project_list" />
-      <mu-button fab color="pink200" class="add" @click="ensure">
+      <mu-button fab :color="this.$store.state.global.theme.color" class="add" @click="ensure">
         <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
       </mu-button>
     </mu-grid-list>

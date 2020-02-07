@@ -1,6 +1,6 @@
 <template>
   <div class="plan_list_box">
-    <mu-button v-show="!todo_list" color="pink200" :to="{name:'project'}">没有进行中的计划，戳我去添加~</mu-button>
+    <mu-button v-show="!todo_list" :color="this.$store.state.global.theme.color" :to="{name:'project'}">没有进行中的计划，戳我去添加~</mu-button>
     <mu-list textline="two-line" v-show="todo_list">
       <mu-sub-header>今天也要元气满满加油鸭O(∩_∩)O~~</mu-sub-header>
       <plan-item v-for="item in todo_list" :key="item.id" :plan="item" @checked-plan="checkedPlan"></plan-item>
@@ -20,7 +20,6 @@ export default {
     planItem
   },
   created() {
-    // console.log(this.$store.state.projects)
     this.getPlans();
     // localStorage.clear();
     this.$emit("getMessage", this.show);

@@ -9,7 +9,7 @@
       >
         <mu-text-field
           id="name"
-          color="pink200"
+          :color="this.$store.state.global.theme.color"
           v-model="validateForm.projectname"
           prop="projectname"
         ></mu-text-field>
@@ -17,7 +17,7 @@
       <mu-form-item label="开始时间" prop="projectstart" :rules="startRules">
         <mu-date-input
           id="start"
-          color="pink200"
+          :color="this.$store.state.global.theme.color"
           v-model="validateForm.projectstart"
           full-width
           prop="projectstart"
@@ -28,7 +28,7 @@
       <mu-form-item label="结束时间" prop="projectend" :rules="endRules">
         <mu-date-input
           id="end"
-          color="pink200"
+          :color="this.$store.state.global.theme.color"
           v-model="validateForm.projectend"
           full-width
           prop="projectend"
@@ -37,7 +37,7 @@
         ></mu-date-input>
       </mu-form-item>
       <mu-form-item class="button_box">
-        <mu-button color="pink200" @click="submit">创建</mu-button>
+        <mu-button :color="this.$store.state.global.theme.color" @click="submit">创建</mu-button>
         <mu-button :to="{name:'project'}">返回</mu-button>
       </mu-form-item>
     </mu-form>

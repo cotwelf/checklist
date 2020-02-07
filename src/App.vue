@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img class="bg" src="../src/img/bgm/2.jpg" alt>
+    <img class="bg" :src="this.$store.state.global.theme.bgi" alt>
     <header-vue :title="title" class="header"></header-vue>
     <mu-paper :z-depth="1">
       <router-view class="main" @getMessage="showMsg"></router-view>
@@ -10,23 +10,21 @@
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-// import Item from "./components/Item.vue";
-
+import image from '@/assets/img/index'
 export default {
-  // components: {
-  //   Item
-  // },
+  created(){
+  },
   data() {
     return {
       show: "",
-      title: "角虫养成计划"
+      title: "角虫养成计划",
+      bgi:"@/assets/img/bgm/bg.png"
     };
   },
   methods: {
     showMsg(show) {
       this.show = show;
-    }
+    },
   }
 };
 </script>
