@@ -3,7 +3,7 @@
     <mu-button v-show="!todo_list" :color="this.$store.state.global.theme.color" :to="{name:'project'}">没有进行中的计划，戳我去添加~</mu-button>
     <mu-list textline="two-line" v-show="todo_list">
       <mu-sub-header>今天也要元气满满加油鸭O(∩_∩)O~~</mu-sub-header>
-      <plan-item v-for="item in todo_list" :key="item.id" :plan="item" @checked-plan="checkedPlan"></plan-item>
+      <plan-item v-for="item in todo_list" :key="item.id" :plan="item" @checked-plan="checkedPlan" @click.native='test'></plan-item>
     </mu-list>
     <mu-list class="add_margin" textline="two-line" v-if="done_list.length">
       <mu-sub-header>以下为今日份已完成的任务菌们</mu-sub-header>
@@ -40,6 +40,9 @@ export default {
     };
   },
   methods: {
+    test(){
+      console.log('item被点击')
+    },
     // 获取计划列表
     getPlans() {
       plansApi

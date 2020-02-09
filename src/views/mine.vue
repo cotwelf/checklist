@@ -73,6 +73,9 @@ export default {
     clear() {
       localStorage.clear();
       this.openAlert = false;
+    },
+    changeTheme(){
+      this.$store.commit()
     }
   }
 };

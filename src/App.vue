@@ -13,6 +13,7 @@
 import image from '@/assets/img/index'
 export default {
   created(){
+     console.log(this.$store.state.global.theme)
   },
   data() {
     return {

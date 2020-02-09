@@ -20,6 +20,8 @@ Vue.use(Toast, {
 
 import Vuex from 'vuex';
 Vue.use(Vuex);
+import store from './store';
+
 import Axios from "axios";
 Vue.prototype.$axios = Axios;
 
@@ -36,7 +38,7 @@ import Moment from 'moment';
 Vue.config.productionTip = false;
 // // // routes
 import router from './router';
-import store from './store';
+
 // 引入mockjs
 require('./mock/index.js')
 new Vue({
