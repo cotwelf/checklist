@@ -59,7 +59,6 @@ export default {
   color: rgb(266, 66, 66);
 }
 .done {
-  color: rgb(166, 166, 166);
   text-decoration: line-through;
 }
 </style>

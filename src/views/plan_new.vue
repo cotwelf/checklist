@@ -7,7 +7,7 @@
         prop="planname"
         :rules="plannameRules"
       >
-        <mu-text-field :color="this.$store.state.global.theme.color" v-model="validateForm.planname" prop="planname"></mu-text-field>
+        <mu-text-field :color="color" v-model="validateForm.planname" prop="planname"></mu-text-field>
       </mu-form-item>
 
       <mu-form-item
@@ -17,7 +17,7 @@
         :rules="plantotalRules"
       >
         <mu-text-field
-          :color="this.$store.state.global.theme.color"
+          :color="color"
           type="number"
           v-model="validateForm.plantotal"
           prop="plantotal"
@@ -29,23 +29,12 @@
         prop="planunit"
         :rules="planunitRules"
       >
-        <mu-text-field :color="this.$store.state.global.theme.color" v-model="validateForm.planunit" prop="planunit"></mu-text-field>
+        <mu-text-field :color="color" v-model="validateForm.planunit" prop="planunit"></mu-text-field>
       </mu-form-item>
-      <!-- <mu-form-item label="结束时间" prop="end_at" :rules="endAtRules">
-        <mu-date-input
-          id="end"
-          color="pink200"
-          v-model="validateForm.end_at"
-          full-width
-          prop="end_at"
-          no-display
-          container="bottomSheet"
-        ></mu-date-input>
-        </mu-form-item> -->
       <mu-form-item label="优先级" prop="planlevel" class="radio">
         <mu-flex class="select-control-row" v-for="(level,index) in levels " :key="index">
           <mu-radio
-            :color="this.$store.state.global.theme.color"
+            color="grey800"
             :value="level.value"
             v-model="validateForm.planlevel"
             :label="level.name"
@@ -56,7 +45,7 @@
       <mu-form-item label="周重复天数" prop="plantype"  class="radio">
         <mu-flex class="select-control-row" v-for="(type,index) in types " :key="index">
           <mu-radio
-            :color="this.$store.state.global.theme.color"
+            color="grey800"
             :value="type.value"
             v-model="validateForm.plantype"
             :label="type.name"
@@ -66,7 +55,7 @@
       </mu-form-item>
       <mu-form-item class="button_box">
         <!-- TODO 按钮离底部太近 -->
-        <mu-button :color="this.$store.state.global.theme.color" @click="submit" >下一步</mu-button>
+        <mu-button :color="color" @click="submit" >下一步</mu-button>
         <mu-button :to="{name:'home'}" >返回</mu-button>
       </mu-form-item>
       <mu-dialog
@@ -104,6 +93,7 @@ export default {
   },
   data() {
     return {
+      color:this.$store.state.global.theme.color,
       ver: "",
       remain_days: "",
       now: "",

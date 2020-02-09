@@ -3,16 +3,15 @@ import App from "./App.vue";
 
 
 // MuseUI
-Vue.use(MuseUI);
 import MuseUI from "muse-ui";
-
 import Toast from "muse-ui-toast";
 import Message from "muse-ui-message";
-
-Vue.use(Message);
-// Vue.use(Toast);
 import "muse-ui-message/dist/muse-ui-message.css";
 import "muse-ui/dist/muse-ui.css";
+Vue.use(MuseUI);
+Vue.use(Message);
+Vue.use(Toast);
+
 
 Vue.use(Toast, {
   close: false,
@@ -35,7 +34,6 @@ import Moment from 'moment';
 // })
 
 Vue.config.productionTip = false;
-
 // // // routes
 import router from './router';
 import store from './store';
