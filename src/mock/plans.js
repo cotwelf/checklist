@@ -55,7 +55,7 @@ Mock.mock('/api/getplans', (req, res) => {
     list.alive = plans.filter(item => (item.status == 0))
     list.completed = plans.filter(item => (item.status == 10))
     list.dead = plans.filter(item => (item.status == 9))
-    list.show = storageUtils.plansSort(plans.filter(item => {
+    list.show = storageUtils.plansSort(list.alive.filter(item => {
         const today = new Date()
         const week = today.getDay() //0:周日-6:周六
         // 2.显示计划

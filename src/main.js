@@ -10,12 +10,11 @@ import "muse-ui-message/dist/muse-ui-message.css";
 import "muse-ui/dist/muse-ui.css";
 Vue.use(MuseUI);
 Vue.use(Message);
-Vue.use(Toast);
 
 
 Vue.use(Toast, {
   close: false,
-  position: "bottom"
+  position: "top"
 });
 
 import Vuex from 'vuex';

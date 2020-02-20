@@ -1,0 +1,20 @@
+<template>
+<div>
+    <mu-list-item>
+            <mu-list-item-content>
+              <mu-list-item-title>{{plan.name}}</mu-list-item-title>
+              <mu-list-item-sub-title>
+          每天完成{{plan.per}}{{plan.unit}}
+        </mu-list-item-sub-title>
+            </mu-list-item-content>
+          </mu-list-item>
+          </div>
+</template>
+<script>
+export default {
+    props:['plan'],
+    created(){
+        console.log(this.plan)
+    }
+}
+</script>
