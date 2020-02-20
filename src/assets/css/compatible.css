@@ -1,5 +1,17 @@
+.main {
+    padding:4rem 0.5rem;
+  }
 /* 有小刘海 */
 /* header */
-.header{
-    height:100px
-}
+@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+    .header{
+        height:100px
+    }
+    .mu-appbar-title{
+        position: absolute;
+        bottom: 0px;
+    }
+    .main {
+        padding:7rem 0.5rem;
+      }
+  }

@@ -7,7 +7,6 @@
         <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
       </mu-button>
     </mu-grid-list>
-
     <mu-dialog title="你的项目菌们很蓝瘦" width="360" :open.sync="openSimple">
       你已经拥有4个项目菌啦！先好好对待他们~
       <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">宝宝们我错了</mu-button>
