@@ -5,6 +5,7 @@ import plan from '@/mock/plans'
 import projects from '@/mock/projects'
 import update_plan from '@/mock/update_plan'
 import update_project from '@/mock/update_project'
+import close_plan from '@/mock/close_plan'
 // export default plan
 //使用mockjs模拟数据
 

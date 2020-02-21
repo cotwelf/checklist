@@ -8,13 +8,14 @@ import {
 } from "@/utils/data.js";
 export default {
 
-    getList(pid) {
+    getList(pid,plan_id) {
         // switch：Mock       
         const req = request({
             method: 'get',
             url: '/api/getplans',
             data: {
-                pid,               
+                pid,
+                plan_id               
             }
         })
         return req
@@ -26,11 +27,11 @@ export default {
             data: {
                 plan: {
                     id: data.id,
-                    ver: data.planver,
-                    name: data.planname,
+                    ver: data.ver,
+                    name: data.name,
                     created_at: data.created_at,
                     end_at: data.end_at,
-                    total: data.plantotal,
+                    total: data.total,
                     per: data.per,
                     unit: data.planunit,
                     level: data.planlevel,
@@ -42,6 +43,14 @@ export default {
                     per_now: data.per_now | data.per
                 }, update_value: JSON.stringify(value),
             }
+        })
+        return req
+    },
+    closePlan(plan_id){
+        const req = request({
+            method:'post',
+            url:'/api/close_plan',
+            data:plan_id
         })
         return req
     },

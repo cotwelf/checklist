@@ -1,20 +1,31 @@
 <template>
   <div>
-    <mu-grid-list class="project">
-      <mu-sub-header>{{list.length?"进行中":"先点击下方按钮新建项目吧~"}}</mu-sub-header>
-      <project-item v-for="item in projects" :key="item.id" :project="item" class="project_list" />
-      <mu-button fab :color="this.$store.state.global.theme.color" class="add" @click="ensure">
+    <mu-sub-header>{{list.length?"进行中":"先点击下方按钮新建项目吧~"}}</mu-sub-header>
+    <mu-button fab :color="this.$store.state.global.theme.color" class="add" @click="ensure">
         <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
       </mu-button>
+    <mu-grid-list class="project">
+      <project-item v-for="item in projects" :key="item.id" :project="item" @getId="closeId" :fetch='fetch' class="project_list" />
     </mu-grid-list>
     <mu-dialog title="你的项目菌们很蓝瘦" width="360" :open.sync="openSimple">
       你已经拥有4个项目菌啦！先好好对待他们~
       <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">宝宝们我错了</mu-button>
     </mu-dialog>
+    <!-- 结束计划框 -->
+    <mu-dialog
+        width="600"
+        max-width="80%"
+        :open.sync="openAlert"
+      >
+        计划尚未完成，确定要结束?
+        <mu-button slot="actions" flat color="primary" @click="openAlert = false">我再想想</mu-button>
+        <mu-button slot="actions" flat color="secondary" @click="closePlan">我意已决</mu-button>
+      </mu-dialog>
   </div>
 </template>
 <script>
 import img from "@/img/project_img/1.jpg";
+import css from "@/assets/css/projects.css"
 import projectsApi from "@/api/projects";
 import plansApi from "@/api/plans";
 import projectItem from "@/components/project/project_item.vue";
@@ -22,19 +33,20 @@ export default {
   components: {
     projectItem
   },
-  computed: {},
   mounted: function() {
     this.$emit("getMessage", this.show);
   },
   created() {
-    projectsApi.getProjects().then(response => {
-      this.projects = response.data;
-    });
+    this.fetchPlan()
+    
     $("body,html").animate({ scrollTop: 0 }, 100);
   },
   data() {
     return {
+      active_project:'',
       projects: [],
+      fetch:0,
+      close_id:'',
       openAlert: false,
       indexes: "",
       open: false,
@@ -43,6 +55,7 @@ export default {
       plans: "",
       openFullscreen: false,
       list: [],
+
       vers: [
         // { name: "普通计划（当天完成定量）", value: 0 },
         { name: "角虫养成计划（当天可多次完成）", value: 1 },
@@ -51,7 +64,27 @@ export default {
       project_id: ""
     };
   },
+
   methods: {
+    fetchPlan(){
+      projectsApi.getProjects().then(response => {
+        this.projects = response.data;
+      });
+    },
+    closeId(val){
+      this.openAlert = true
+      this.close_id = val
+    },
+    closePlan(){
+      plansApi.closePlan(this.close_id).then(response=>{
+        console.log(response.data)
+        if(response.data.flag == 'success'){
+          this.fetchPlan()
+          this.fetch=1
+          this.openAlert = false
+        }
+      })
+    },
     closeSimpleDialog() {
       this.openSimple = false;
     },

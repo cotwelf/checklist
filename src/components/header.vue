@@ -1,6 +1,6 @@
 <template>
   <div>
-    <mu-appbar :color="this.$store.state.global.theme.color" class="header">
+    <mu-appbar :color="this.$store.state.global.theme.color" class="header-bar">
       {{title}}
       <!-- <mu-button flat slot="right">
         <i class="iconfont icon-shezhi" style="font-size: 30px"></i>

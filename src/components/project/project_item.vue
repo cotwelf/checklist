@@ -6,9 +6,8 @@
         <b>{{remain()}}</b>天后结束
       </div>
       <mu-list class="list" v-for="plan in plans " :key="plan.id">
-        <plan-list :plan='plan'/>
+        <plan-list :plan='plan' :fetch='fetch' @sendId="closeId" />
       </mu-list>
-      
       <mu-button
         slot="action"
         flat
@@ -23,21 +22,36 @@ import planApi from '@/api/plans'
 import planList from'@/components/project/project_plan'
 import { remainDays } from '@/utils/data'
 export default {
-  props:['project'],
+  props:['project','fetch'],
   components:{
     planList
   },
+    watch: {
+    fetch(val){
+this.fetchData()
+    }
+  },
   created(){
-      planApi.getList(this.project.id).then(res =>{
-          this.plans = res.data
-      })
+      this.fetchData()
+      this.old_fetch = this.fetch
+      console.log(this.fetch)
   },
   data() {
     return {
-        plans:[]
+        plans:[],
+        old_fetch:''
     };
   },
+    
   methods:{
+    fetchData(){
+      planApi.getList(this.project.id).then(res =>{
+          this.plans = res.data
+      })
+    },
+    closeId(val){
+      this.$emit('getId',val)
+    },
       remain(){
           return remainDays(this.project.end_at)
       }

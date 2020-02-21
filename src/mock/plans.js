@@ -1,32 +1,14 @@
 const Mock = require('mockjs')
-// 获取plan
-Mock.mock('/api/getplans/mock', (req, res) => {
-    console.log('plan_mock')
-    const data = Mock.mock({
-        'items|10': [{
-            created_at: '@date("yyyy/MM/dd")',
-            'done|0-10.2': 1,
-            'dose|0-5.2': 1,
-            end_at: '2020/3/3',
-            name: '@cname()',
-            id: '@integer(100,500)',
-            'level|1': [1, 2, 3, 4],
-            'per|0-5.2': 1,
-            pid: '@integer(100,500)',
-            'status|1': [10],
-            'total|10-100.2': 1,
-            'type|1': [1, 5, 6, 7],
-            'unit|': ['课', '页', '节'],
-            'ver|1': [1, 2],
-        }]
-    })
-    return data
-})
 
 // storage 获取todoplan
 import storageUtils from '@/mock/storageUtils'
 Mock.mock('/api/getplans', (req, res) => {
     const plans = storageUtils.getData("plans")
+    console.log(plans)
+    //查询特定计划
+    if(JSON.parse(req.body).plan_id){
+        return plans.filter(item => item.id == JSON.parse(req.body).plan_id)
+    }
     //查询特定项目的计划
     if(JSON.parse(req.body).pid){
         return storageUtils.plansSort(plans.filter(item=>item.pid == JSON.parse(req.body).pid))
@@ -40,8 +22,6 @@ Mock.mock('/api/getplans', (req, res) => {
         } else if (Date.parse(item.end_at) < Date.parse(storageUtils.today())) {
             // 1-2.检查计划是否延期(9烂尾)
             item.status = 9
-        } else {
-            item.status = 0
         }
         //2.更新时间update_time
         if (item.update_time != storageUtils.today()) {

@@ -8,12 +8,12 @@
           </mu-list-item-action>
           <mu-list-item-title>删除数据</mu-list-item-title>
         </mu-list-item>
-        <mu-list-item button @click="update">
+        <!-- <mu-list-item button @click="update">
           <mu-list-item-action>
             <mu-icon value=":iconfont icon-fenxiang"></mu-icon>
           </mu-list-item-action>
           <mu-list-item-title>保留数据</mu-list-item-title>
-        </mu-list-item>
+        </mu-list-item> -->
         <mu-list-item button @click="loadData">
           <mu-list-item-action>
             <mu-icon value=":iconfont icon-fenxiang"></mu-icon>
@@ -31,7 +31,7 @@
       >
         删除后不可恢复
         <mu-button slot="actions" flat color="primary" @click="openAlert = false">手滑了</mu-button>
-        <mu-button slot="actions" flat color="primary" @click="clear">是的</mu-button>
+        <mu-button slot="actions" flat color="secondary" @click="clear">是的</mu-button>
       </mu-dialog>
     </mu-paper>
   </div>

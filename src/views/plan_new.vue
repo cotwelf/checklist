@@ -4,23 +4,23 @@
       <mu-form-item
         label="计划名称"
         help-text="汉字、字母或字符，不要超过10个字"
-        prop="planname"
-        :rules="plannameRules"
+        prop="name"
+        :rules="nameRules"
       >
-        <mu-text-field :color="color" v-model="validateForm.planname" prop="planname"></mu-text-field>
+        <mu-text-field :color="color" v-model="validateForm.name" prop="name"></mu-text-field>
       </mu-form-item>
 
       <mu-form-item
         label="总目标"
         help-text="数字，如100，不要超过10位数"
-        prop="plantotal"
-        :rules="plantotalRules"
+        prop="total"
+        :rules="totalRules"
       >
         <mu-text-field
           :color="color"
           type="number"
-          v-model="validateForm.plantotal"
-          prop="plantotal"
+          v-model="validateForm.total"
+          prop="total"
         ></mu-text-field>
       </mu-form-item>
       <mu-form-item
@@ -82,9 +82,9 @@ export default {
     this.$emit("getMessage", this.show);
   },
   created() {
-    
     $("body,html").animate({ scrollTop: 0 }, 100);
     const pid = this.$route.query.pid
+    this.update = this.$route.query.id
     getProject.getProjects(pid).then(response=>{
       console.log(response.data)
       this.validateForm.end_at = response.data.end_at
@@ -95,6 +95,7 @@ export default {
     return {
       color:this.$store.state.global.theme.color,
       ver: "",
+      update:"",
       remain_days: "",
       now: "",
       list: [],
@@ -112,14 +113,14 @@ export default {
         { name: "重要（没有明确规定完成时间）", value: 3 },
         { name: "不重要（仅备忘）", value: 4 }
       ],
-      plannameRules: [
+      nameRules: [
         { validate: val => !!val, message: "必须填写计划名称" },
         {
           validate: val => val.length <= 10,
           message: "计划名称太长啦臣妾记不住啊"
         }
       ],
-      plantotalRules: [
+      totalRules: [
         { validate: val => !!val, message: "必须填写总目标" },
         {
           validate: val => val.length <= 10,
@@ -139,13 +140,13 @@ export default {
       validateForm: {
         // 新建计划
         id:randomId(),
-        planname: "",
-        plantotal: "",
+        name: "",
+        total: "",
         per:'',
         planunit: "",
         plantype: 7,
         pid: 0,
-        planver: 0,
+        ver: 0,
         planlevel: 1,
         created_at:'',
         end_at:'',
@@ -154,13 +155,13 @@ export default {
       }
     };
   },
-  watch:{
-    validateForm:{
-      deep:true,
-      handler:function(newItems, oldItems){ 
-        console.log(newItems.planlevel) 
-    }}
-  },
+  // watch:{
+  //   validateForm:{
+  //     deep:true,
+  //     handler:function(newItems, oldItems){ 
+  //       console.log(newItems.planlevel) 
+  //   }}
+  // },
   methods: {
     freshData() {},
     openFullscreenDialog() {
@@ -184,7 +185,7 @@ export default {
         this.remain_days = remainDays(this.validateForm.end_at)?remainDays(this.validateForm.end_at):1
         if (result) {
           // 计算每天完成数量this.validateForm.per
-          this.validateForm.per = (this.validateForm.plantotal/this.remain_days).toFixed(2)
+          this.validateForm.per = (this.validateForm.total/this.remain_days).toFixed(2)
           this.openAlertDialog();
         }
       });

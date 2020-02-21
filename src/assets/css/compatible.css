@@ -4,8 +4,14 @@
 /* 有小刘海 */
 /* header */
 @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+    body{
+        font-size: 20px;
+    }
     .header{
         height:100px
+    }
+    .header>.header-bar{
+        height: 100px;
     }
     .mu-appbar-title{
         position: absolute;
