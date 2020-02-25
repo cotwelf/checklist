@@ -5,7 +5,7 @@
               <img v-if="plan.status == 9" style="width:3.5rem;position:absolute;right:1rem" src="@/assets/img/jieshu.png">
               <img v-if="plan.status == 10" style="width:3.5rem;position:absolute;right:1rem" src="@/assets/img/wancheng.png">
               <mu-list-item-title>{{plan.name}}</mu-list-item-title>
-              <mu-list-item-sub-title>每天完成{{plan.per}}{{plan.unit}}</mu-list-item-sub-title>
+              <mu-list-item-sub-title>共{{plan.total}}{{plan.unit}}，剩余{{plan.total-plan.done}}{{plan.unit}}</mu-list-item-sub-title>
 
             </mu-list-item-content>
             <mu-list-item-action>

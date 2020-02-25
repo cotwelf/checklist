@@ -15,5 +15,17 @@ Mock.mock('/api/getprojects',(req,res)=>{
            }
        }
     }
-    return data
+    const projects= {
+        dead:[],
+        alive:[]
+      }
+    data.filter(item =>{
+        if(Date.parse(new Date())>Date.parse(item.end_at)){
+          // dead
+      projects.dead.push(item)
+        }else{
+          projects.alive.push(item)
+        }
+      })
+    return projects
 })

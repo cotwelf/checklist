@@ -12,3 +12,6 @@
   .radios {
     margin-top: 15px;
   }
+  [v-cloak]{
+    display: none;
+  }

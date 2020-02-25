@@ -1,7 +1,7 @@
 <template>
   <div class="plan_list_box">
-    <mu-button v-show="!todo_list" :color="this.$store.state.global.theme.color" :to="{name:'project'}">没有进行中的计划，戳我去添加~</mu-button>
-    <mu-list textline="two-line" v-show="todo_list">
+    <mu-button class="create_tips" v-if="!this.todo_list.length" :color="this.$store.state.global.theme.color" :to="{name:'project'}">没有进行中的计划，戳我去添加~</mu-button>
+    <mu-list textline="two-line" v-cloak v-if="this.todo_list.length">
       <mu-sub-header>今天也要元气满满加油鸭O(∩_∩)O~~</mu-sub-header>
       <plan-item v-for="item in todo_list" :key="item.id" :plan="item" @checked-plan="checkedPlan" @click.native='test'></plan-item>
     </mu-list>
@@ -15,12 +15,14 @@
 import { remainDays, addRecord, numberHelper } from "@/utils/data.js";
 import plansApi from "@/api/plans";
 import planItem from "@/components/plan_list/plan_item.vue";
+import css from "@/assets/css/global.css"
 export default {
   components: {
     planItem
   },
   created() {
     this.getPlans();
+    console.log(this.todo_list.length)
     // localStorage.clear();
     this.$emit("getMessage", this.show);
     $("body,html").animate({ scrollTop: 0 }, 100);
@@ -48,7 +50,6 @@ export default {
       plansApi
         .getList()
         .then(response => {
-          console.log(response.data);
           this.todo_list = response.data.show.filter(item => {
             if (!item.delay && item.today_done < item.per) {
               return item;
@@ -72,10 +73,9 @@ export default {
     },
     // 选择某任务
     checkedPlan(plan) {
-      console.log("checkedPlan");
       this.$prompt(
         "今日已完成" +
-          numberHelper(plan.today_done) +
+          numberHelper(plan.today_done) + plan.unit+
           ("，全部剩余" + numberHelper((plan.total - plan.done)*100/plan.total) + "%"),
         "请输入完成量",
         {
@@ -120,5 +120,9 @@ export default {
 }
 .add_margin {
   margin-bottom: 8rem;
+}
+.create_tips{
+  position: absolute;
+  bottom: 10rem
 }
 </style>

@@ -9,7 +9,7 @@
         <mu-list-item-sub-title
           v-if="!done"
           :class="{'delay': plan.delay}"
-        >{{'今日已完成:'+dataHelper(plan.today_done)+',待完成:'+dataHelper((plan.delay?plan.per_now:plan.per)-plan.today_done)+plan.unit}}</mu-list-item-sub-title>
+        >{{'今日已完成:'+dataHelper(plan.today_done)+plan.unit+',待完成:'+dataHelper((plan.delay?plan.per_now:plan.per)-plan.today_done)+plan.unit}}</mu-list-item-sub-title>
         <mu-list-item-sub-title v-else>今日已完成{{dataHelper(plan.today_done)+plan.unit}}~加个鸡腿~</mu-list-item-sub-title>
       </mu-list-item-content>
       <mu-list-item-action>

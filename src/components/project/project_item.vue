@@ -1,14 +1,15 @@
 <template>
   <div>
     <mu-expansion-panel >
-      <div slot="header">
+      <div slot="header" >
         {{project.name}}
-        <b>{{remain()}}</b>天后结束
+        <span v-if="Date.parse(new Date())<Date.parse(project.end_at)">（{{remain()}}天后结束）</span>
       </div>
       <mu-list class="list" v-for="plan in plans " :key="plan.id">
         <plan-list :plan='plan' :fetch='fetch' @sendId="closeId" />
       </mu-list>
       <mu-button
+      v-if="Date.parse(new Date())<Date.parse(project.end_at)"
         slot="action"
         flat
         color="primary"
@@ -32,6 +33,7 @@ this.fetchData()
     }
   },
   created(){
+
       this.fetchData()
       this.old_fetch = this.fetch
       console.log(this.fetch)

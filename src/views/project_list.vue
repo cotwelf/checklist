@@ -1,12 +1,18 @@
 <template>
   <div>
-    <mu-sub-header>{{list.length?"进行中":"先点击下方按钮新建项目吧~"}}</mu-sub-header>
+    <mu-sub-header>{{projects.alive.length?"进行中的项目":"没有进行中的项目，点击下方“+”按钮新建"}}</mu-sub-header>
     <mu-button fab :color="this.$store.state.global.theme.color" class="add" @click="ensure">
         <mu-icon value=":iconfont icon-jiajianzujianjiahao"></mu-icon>
       </mu-button>
     <mu-grid-list class="project">
-      <project-item v-for="item in projects" :key="item.id" :project="item" @getId="closeId" :fetch='fetch' class="project_list" />
+      <project-item v-for="item in projects.alive" :key="item.id" :project="item" @getId="closeId" :fetch='fetch' class="project_list" />
     </mu-grid-list>
+    <div v-if='projects.dead.length'>
+      <mu-sub-header>已结束的项目</mu-sub-header>
+    <mu-grid-list class="project">
+      <project-item v-for="item in projects.dead" :key="item.id" :project="item" @getId="closeId" :fetch='fetch' class="project_list" />
+    </mu-grid-list>
+    </div>
     <mu-dialog title="你的项目菌们很蓝瘦" width="360" :open.sync="openSimple">
       你已经拥有4个项目菌啦！先好好对待他们~
       <mu-button slot="actions" flat color="primary" @click="closeSimpleDialog">宝宝们我错了</mu-button>
@@ -38,13 +44,15 @@ export default {
   },
   created() {
     this.fetchPlan()
-    
+    plansApi.getList().then(response =>{
+
+    })
     $("body,html").animate({ scrollTop: 0 }, 100);
   },
   data() {
     return {
       active_project:'',
-      projects: [],
+      projects: '',
       fetch:0,
       close_id:'',
       openAlert: false,
@@ -68,7 +76,9 @@ export default {
   methods: {
     fetchPlan(){
       projectsApi.getProjects().then(response => {
-        this.projects = response.data;
+        this.projects = response.data
+        console.log("fetchPlan",this.projects.dead)
+        
       });
     },
     closeId(val){
@@ -77,7 +87,6 @@ export default {
     },
     closePlan(){
       plansApi.closePlan(this.close_id).then(response=>{
-        console.log(response.data)
         if(response.data.flag == 'success'){
           this.fetchPlan()
           this.fetch=1
